@@ -12,7 +12,7 @@ resource "aws_lb" "xotocross-alb" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    name        = var.xotocross-alb-name
+    Name        = var.xotocross-alb-name
     environment = var.environment
   }
 }
@@ -30,7 +30,7 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   }
 
   tags = {
-    name        = "${var.xotocross-alb-name}-listener-${each.value}"
+    Name        = "${var.xotocross-alb-name}-listener-${each.value}"
     environment = var.environment
   }
 }
@@ -65,6 +65,6 @@ resource "aws_lb_target_group" "xotocross-tg" {
 
   tags = {
     environment = var.environment
-    name        = "${var.xotocross-tg-name}-${each.value}"
+    Name        = "${var.xotocross-tg-name}-${each.value}"
   }
 }
