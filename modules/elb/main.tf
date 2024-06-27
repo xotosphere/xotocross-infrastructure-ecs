@@ -1,4 +1,3 @@
-
 resource "aws_lb" "xotocross-alb" {
   name                             = var.xotocross-alb-name
   internal                         = false
