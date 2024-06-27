@@ -7,6 +7,7 @@ variable "xotocross-service-name" { description = "xotocross service name" }
 variable "xotocross-container-name" { description = "xotocross container name" }
 variable "xotocross-container-port" { description = "xotocross list of ports" }
 variable "xotocross-desired-count" { description = "xotocross desired count" }
+variable "xotocross-ecs-launch-type" { description = "xotocross launch type" }
 variable "xotocross-deployment-max" { description = "xotocross deployment max" }
 variable "xotocross-deployment-min" { description = "xotocross deployment min" }
 variable "xotocross-enable-deployment-circuit-breaker" { description = "xotocross enable deployment circuit breaker" }

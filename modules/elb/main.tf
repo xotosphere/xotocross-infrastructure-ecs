@@ -64,7 +64,7 @@ resource "aws_lb_target_group" "xotocross-tg" {
   }
 
   tags = {
-    environment = var.environment
     Name        = "${var.xotocross-tg-name}-${each.value}"
+    environment = var.environment
   }
 }
