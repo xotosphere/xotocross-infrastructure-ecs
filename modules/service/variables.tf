@@ -4,7 +4,6 @@ variable "xotocross-container-definition" { description = "xotocross container d
 variable "xotocross-execution-role-arn" { description = "xotocross execution role arn" }
 variable "xotocross-task-role-arn" { description = "xotocross task role arn" }
 variable "xotocross-service-name" { description = "xotocross service name" }
-variable "xotocross-container-name" { description = "xotocross container name" }
 variable "xotocross-container-port" { description = "xotocross list of ports" }
 variable "xotocross-desired-count" { description = "xotocross desired count" }
 variable "xotocross-ecs-launch-type" { description = "xotocross launch type" }
