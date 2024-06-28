@@ -1,7 +1,7 @@
 ################# cloudwatch
 
-resource "aws_cloudwatch_log_group" "xotocross-log-group" {
-  name = var.xotocross-log-group-name
+resource "aws_cloudwatch_log_group" "xotocross-cluster-log-group" {
+  name = var.xotocross-cluster-log-group-name
 }
 
 resource "aws_cloudwatch_metric_alarm" "xotocross-cpu-cap-alarm" {
