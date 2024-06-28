@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-cpu-cap-alarm" {
 	alarm_description   = "xotocross metric checks if cpu utilization is above 80%"
 	alarm_actions       = [aws_sns_topic.xotocross-cpu-cap-alarm.arn]
 	dimensions = {
-		ClusterName = var.xotocross-ecs-cluster-id
+		ClusterName = var.xotocross-cluster-name
 		ServiceName = var.xotocross-service-name
 	}
 }

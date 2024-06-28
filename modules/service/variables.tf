@@ -1,4 +1,4 @@
-variable "xotocross-ecs-cluster-id" { description = "xotocross ecs cluster id" }
+variable "xotocross-cluster-name" { description = "xotocross ecs cluster name" }
 variable "xotocross-task-family" { description = "xotocross task family" }
 variable "xotocross-container-definition" { description = "xotocross container definition" }
 variable "xotocross-execution-role-arn" { description = "xotocross execution role arn" }

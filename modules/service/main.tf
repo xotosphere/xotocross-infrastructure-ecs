@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
 
 resource "aws_ecs_service" "xotocross-service" {
   name                               = var.xotocross-service-name
-  cluster                            = var.xotocross-ecs-cluster-id
+  cluster                            = var.xotocross-cluster-name
   task_definition                    = aws_ecs_task_definition.xotocross-ecs-task-definition.arn
   deployment_maximum_percent         = var.xotocross-deployment-max
   deployment_minimum_healthy_percent = var.xotocross-deployment-min
