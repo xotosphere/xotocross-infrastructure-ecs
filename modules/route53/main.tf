@@ -22,7 +22,7 @@ resource "aws_route53_record" "domain" {
   type    = "A"
   alias {
     name                   = var.xotocross-alb-dns-name
-    zone_id                = data.aws_elb.alb.zone_id
+    zone_id                = var.xotocross-alb-zone-id
     evaluate_target_health = true
   }
 }
