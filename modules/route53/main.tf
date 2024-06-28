@@ -1,9 +1,5 @@
-resource "aws_route53_zone" "xotocross-zone" {
-  name = var.xotocross-domain-name
-}
-
 resource "aws_route53_record" "domain" {
-  zone_id = aws_route53_zone.xotocross-zone.zone_id
+  zone_id = var.xotocross-zone-id
   name    = var.xotocross-domain-name
   type    = "A"
 
@@ -15,7 +11,7 @@ resource "aws_route53_record" "domain" {
 }
 
 resource "aws_route53_record" "subdomain" {
-  zone_id = aws_route53_zone.xotocross-zone.zone_id
+  zone_id = var.xotocross-zone-id
   name    = "${var.xotocross-subdomain-name}.${var.xotocross-domain-name}"
   type    = "A"
 
