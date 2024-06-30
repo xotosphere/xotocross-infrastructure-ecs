@@ -5,4 +5,4 @@ variable "xotocross-lambda-role-arn" { description = "xotocross arn of the lambd
 variable "xotocross-asg-name" { description = "xotocross name of the autoscaling group" }
 variable "xotocross-capacity" { description = "xotocross capacity of the autoscaling group" }
 variable "xotocross-email" { description = "xotocross emails subscriptions" }
-variable "xotocross-cluster-log-group-name" { description = "xotocross cluster log group name for lambda" }
+variable "xotocross-log-group-name" { description = "xotocross cluster log group name for lambda" }

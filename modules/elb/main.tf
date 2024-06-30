@@ -17,10 +17,10 @@ resource "aws_lb" "xotocross-alb" {
 }
 
 resource "aws_lb_listener" "xotocross-http-listener" {
-  for_each = toset([for idx in range(0, length(var.xotocross-ports)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-container-ports)) : tostring(idx)])
 
   load_balancer_arn = aws_lb.xotocross-alb.arn
-  port              = var.xotocross-ports[each.value]
+  port              = var.xotocross-container-ports[each.value]
   protocol          = "HTTP"
 
   default_action {
@@ -35,10 +35,10 @@ resource "aws_lb_listener" "xotocross-http-listener" {
 }
 
 resource "aws_lb_target_group" "xotocross-tg" {
-  for_each = toset([for idx in range(0, length(var.xotocross-ports)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-host-ports)) : tostring(idx)])
 
   name                          = "${var.xotocross-tg-name}-${each.value}"
-  port                          = var.xotocross-ports[each.value]
+  port                          = var.xotocross-host-ports[each.value]
   protocol                      = "HTTP"
   target_type                   = var.xotocross-target-type
   vpc_id                        = var.xotocross-vpc-id

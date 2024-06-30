@@ -114,6 +114,6 @@ resource "aws_sns_topic_subscription" "xotocross-stop-email" {
 }
 
 resource "aws_cloudwatch_log_group" "xotocross-scheduler-function-log-group" {
-  name = var.xotocross-cluster-log-group-name
+  name = var.xotocross-log-group-name
   retention_in_days = 14
 }
