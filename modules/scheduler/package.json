@@ -1,0 +1,9 @@
+{
+	"name": "xotocross-lamda-scheduler",
+	"version": "1.0.0",
+	"description": "",
+	"main": "lambda.js",
+	"dependencies": {
+		"@aws-sdk/client-auto-scaling": "^3.600.0"
+	}
+}
