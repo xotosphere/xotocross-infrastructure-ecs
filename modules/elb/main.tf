@@ -56,7 +56,6 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xotocross-host-ports)) : tostring(idx)])
 
   listener_arn = aws_lb_listener.xotocross-http-listener-main.arn
-  priority     = 100
 
   action {
     type             = "forward"
@@ -64,7 +63,7 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   }
   condition {
     host_header {
-      values = [xotocross-listener-hosts[each.value]]
+      values = [var.xotocross-listener-hosts[each.value]]
     }
   }
 }
