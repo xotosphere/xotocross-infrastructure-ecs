@@ -17,10 +17,10 @@ resource "aws_lb" "xotocross-alb" {
 }
 
 resource "aws_lb_listener" "xotocross-http-listener" {
-  for_each = toset([for idx in range(0, length(var.xotocross-container-ports)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-listener-ports)) : tostring(idx)])
 
   load_balancer_arn = aws_lb.xotocross-alb.arn
-  port              = var.xotocross-container-ports[each.value]
+  port              = var.xotocross-listener-ports[each.value]
   protocol          = "HTTP"
 
   default_action {
