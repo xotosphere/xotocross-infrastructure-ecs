@@ -24,3 +24,11 @@ resource "aws_route53_record" "subdomain" {
   ttl     = "300"
   records = [var.xotocross-alb-name]
 }
+
+resource "aws_route53_record" "subdomain" {
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = "*.${var.environment}.${var.xotocross-subdomain-name}.${var.xotocross-domain-name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [var.xotocross-alb-name]
+}
