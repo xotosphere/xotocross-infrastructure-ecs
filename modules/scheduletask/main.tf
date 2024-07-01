@@ -58,8 +58,8 @@ resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
   })
 }
 
-resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-stop-rule-alarm" {
-  alarm_name          = "${var.xotocross-function-name}-stop-rule-alarm"
+resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
+  alarm_name          = "${var.xotocross-function-name}-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "Errors"
@@ -68,19 +68,19 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-stop-rule-alarm" 
   statistic           = "SampleCount"
   threshold           = "1"
   alarm_description   = "xotocross metric checks if there are any errors from the lambda function"
-  alarm_actions       = [aws_sns_topic.xotocross-scheduletask-stop-rule-sns.arn]
+  alarm_actions       = [aws_sns_topic.xotocross-scheduletask-sns.arn]
   dimensions = {
     FunctionName =  var.xotocross-function-name
   }
 }
 
-resource "aws_sns_topic" "xotocross-scheduletask-stop-rule-sns" {
-  name = "${var.xotocross-function-name}-stop-rule-sns"
+resource "aws_sns_topic" "xotocross-scheduletask-sns" {
+  name = "${var.xotocross-function-name}-sns"
 }
 
-resource "aws_sns_topic_subscription" "xotocross-scheduletask-stop-rule-email" {
+resource "aws_sns_topic_subscription" "xotocross-scheduletask-email" {
   for_each   = toset(var.xotocross-email)
-  topic_arn  = aws_sns_topic.xotocross-scheduletask-stop-rule-sns.arn
+  topic_arn  = aws_sns_topic.xotocross-scheduletask-sns.arn
   protocol   = "email"
   endpoint   = each.value
 }

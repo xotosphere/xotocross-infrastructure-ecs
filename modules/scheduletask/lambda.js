@@ -1,3 +1,11 @@
+/**
+	{
+		"serviceName":"xotocross-core-staging-service",
+		"taskCount":0,
+		"action":"stop"
+	}
+*/
+
 const {
     ECSClient,
     UpdateServiceCommand,

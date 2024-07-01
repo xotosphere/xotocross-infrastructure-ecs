@@ -44,8 +44,8 @@ resource "aws_lb_listener" "xotocross-http-listener-main" {
     type = "fixed-response"
 
     fixed_response {
-      content_type = "text/plain"
-      message_body = "Hello world"
+      content_type = "text/html"
+      message_body = "<html><head><style>body{background-color:#282c34;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:calc(10px + 2vmin);color:white;}</style></head><body><h1>Welcome to our website! be sure to check the url 😊</h1></body></html>"
       status_code  = "200"
     }
   }
