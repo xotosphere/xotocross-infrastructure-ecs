@@ -1,0 +1,11 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always",
+    "source.fixAll.json": "always",
+    "source.fixAll.markdownlint": "always",
+    "source.fixAll.shellcheck": "always",
+    "editor.formatOnSave": "always"
+  },
+  "editor.formatOnSave": true
+}
