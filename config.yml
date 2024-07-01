@@ -22,7 +22,6 @@ accounts:
           value: "alberto"
         - property: "RoleName"
           type: "glob"
-          value: "admin"
 
 resource-types:
   excludes:
