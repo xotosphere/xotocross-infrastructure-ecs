@@ -25,7 +25,6 @@ Temporary Items
 *.tfstate.*
 crash.log
 crash.*.log
-*.tfvars
 *.tfvars.json
 override.tf
 override.tf.json
