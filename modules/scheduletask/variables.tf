@@ -1,4 +1,6 @@
 variable "environment" { description = "xotocross environment (e.g. [development, staging, production])" }
+variable "xotocross-task-count" { description = "xotocross task count" }
+variable "xotocross-service-name" { description = "xotocross name of the service" }
 variable "xotocross-layer-name" { description = "xotocross name of the layer" }
 variable "xotocross-function-name" { description = "xotocross name of the function" }
 variable "xotocross-bucket-name" { description = "xotocross name of the s3 bucket" }

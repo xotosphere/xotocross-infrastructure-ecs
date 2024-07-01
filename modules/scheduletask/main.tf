@@ -65,6 +65,8 @@ resource "aws_cloudwatch_event_target" "xotocross-scheduletask-stop-target" {
   arn       = module.xotocross-scheduletask.lambda_function_arn
 
   input = jsonencode({
+    serviceName = var.xotocross-service-name,
+    taskCount = var.xotocross-task-count,
     action               = "stop"
   })
 }
@@ -79,6 +81,8 @@ resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
   target_id = "${var.xotocross-function-name}-start-resources"
   arn       = module.xotocross-scheduletask.lambda_function_arn
   input = jsonencode({
+    serviceName = var.xotocross-service-name,
+    taskCount = var.xotocross-task-count,
     action               = "start"
   })
 }
