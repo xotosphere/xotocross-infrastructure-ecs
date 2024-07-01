@@ -1,5 +1,5 @@
 {
-	"name": "xotocross-schedulescale",
+	"name": "xotocross-scheduletask",
 	"version": "1.0.0",
 	"description": "",
 	"main": "lambda.js",

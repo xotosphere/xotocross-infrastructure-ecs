@@ -1,11 +1,12 @@
-resource "null_resource" "xotocross-layer-prepare" {
+
+resource "null_resource" "xotocross-scheduletask-layer-prepare" {
   provisioner "local-exec" {
     command = <<EOF
       mkdir -p ${path.module}/nodejs/node_modules &&
       cp -R ${path.module}/package.json ${path.module}/nodejs/ &&
       cp -R ${path.module}/package-lock.json ${path.module}/nodejs/ &&
       npm --prefix ${path.module}/nodejs install &&
-      cd ${path.module} && zip -r xotocross-${var.xotocross-service-name}-layer.zip nodejs
+      cd ${path.module} && zip -r ${var.xotocross-layer-name}.zip nodejs
     EOF
   }
   triggers = {
@@ -15,26 +16,26 @@ resource "null_resource" "xotocross-layer-prepare" {
 
 resource "aws_s3_object" "object" {
   bucket     = var.xotocross-bucket-name
-  key        = "xotocross-${var.xotocross-service-name}-layer.zip"
-  source     = "${path.module}/xotocross-${var.xotocross-service-name}-layer.zip"
+  key        = "${var.xotocross-layer-name}.zip"
+  source     = "${path.module}/${var.xotocross-layer-name}.zip"
   acl        = "private"
-  depends_on = [null_resource.xotocross-layer-prepare]
+  depends_on = [null_resource.xotocross-scheduletask-layer-prepare]
 }
 
-resource "aws_lambda_layer_version" "xotocross-lambda-layer" {
+resource "aws_lambda_layer_version" "xotocross-scheduletask-layer" {
   s3_bucket           = aws_s3_object.object.bucket
   s3_key              = aws_s3_object.object.key
-  layer_name          = "xotocross-${var.xotocross-service-name}-layer"
+  layer_name          = var.xotocross-layer-name
   compatible_runtimes = ["nodejs20.x"]
   depends_on          = [aws_s3_object.object]
 }
 
 module "xotocross-scheduletask" {
   source        = "terraform-aws-modules/lambda/aws"
-  function_name = var.xotocross-service-name
+  function_name = var.xotocross-function-name
   handler       = "lambda.handler"
   runtime       = "nodejs20.x"
-  layers        = [aws_lambda_layer_version.xotocross-lambda-layer.arn]
+  layers        = [aws_lambda_layer_version.xotocross-scheduletask-layer.arn]
   source_path = [
     {
       path             = "${path.module}/lambda.js",
@@ -53,14 +54,14 @@ module "xotocross-scheduletask" {
 
 }
 
-resource "aws_cloudwatch_event_rule" "xotocross-stop-task" {
-  name                = "xotocross-${var.xotocross-service-name}-stop"
+resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
+  name                = "${var.xotocross-function-name}-stop-rule"
   schedule_expression = "cron(0 22 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "xotocross-stop-task-target" {
-  rule      = aws_cloudwatch_event_rule.xotocross-stop-task.name
-  target_id = "xotocross-${var.xotocross-service-name}-stop"
+resource "aws_cloudwatch_event_target" "xotocross-scheduletask-stop-target" {
+  rule      = aws_cloudwatch_event_rule.xotocross-scheduletask-stop-rule.name
+  target_id = "${var.xotocross-function-name}-stop-resources"
   arn       = module.xotocross-scheduletask.lambda_function_arn
 
   input = jsonencode({
@@ -68,22 +69,22 @@ resource "aws_cloudwatch_event_target" "xotocross-stop-task-target" {
   })
 }
 
-resource "aws_cloudwatch_event_rule" "xotocross-start-task" {
-  name                = "xotocross-${var.xotocross-service-name}-start"
+resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-start-rule" {
+  name                = "${var.xotocross-function-name}-start-rule"
   schedule_expression = "cron(0 6 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "xotocross-start-task-target" {
-  rule      = aws_cloudwatch_event_rule.xotocross-start-task.name
-  target_id = "xotocross-${var.xotocross-service-name}-start"
+resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
+  rule      = aws_cloudwatch_event_rule.xotocross-scheduletask-start-rule.name
+  target_id = "${var.xotocross-function-name}-start-resources"
   arn       = module.xotocross-scheduletask.lambda_function_arn
   input = jsonencode({
     action               = "start"
   })
 }
 
-resource "aws_cloudwatch_metric_alarm" "xotocross-stop-task-alarm" {
-  alarm_name          = "xotocross-${var.xotocross-service-name}-stop-alarm"
+resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-stop-rule-alarm" {
+  alarm_name          = "${var.xotocross-function-name}-stop-rule-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "Errors"
@@ -92,19 +93,19 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-stop-task-alarm" {
   statistic           = "SampleCount"
   threshold           = "1"
   alarm_description   = "xotocross metric checks if there are any errors from the lambda function"
-  alarm_actions       = [aws_sns_topic.xotocross-stop-task-sns.arn]
+  alarm_actions       = [aws_sns_topic.xotocross-scheduletask-stop-rule-sns.arn]
   dimensions = {
-    FunctionName =  var.xotocross-service-name
+    FunctionName =  var.xotocross-function-name
   }
 }
 
-resource "aws_sns_topic" "xotocross-stop-task-sns" {
-  name = "xotocross-${var.xotocross-service-name}-stop-sns"
+resource "aws_sns_topic" "xotocross-scheduletask-stop-rule-sns" {
+  name = "${var.xotocross-function-name}-stop-rule-sns"
 }
 
-resource "aws_sns_topic_subscription" "xotocross-stop-task-email" {
+resource "aws_sns_topic_subscription" "xotocross-scheduletask-stop-rule-email" {
   for_each   = toset(var.xotocross-email)
-  topic_arn  = aws_sns_topic.xotocross-stop-task-sns.arn
+  topic_arn  = aws_sns_topic.xotocross-scheduletask-stop-rule-sns.arn
   protocol   = "email"
   endpoint   = each.value
 }
