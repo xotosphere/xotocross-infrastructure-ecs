@@ -78,17 +78,17 @@ resource "aws_lb_target_group" "xotocross-tg" {
   vpc_id                        = var.xotocross-vpc-id
   load_balancing_algorithm_type = "round_robin"
 
-  # health_check {
-  #   enabled             = true
-  #   healthy_threshold   = var.xotocross-healthy-threshhold
-  #   unhealthy_threshold = var.xotocross-unhealthy-threshhold
-  #   interval            = var.xotocross-health-check-interval
-  #   matcher             = "200"
-  #   path                = var.xotocross-health-check-path
-  #   port                = "traffic-port"
-  #   protocol            = "HTTP"
-  #   timeout             = var.xotocross-health-check-timeout
-  # }
+  health_check {
+    enabled             = true
+    healthy_threshold   = var.xotocross-healthy-threshhold
+    unhealthy_threshold = var.xotocross-unhealthy-threshhold
+    interval            = var.xotocross-health-check-interval
+    matcher             = "200"
+    path                = var.xotocross-health-check-paths[each.value]
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = var.xotocross-health-check-timeout
+  }
 
   stickiness {
     cookie_duration = 86400

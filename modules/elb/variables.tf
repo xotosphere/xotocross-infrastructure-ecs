@@ -12,7 +12,7 @@ variable "xotocross-vpc-id" { description = "xotocross id of the vpc where the t
 variable "xotocross-healthy-threshhold" { description = "xotocross number of consecutive successful health checks required to consider a target healthy" }
 variable "xotocross-unhealthy-threshhold" { description = "xotocross number of consecutive failed health checks required to consider a target unhealthy" }
 variable "xotocross-health-check-interval" { description = "xotocross interval between health checks (in seconds)" }
-variable "xotocross-health-check-path" { description = "xotocross path of the health check endpoint" }
+variable "xotocross-health-check-paths" { description = "xotocross path of the health check endpoint" }
 variable "xotocross-health-check-timeout" { description = "xotocross timeout for the health check (in seconds)" }
 variable "xotocross-listener-hosts" { description = "xotocross list of hosts for the listeners" }
-  
+
