@@ -44,5 +44,4 @@ resource "aws_ecs_service" "xotocross-service" {
   propagate_tags                    = var.xotocross-propagate-tags
   enable_execute_command            = var.xotocross-enable-execute-command
   health_check_grace_period_seconds = var.xotocross-health-check-grace-period
-  # iam_role                          = var.xotocross-iam-role
 }
