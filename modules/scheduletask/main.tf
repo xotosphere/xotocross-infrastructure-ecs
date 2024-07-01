@@ -1,41 +1,12 @@
 
-resource "null_resource" "xotocross-scheduletask-layer-prepare" {
-  provisioner "local-exec" {
-    command = <<EOF
-      mkdir -p ${path.module}/nodejs/node_modules &&
-      cp -R ${path.module}/package.json ${path.module}/nodejs/ &&
-      cp -R ${path.module}/package-lock.json ${path.module}/nodejs/ &&
-      npm --prefix ${path.module}/nodejs install &&
-      cd ${path.module} && zip -r ${var.xotocross-layer-name}.zip nodejs
-    EOF
-  }
-  triggers = {
-    always-run = "${timestamp()}"
-  }
-}
-
-resource "aws_s3_object" "object" {
-  bucket     = var.xotocross-bucket-name
-  key        = "${var.xotocross-layer-name}.zip"
-  source     = "${path.module}/${var.xotocross-layer-name}.zip"
-  acl        = "private"
-  depends_on = [null_resource.xotocross-scheduletask-layer-prepare]
-}
-
-resource "aws_lambda_layer_version" "xotocross-scheduletask-layer" {
-  s3_bucket           = aws_s3_object.object.bucket
-  s3_key              = aws_s3_object.object.key
-  layer_name          = var.xotocross-layer-name
-  compatible_runtimes = ["nodejs20.x"]
-  depends_on          = [aws_s3_object.object]
-}
-
 module "xotocross-scheduletask" {
   source        = "terraform-aws-modules/lambda/aws"
   function_name = var.xotocross-function-name
   handler       = "lambda.handler"
   runtime       = "nodejs20.x"
-  layers        = [aws_lambda_layer_version.xotocross-scheduletask-layer.arn]
+  layers = [
+   data.aws_lambda_layer_version.xotocross-core-layer.arn
+  ]
   source_path = [
     {
       path             = "${path.module}/lambda.js",

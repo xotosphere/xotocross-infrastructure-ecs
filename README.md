@@ -11,4 +11,3 @@ This module creates the following AWS resources:
 - ECS Task Definition
 - Load Balancer (optional)
 - Auto Scaling (optional)
-
