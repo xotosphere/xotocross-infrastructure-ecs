@@ -4,8 +4,8 @@ output "xotocross-alb-listener-arns" {
 }
 
 output "xotocross-target-group-arns" {
-  description = "xotocross arns of the target groups"
   value       = { for k in keys(aws_lb_target_group.xotocross-tg) : k => aws_lb_target_group.xotocross-tg[k].arn }
+  description = "xotocross arns of the target groups"
 }
 
 output "xotocross-alb-name" {
