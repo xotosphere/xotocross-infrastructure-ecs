@@ -22,7 +22,6 @@ module "xotocross-scheduletask" {
   
   create_role = false
   lambda_role = var.xotocross-lambda-role-arn
-
 }
 
 resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
