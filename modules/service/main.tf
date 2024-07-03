@@ -1,6 +1,6 @@
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   family                   = var.xotocross-task-family
-  container_definitions    = jsonencode([var.xotocross-container-definition])
+  container_definitions    = jsonencode(var.xotocross-container-definition)
   execution_role_arn       = var.xotocross-execution-role-arn
   task_role_arn            = var.xotocross-task-role-arn
   network_mode             = var.xotocross-network-mode
