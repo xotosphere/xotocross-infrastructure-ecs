@@ -1,0 +1,107 @@
+name: Build Docker Image
+
+on:
+    workflow_dispatch:
+        inputs:
+            org-name:
+                description: 'organization name'
+                required: true
+                default: 'xotosphere'
+                type: choice
+                options:
+                    - xotosphere
+env:
+    ORG_NAME: ${{ github.event.inputs.org-name || 'xotosphere' }}
+
+permissions:
+    actions: write
+    checks: write
+    contents: write
+    deployments: write
+    id-token: write
+    issues: write
+    discussions: write
+    packages: write
+    pages: write
+    pull-requests: write
+    repository-projects: write
+    security-events: write
+    statuses: write
+
+defaults:
+    run:
+        shell: bash
+jobs:
+    env:
+        name: Env
+        runs-on: ubuntu-22.04
+        container:
+            image: node:18
+            options: --user 1001
+        steps:
+            - name: Get env files
+              run: |
+                  npx --yes dotenv-vault new vlt_eeb6cc2b4e447e8b22dee3428b45e9db91f809242010430bf6abad6fa13f4f87
+                  npx --yes dotenv-vault pull --dotenvMe me_6def25ea41f4644d32e36a0cf683b11ae333f73e9e997b9b33edb5e696b8a3ea ci .env.xotocross
+
+            - name: Mask .env file
+              run: |
+                  while IFS='=' read -r key value
+                  do
+                    echo "::add-mask::$value"
+
+                    done < .env.xotocross
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: secret-artifact
+                  path: .env.xotocross
+                  retention-days: 1
+
+    dockerize:
+        name: Dockerize
+        runs-on: ubuntu-22.04
+        needs: ['env']
+        steps:
+            - name: Download secret-artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: secret-artifact
+
+            - name: Mask .env file
+              run: |
+                  while IFS='=' read -r key value
+                  do
+                      echo "::add-mask::$value"
+                  done < .env.xotocross
+
+            - name: Load .env file
+              run: grep -o '^[^#]*' .env.xotocross >> "$GITHUB_ENV"
+
+            - name: Gather Environments
+              run: |
+                  echo "value=$XOTOCROSS_GITHUB_ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
+              id: xotocross_github_access_token
+
+            - name: Checkout root repo
+              uses: actions/checkout@v3.1.0
+              with:
+                  token: ${{ steps.xotocross_github_access_token.outputs.value }}
+                  submodules: true
+
+            - name: Log in to registry
+              run: echo "${{ steps.xotocross_github_access_token.outputs.value }}" | docker login ghcr.io -u $ --password-stdin
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+              with:
+                  platforms: linux/amd64,linux/arm64
+
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                  context: ./docker/fluentbit
+                  file: ./docker/fluentbit/Dockerfile
+                  push: true
+                  tags: ghcr.io/${{ env.ORG_NAME }}/fluentbit:latest
