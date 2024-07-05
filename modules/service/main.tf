@@ -1,5 +1,5 @@
 locals {
-  xotocross-container-definition-fluentbit = templatefile("${path.module}/aws/task-container.tpl", {
+  xotocross-container-definition-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
     xotocross-container-cpu       = 0
@@ -29,7 +29,7 @@ locals {
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
     })
-  })
+  }))
 
   xotocross-container-list-definition = concat(
     var.xotocross-container-definition,
