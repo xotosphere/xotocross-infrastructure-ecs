@@ -32,7 +32,7 @@ locals {
   })
 
   xotocross-container-list-definition = concat(
-    [var.xotocross-container-definition],
+    var.xotocross-container-definition,
     var.xotocross-is-application ? [local.xotocross-container-definition-fluentbit] : []
   )
 }
