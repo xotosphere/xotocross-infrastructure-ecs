@@ -22,5 +22,5 @@ variable "xotocross-iam-role" { description = "xotocross iam role" }
 variable "xotocross-network-mode" { description = "xotocross network mode" }
 variable "xotocross-target-group-arns" { description = "xotocross target group arn" }
 variable "environment" { description = "xotocross environment (e.g. development, staging, production)" }
-variable "region" { description = "xotocross environment (e.g. development, staging, production)" }
+variable "region" { description = "xotocross region" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }

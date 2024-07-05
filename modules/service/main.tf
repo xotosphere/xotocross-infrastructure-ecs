@@ -65,6 +65,7 @@ resource "aws_ecs_service" "xotocross-service" {
   dynamic "load_balancer" {
     for_each = range(0, length(var.xotocross-container-port))
     iterator = count
+    
     content {
       target_group_arn = var.xotocross-target-group-arns[count.value]
       container_name   = local.xotocross-container-list-definition[count.value].name

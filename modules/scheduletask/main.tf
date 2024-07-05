@@ -84,7 +84,7 @@ resource "aws_sns_topic_subscription" "xotocross-scheduletask-email" {
   endpoint  = each.value
 }
 
-resource "aws_cloudwatch_log_group" "xotocross-scheduletask-log-group" {
-  name              = var.xotocross-log-group-name
-  retention_in_days = 14
-}
+# resource "aws_cloudwatch_log_group" "xotocross-scheduletask-log-group" {
+#   name              = var.xotocross-log-group-name
+#   retention_in_days = 14
+# }
