@@ -1,16 +1,17 @@
 /**
 	{
-		"serviceName":"xotocross-core-staging-service",
+		"clusterName":"xotocross-staging-ecs",
+		"serviceName":"xotocross-demo-staging-service",
 		"taskCount":0,
 		"action":"stop"
 	}
 */
 
 const {
-    ECSClient,
-    UpdateServiceCommand,
-    StopTaskCommand,
-    ListTasksCommand
+	ECSClient,
+	UpdateServiceCommand,
+	StopTaskCommand,
+	ListTasksCommand
 } = require('@aws-sdk/client-ecs');
 
 const config = {
@@ -18,25 +19,41 @@ const config = {
 	environment: process.env.environment
 };
 
-exports.handler = async ({ serviceName, action, taskCount }) => {
-	console.info(`environment: ${config.environment}, serviceName: ${serviceName}, action: ${action}, taskCount: ${taskCount}`);
-	action === 'stop' ? await stopTasks(serviceName) : await changeTaskCount(serviceName, taskCount);
+exports.handler = async ({ clusterName, serviceName, action, taskCount }) => {
+	console.info(
+		`environment: ${config.environment}, serviceName: ${serviceName}, action: ${action}, taskCount: ${taskCount}`
+	);
+	action === 'stop'
+		? await stopTasks(clusterName, serviceName)
+		: await changeTaskCount(clusterName, serviceName, taskCount);
 };
 
 /**
  * @param {string} serviceName
  * @param {number} taskCount
  */
-const changeTaskCount = async (serviceName, taskCount) => {
-	await config.client.send(new UpdateServiceCommand({ service: serviceName, desiredCount: taskCount }));
+const changeTaskCount = async (clusterName, serviceName, taskCount) => {
+	await config.client.send(
+		new UpdateServiceCommand({
+			service: serviceName,
+			desiredCount: taskCount,
+			cluster: clusterName
+		})
+	);
 	console.info(`desired task count of ${serviceName} changed to ${taskCount}`);
 };
 
 /**
  * @param {string} serviceName
  */
-const stopTasks = async (serviceName) => {
-	const { taskArns } = await config.client.send(new ListTasksCommand({ serviceName }));
-	for (const taskArn of taskArns) await config.client.send(new StopTaskCommand({ task: taskArn }));
+const stopTasks = async (clusterName, serviceName) => {
+	console.info(clusterName);
+	const { taskArns } = await config.client.send(
+		new ListTasksCommand({ serviceName, cluster: clusterName })
+	);
+	for (const taskArn of taskArns)
+		await config.client.send(
+			new StopTaskCommand({ task: taskArn, cluster: clusterName })
+		);
 	console.info(`all tasks of ${serviceName} stopped`);
 };
