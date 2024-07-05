@@ -7,7 +7,7 @@ locals {
     xotocross-container-cpu       = 0
     xotocross-container-memory    = 256
     xotocross-container-essential = false
-    xotocross-port-mapping        = [{ containerPort = var.xotocross-container-ports[1], hostPort = var.xotocross-host-ports[1], protocol = "tcp" }]
+    xotocross-port-mapping        = [{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }]
     xotocross-environment = [
       { name = "environment", value = var.environment },
       { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
