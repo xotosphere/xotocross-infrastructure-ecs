@@ -5,8 +5,8 @@ locals {
     xotocross-container-cpu       = 0
     xotocross-container-memory    = 256
     xotocross-container-essential = false
-    xotocross-port-mapping        = [{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }]
-    xotocross-environment = [
+    xotocross-port-mapping        = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }])
+    xotocross-environment = jsonencode([
       { name = "environment", value = var.environment },
       { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
       { name = "LOKI_PORT", value = "80" },
@@ -14,7 +14,7 @@ locals {
       { name = "COST_PROJECT_VERSION", value = "1.0.0" },
       { name = "ENVIRONMENT", value = var.environment },
       { name = "FLB_LOG_LEVEL", value = "debug" }
-    ]
+    ])
     xotocross-log-group-name        = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
     xotocross-region                = var.region
     xotocross-container-command     = jsonencode([])
@@ -30,15 +30,17 @@ locals {
       }
     })
   })
+
+  xotocross-container-list-definition = concat(
+    [var.xotocross-container-definition],
+    var.xotocross-is-application ? [local.xotocross-container-definition-fluentbit] : []
+  )
 }
 
+
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
-  family = var.xotocross-task-family
-  container_definitions = jsonencode(
-    var.xotocross-is-application
-    ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit]
-    : [var.xotocross-container-definition]
-  )
+  family                = var.xotocross-task-family
+  container_definitions = jsonencode(local.xotocross-container-list-definition)
 
   # container_definitions    = jsonencode(var.xotocross-container-definition)
   execution_role_arn       = var.xotocross-execution-role-arn
