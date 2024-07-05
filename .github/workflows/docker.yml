@@ -98,6 +98,8 @@ jobs:
               with:
                   platforms: linux/amd64,linux/arm64
 
+            # todo can we pass the variables for docker to contain things like env and so on 
+        
             - name: Build and push
               uses: docker/build-push-action@v6
               with:
