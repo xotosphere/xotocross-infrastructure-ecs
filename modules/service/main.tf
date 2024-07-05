@@ -1,4 +1,6 @@
 locals {
+  is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
+  
   xotocross-container-definition-fluentbit = templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
@@ -21,6 +23,7 @@ locals {
     xotocross-container-command    = jsonencode([])
     xotocross-container-dependency = jsonencode([])
     xotocross-container-entrypoint = jsonencode([])
+    xotocross-container-healthcheck   = "null"
     xotocross-container-firelensconfiguration = {
       type = "fluentbit",
       options = {
@@ -35,7 +38,7 @@ locals {
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   family                   = var.xotocross-task-family
 container_definitions    = jsonencode(
-  var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor" 
+  local.is_application
   ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit] 
   : [var.xotocross-container-definition]
 )

@@ -1,3 +1,7 @@
+locals {
+  is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
+}
+
 resource "aws_lb" "xotocross-alb" {
   name                             = var.xotocross-alb-name
   internal                         = false
@@ -59,9 +63,22 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.xotocross-tg[each.value].arn
   }
-  condition {
-    host_header {
-      values = [var.xotocross-listener-hosts[each.value]]
+
+  dynamic "condition" {
+    for_each = local.is_application ? [1] : []
+    content {
+      host_header {
+        values = [var.xotocross-listener-hosts[each.value], "fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"]
+      }
+    }
+  }
+
+  dynamic "condition" {
+    for_each = !local.is_application ? [1] : []
+    content {
+      host_header {
+        values = [var.xotocross-listener-hosts[each.value]]
+      }
     }
   }
 }
