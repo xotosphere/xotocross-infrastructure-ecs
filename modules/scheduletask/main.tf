@@ -1,5 +1,5 @@
 
-module "xotocross-scheduletask" {
+module "xotocross-scheduletask-function" {
   source        = "terraform-aws-modules/lambda/aws"
   function_name = var.xotocross-function-name
   handler       = "lambda.handler"

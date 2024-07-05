@@ -19,8 +19,7 @@ const config = {
 };
 
 exports.handler = async ({ serviceName, action, taskCount }) => {
-	console.info(`environment: ${config.environment}`);
-	console.info(`${action} tasks...`);
+	console.info(`environment: ${config.environment}, serviceName: ${serviceName}, action: ${action}, taskCount: ${taskCount}`);
 	action === 'stop' ? await stopTasks(serviceName) : await changeTaskCount(serviceName, taskCount);
 };
 
