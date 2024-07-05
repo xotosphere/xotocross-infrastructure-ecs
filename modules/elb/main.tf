@@ -34,7 +34,6 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   }
 }
 
-
 resource "aws_lb_listener" "xotocross-http-listener-main" {
   load_balancer_arn = aws_lb.xotocross-alb.arn
   port              = 80
@@ -51,7 +50,6 @@ resource "aws_lb_listener" "xotocross-http-listener-main" {
   }
 }
 
-
 resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xotocross-host-ports)) : tostring(idx)])
 
@@ -65,6 +63,58 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
     host_header {
       values = [var.xotocross-listener-hosts[each.value]]
     }
+  }
+}
+
+resource "aws_lb_listener_rule" "xotocross-rule-503" {
+  listener_arn = aws_lb_listener.xotocross-http-listener-main.arn
+  priority     = 100
+
+  action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/html"
+      message_body = "<html><body><h1>503 Service Temporarily Unavailable</h1></body></html>"
+      status_code  = "503"
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/503"]
+    }
+  }
+
+  tags = {
+    Name        = "xotocross-rule-503"
+    environment = var.environment
+  }
+}
+
+resource "aws_lb_listener_rule" "xotocross-rule-404" {
+  listener_arn = aws_lb_listener.xotocross-http-listener-main.arn
+  priority     = 101
+
+  action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/html"
+      message_body = "<html><body><h1>404 Not Found</h1></body></html>"
+      status_code  = "404"
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/404"]
+    }
+  }
+
+  tags = {
+    Name        = "xotocross-rule-404"
+    environment = var.environment
   }
 }
 
