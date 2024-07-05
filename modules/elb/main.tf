@@ -34,7 +34,7 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   }
 }
 
-resource "aws_lb_listener" "xotocross-http-listener-main" {
+resource "aws_lb_listener" "xotocross-http-listener-200" {
   load_balancer_arn = aws_lb.xotocross-alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -53,7 +53,7 @@ resource "aws_lb_listener" "xotocross-http-listener-main" {
 resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xotocross-host-ports)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xotocross-http-listener-main.arn
+  listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
 
   action {
     type             = "forward"
@@ -95,6 +95,7 @@ resource "aws_lb_target_group" "xotocross-tg" {
     unhealthy_threshold = var.xotocross-unhealthy-threshhold
     interval            = var.xotocross-health-check-interval
     matcher             = "200"
+    # todo important we have to fix according to the right helth checks of the apps bit include
     path                = var.xotocross-health-check-paths[each.value]
     port                = "traffic-port"
     protocol            = "HTTP"

@@ -17,7 +17,6 @@ locals {
     ]
     xotocross-log-group-name       = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
     xotocross-region               = var.region
-    xotocross-container-name       = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-command    = jsonencode([])
     xotocross-container-dependency = jsonencode([])
     xotocross-container-entrypoint = jsonencode([])
