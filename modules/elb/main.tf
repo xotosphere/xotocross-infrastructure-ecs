@@ -1,7 +1,3 @@
-locals {
-  # is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
-}
-
 resource "aws_lb" "xotocross-alb" {
   name                             = var.xotocross-alb-name
   internal                         = false

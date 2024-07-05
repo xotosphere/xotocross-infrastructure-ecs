@@ -1,6 +1,4 @@
 locals {
-  # is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
-  
   xotocross-container-definition-fluentbit = templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
