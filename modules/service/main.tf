@@ -1,6 +1,6 @@
 locals {
   xotocross-container-definition-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
-    xotocross-container-name      = "${var.xotocross-service-name}-fluentbit"
+    xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
     xotocross-container-cpu       = 0
     xotocross-container-memory    = 256
@@ -15,7 +15,7 @@ locals {
       { name = "ENVIRONMENT", value = var.environment },
       { name = "FLB_LOG_LEVEL", value = "debug" }
     ])
-    xotocross-log-group-name        = "${var.xotocross-service-name}-${var.environment}-logs"
+    xotocross-log-group-name        = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
     xotocross-region                = var.region
     xotocross-container-command     = jsonencode([])
     xotocross-container-dependency  = jsonencode([])
