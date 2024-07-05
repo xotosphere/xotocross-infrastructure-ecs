@@ -1,6 +1,46 @@
+locals {
+  xotocross-container-definition-fluentbit = templatefile("${path.module}/aws/task-container.tpl", {
+    xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
+    xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
+    xotocross-container-cpu       = 0
+    xotocross-container-memory    = 256
+    xotocross-container-essential = false
+    xotocross-port-mapping        = [{ containerPort = var.xotocross-container-ports[1], hostPort = var.xotocross-host-ports[1], protocol = "tcp" }]
+    xotocross-environment = [
+      { name = "environment", value = var.environment },
+      { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
+      { name = "LOKI_PORT", value = "80" },
+      { name = "COST_PROJECT_NAME", value = var.xotocross-service-name },
+      { name = "COST_PROJECT_VERSION", value = "1.0.0" },
+      { name = "ENVIRONMENT", value = var.environment },
+      { name = "FLB_LOG_LEVEL", value = "debug" }
+    ]
+    xotocross-log-group-name       = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
+    xotocross-region               = var.region
+    xotocross-container-name       = "xotocross-${var.xotocross-service-name}-fluentbit"
+    xotocross-container-command    = jsonencode([])
+    xotocross-container-dependency = jsonencode([])
+    xotocross-container-entrypoint = jsonencode([])
+    xotocross-container-firelensconfiguration = {
+      type = "fluentbit",
+      options = {
+        enable-ecs-log-metadata = "true",
+        config-file-type        = "file",
+        config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
+      }
+    }
+  })
+}
+
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   family                   = var.xotocross-task-family
-  container_definitions    = jsonencode(var.xotocross-container-definition)
+container_definitions    = jsonencode(
+  var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor" 
+  ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit] 
+  : [var.xotocross-container-definition]
+)
+
+  # container_definitions    = jsonencode(var.xotocross-container-definition)
   execution_role_arn       = var.xotocross-execution-role-arn
   task_role_arn            = var.xotocross-task-role-arn
   network_mode             = var.xotocross-network-mode
