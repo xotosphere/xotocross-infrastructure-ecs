@@ -1,5 +1,5 @@
 locals {
-  is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
+  # is_application = var.xotocross-service-name != "core" && var.xotocross-service-name != "monitor"
   
   xotocross-container-definition-fluentbit = templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
@@ -38,7 +38,7 @@ locals {
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   family                   = var.xotocross-task-family
 container_definitions    = jsonencode(
-  local.is_application
+  var.xotocross-is-application
   ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit] 
   : [var.xotocross-container-definition]
 )

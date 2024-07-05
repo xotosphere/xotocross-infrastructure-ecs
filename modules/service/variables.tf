@@ -6,6 +6,7 @@ variable "xotocross-task-role-arn" { description = "xotocross task role arn" }
 variable "xotocross-service-name" { description = "xotocross service name" }
 variable "xotocross-container-port" { description = "xotocross list of ports" }
 variable "xotocross-desired-count" { description = "xotocross desired count" }
+variable "xotocross-is-application" { description = "xotocross is application condition" }
 variable "xotocross-ecs-launch-type" { description = "xotocross launch type" }
 variable "xotocross-deployment-max" { description = "xotocross deployment max" }
 variable "xotocross-deployment-min" { description = "xotocross deployment min" }
