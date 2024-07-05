@@ -15,30 +15,30 @@ locals {
       { name = "ENVIRONMENT", value = var.environment },
       { name = "FLB_LOG_LEVEL", value = "debug" }
     ]
-    xotocross-log-group-name       = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
-    xotocross-region               = var.region
-    xotocross-container-command    = jsonencode([])
-    xotocross-container-dependency = jsonencode([])
-    xotocross-container-entrypoint = jsonencode([])
-    xotocross-container-healthcheck   = "null"
-    xotocross-container-firelensconfiguration = {
+    xotocross-log-group-name        = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
+    xotocross-region                = var.region
+    xotocross-container-command     = jsonencode([])
+    xotocross-container-dependency  = jsonencode([])
+    xotocross-container-entrypoint  = jsonencode([])
+    xotocross-container-healthcheck = "null"
+    xotocross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
         enable-ecs-log-metadata = "true",
         config-file-type        = "file",
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
-    }
+    })
   })
 }
 
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
-  family                   = var.xotocross-task-family
-container_definitions    = jsonencode(
-  var.xotocross-is-application
-  ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit] 
-  : [var.xotocross-container-definition]
-)
+  family = var.xotocross-task-family
+  container_definitions = jsonencode(
+    var.xotocross-is-application
+    ? [var.xotocross-container-definition, local.xotocross-container-definition-fluentbit]
+    : [var.xotocross-container-definition]
+  )
 
   # container_definitions    = jsonencode(var.xotocross-container-definition)
   execution_role_arn       = var.xotocross-execution-role-arn

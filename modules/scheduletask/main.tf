@@ -5,7 +5,7 @@ module "xotocross-scheduletask-function" {
   handler       = "lambda.handler"
   runtime       = "nodejs20.x"
   layers = [
-   data.aws_lambda_layer_version.xotocross-core-layer.arn
+    data.aws_lambda_layer_version.xotocross-core-layer.arn
   ]
   source_path = [
     {
@@ -19,7 +19,7 @@ module "xotocross-scheduletask-function" {
   environment_variables = {
     environment = var.environment
   }
-  
+
   create_role = false
   lambda_role = var.xotocross-lambda-role-arn
 }
@@ -32,12 +32,12 @@ resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
 resource "aws_cloudwatch_event_target" "xotocross-scheduletask-stop-target" {
   rule      = aws_cloudwatch_event_rule.xotocross-scheduletask-stop-rule.name
   target_id = "${var.xotocross-function-name}-stop-resources"
-  arn       = module.xotocross-scheduletask.lambda_function_arn
+  arn       = module.xotocross-scheduletask-function.lambda_function_arn
 
   input = jsonencode({
     serviceName = var.xotocross-service-name,
-    taskCount = var.xotocross-task-count,
-    action               = "stop"
+    taskCount   = var.xotocross-task-count,
+    action      = "stop"
   })
 }
 
@@ -49,11 +49,11 @@ resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-start-rule" {
 resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
   rule      = aws_cloudwatch_event_rule.xotocross-scheduletask-start-rule.name
   target_id = "${var.xotocross-function-name}-start-resources"
-  arn       = module.xotocross-scheduletask.lambda_function_arn
+  arn       = module.xotocross-scheduletask-function.lambda_function_arn
   input = jsonencode({
     serviceName = var.xotocross-service-name,
-    taskCount = var.xotocross-task-count,
-    action               = "start"
+    taskCount   = var.xotocross-task-count,
+    action      = "start"
   })
 }
 
@@ -69,7 +69,7 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   alarm_description   = "xotocross metric checks if there are any errors from the lambda function"
   alarm_actions       = [aws_sns_topic.xotocross-scheduletask-sns.arn]
   dimensions = {
-    FunctionName =  var.xotocross-function-name
+    FunctionName = var.xotocross-function-name
   }
 }
 
@@ -78,13 +78,13 @@ resource "aws_sns_topic" "xotocross-scheduletask-sns" {
 }
 
 resource "aws_sns_topic_subscription" "xotocross-scheduletask-email" {
-  for_each   = toset(var.xotocross-email)
-  topic_arn  = aws_sns_topic.xotocross-scheduletask-sns.arn
-  protocol   = "email"
-  endpoint   = each.value
+  for_each  = toset(var.xotocross-email)
+  topic_arn = aws_sns_topic.xotocross-scheduletask-sns.arn
+  protocol  = "email"
+  endpoint  = each.value
 }
 
 resource "aws_cloudwatch_log_group" "xotocross-scheduletask-log-group" {
-  name = var.xotocross-log-group-name
+  name              = var.xotocross-log-group-name
   retention_in_days = 14
 }
