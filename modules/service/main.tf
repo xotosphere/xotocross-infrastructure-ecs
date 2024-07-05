@@ -20,7 +20,7 @@ locals {
     xotocross-container-command     = jsonencode([])
     xotocross-container-dependency  = jsonencode([])
     xotocross-container-entrypoint  = jsonencode([])
-    xotocross-container-healthcheck = "null"
+    xotocross-container-healthcheck = jsonencode({})
     xotocross-container-firelensconfiguration = {
       type = "fluentbit",
       options = {
