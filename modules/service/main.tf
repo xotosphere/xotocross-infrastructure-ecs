@@ -67,7 +67,7 @@ resource "aws_ecs_service" "xotocross-service" {
     iterator = count
     content {
       target_group_arn = var.xotocross-target-group-arns[count.value]
-      container_name   = var.xotocross-container-definition[count.value].name
+      container_name   = local.xotocross-container-list-definition[count.value].name
       container_port   = var.xotocross-container-port[count.value]
     }
   }
