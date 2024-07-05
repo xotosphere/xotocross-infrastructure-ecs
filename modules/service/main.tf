@@ -21,14 +21,14 @@ locals {
     xotocross-container-dependency  = jsonencode([])
     xotocross-container-entrypoint  = jsonencode([])
     xotocross-container-healthcheck = "null"
-    xotocross-container-firelensconfiguration = jsonencode({
+    xotocross-container-firelensconfiguration = {
       type = "fluentbit",
       options = {
         enable-ecs-log-metadata = "true",
         config-file-type        = "file",
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
-    })
+    }
   }))
 
   xotocross-container-list-definition = concat(
