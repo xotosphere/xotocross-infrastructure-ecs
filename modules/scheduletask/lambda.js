@@ -15,6 +15,7 @@ const {
 } = require('@aws-sdk/client-ecs');
 
 const config = {
+	// todo check if we need this eu-west-3 (as its not global)
 	client: new ECSClient({ region: 'eu-west-3' }),
 	environment: process.env.environment
 };
