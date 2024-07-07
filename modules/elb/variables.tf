@@ -4,7 +4,6 @@ variable "xotocross-public-subnets" { description = "xotocross list of public su
 variable "xotocross-alb-sg" { description = "xotocross list of security group ids to attach to the alb" }
 variable "xotocross-listener-ports" { description = "xotocross list of ports for the listeners" }
 variable "xotocross-host-ports" { description = "xotocross list of target ports for the listeners" }
-variable "xotocross-has-monitor" { description = "xotocross is application condition" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }
 variable "xotocross-tg-name" { description = "xotocross name of the target group" }
 variable "xotocross-target-type" { description = "xotocross type of targets for the target group" }
