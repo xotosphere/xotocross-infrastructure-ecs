@@ -61,7 +61,7 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   }
 
   dynamic "condition" {
-    for_each = var.xotocross-is-application ? [1] : []
+    for_each = var.xotocross-has-monitor ? [1] : []
     content {
       host_header {
         values = [var.xotocross-listener-hosts[each.value], "fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"]
@@ -70,7 +70,7 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   }
 
   dynamic "condition" {
-    for_each = !var.xotocross-is-application ? [1] : []
+    for_each = !var.xotocross-has-monitor ? [1] : []
     content {
       host_header {
         values = [var.xotocross-listener-hosts[each.value]]

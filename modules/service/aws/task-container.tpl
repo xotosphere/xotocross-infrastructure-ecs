@@ -4,13 +4,13 @@
   "cpu": ${xotocross-container-cpu},
   "memory": ${xotocross-container-memory},
   "essential":  ${xotocross-container-essential},
-  "portMappings": ${xotocross-port-mapping},
-  "environment" : ${xotocross-environment},
+  "portMappings": ${xotocross-container-portmap},
+  "environment" : ${xotocross-container-environment},
   "logConfiguration": {
     "logDriver": "awslogs",
     "options": {
-      "awslogs-group": "${xotocross-log-group-name}",
-      "awslogs-region": "${xotocross-region}",
+      "awslogs-group": "${xotocross-container-loggroup}",
+      "awslogs-region": "${xotocross-container-region}",
       "awslogs-stream-prefix": "${xotocross-container-name}"
     }
   },
