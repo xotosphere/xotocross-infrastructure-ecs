@@ -33,26 +33,26 @@ locals {
 
   xotocross-container-definition-global = concat(
     var.xotocross-container-definition,
-    var.xotocross-has-monitor ? [local.xotocross-container-definition-fluentbit] : []
+    var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : []
   )
 
   xotocross-healthcheck-paths-global = concat(
     var.xotocross-healthcheck-paths,
-    var.xotocross-has-monitor ? ["/api/v1/health"] : []
+    var.xotocross-enable-monitor ? ["/api/v1/health"] : []
   )
 
   xotocross-listener-hosts-global = concat(
     var.xotocross-listener-hosts,
-    var.xotocross-has-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : []
+    var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : []
   )
 
   xotocross-container-ports-global = concat(
     var.xotocross-container-ports,
-    var.xotocross-has-monitor ? [24224] : []
+    var.xotocross-enable-monitor ? [24224] : []
   )
 
   xotocross-host-ports-global = concat(
     var.xotocross-host-ports,
-    var.xotocross-has-monitor ? [24224] : []
+    var.xotocross-enable-monitor ? [24224] : []
   )
 }
