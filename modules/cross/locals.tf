@@ -38,7 +38,7 @@ locals {
 
   xotocross-healthcheck-paths-global = concat(
     var.xotocross-healthcheck-paths,
-    var.xotocross-has-monitor ? ["/"] : []
+    var.xotocross-has-monitor ? ["/api/v1/health"] : []
   )
 
   xotocross-listener-hosts-global = concat(
