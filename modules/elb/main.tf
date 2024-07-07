@@ -93,14 +93,14 @@ resource "aws_lb_target_group" "xotocross-tg" {
     enabled = true
     healthy_threshold = var.xotocross-healthy-threshhold
     unhealthy_threshold = var.xotocross-unhealthy-threshhold
-    interval = var.xotocross-health-check-interval
+    interval = var.xotocross-healthcheck-interval
     matcher = "200"
     
     # todo important we have to fix according to the right helth checks of the apps bit include
-    path = var.xotocross-health-check-paths[each.value]
+    path = var.xotocross-healthcheck-paths[each.value]
     port = "traffic-port"
     protocol = "HTTP"
-    timeout = var.xotocross-health-check-timeout
+    timeout = var.xotocross-healthcheck-timeout
   }
 
   stickiness {
