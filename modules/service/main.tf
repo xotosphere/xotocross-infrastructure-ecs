@@ -15,7 +15,7 @@ locals {
       { name = "ENVIRONMENT", value = var.environment },
       { name = "FLB_LOG_LEVEL", value = "debug" }
     ])
-    xotocross-log-group-name = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
+    xotocross-log-group-name = "xotocross-${var.xotocross-service-name}-${var.environment}-ecs-logs"
     xotocross-region = var.region
     xotocross-container-command = jsonencode([])
     xotocross-container-dependency = jsonencode([])
