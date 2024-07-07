@@ -4,9 +4,11 @@ module "xotocross-scheduletask-function" {
   function_name = var.xotocross-function-name
   handler = "lambda.handler"
   runtime = "nodejs20.x"
+  
   layers = [
     data.aws_lambda_layer_version.xotocross-core-layer.arn
   ]
+  
   source_path = [
     {
       path = "${path.module}/lambda.js",
@@ -16,6 +18,7 @@ module "xotocross-scheduletask-function" {
       ],
     },
   ]
+  
   environment_variables = {
     environment = var.environment
   }

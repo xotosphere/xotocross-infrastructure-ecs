@@ -7,16 +7,10 @@
 	}
 */
 
-const {
-	ECSClient,
-	UpdateServiceCommand,
-	StopTaskCommand,
-	ListTasksCommand
-} = require('@aws-sdk/client-ecs');
+const { ECSClient, UpdateServiceCommand, StopTaskCommand, ListTasksCommand } = require('@aws-sdk/client-ecs');
 
 const config = {
-	// todo check if we need this eu-west-3 (as its not global)
-	client: new ECSClient({ region: 'eu-west-3' }),
+	client: new ECSClient({}),
 	environment: process.env.environment
 };
 
