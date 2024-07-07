@@ -5,6 +5,11 @@ resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   task_role_arn            = var.xotocross-task-role-arn
   network_mode             = var.xotocross-network-mode
   requires_compatibilities = ["EC2"]
+
+  volume {
+    name      = "xotocross-ebs-${var.environment}-volume"
+    host_path = "/mnt/xotocross-ebs-${var.environment}-volume"
+  }
 }
 
 resource "aws_ecs_service" "xotocross-service" {
