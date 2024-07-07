@@ -1,17 +1,17 @@
 resource "aws_lb" "xotocross-alb" {
-  name                             = var.xotocross-alb-name
-  internal                         = false
-  load_balancer_type               = "application"
-  subnets                          = var.xotocross-public-subnets
-  security_groups                  = [var.xotocross-alb-sg]
-  desync_mitigation_mode           = "defensive"
+  name = var.xotocross-alb-name
+  internal = false
+  load_balancer_type = "application"
+  subnets = var.xotocross-public-subnets
+  security_groups = [var.xotocross-alb-sg]
+  desync_mitigation_mode = "defensive"
   enable_cross_zone_load_balancing = true
-  enable_http2                     = true
-  idle_timeout                     = 300
-  ip_address_type                  = "ipv4"
+  enable_http2 = true
+  idle_timeout = 300
+  ip_address_type = "ipv4"
 
   tags = {
-    Name        = var.xotocross-alb-name
+    Name = var.xotocross-alb-name
     environment = var.environment
   }
 }
@@ -20,24 +20,24 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   for_each = toset([for idx in range(0, length(var.xotocross-listener-ports)) : tostring(idx)])
 
   load_balancer_arn = aws_lb.xotocross-alb.arn
-  port              = var.xotocross-listener-ports[each.value]
-  protocol          = "HTTP"
+  port = var.xotocross-listener-ports[each.value]
+  protocol = "HTTP"
 
   default_action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = aws_lb_target_group.xotocross-tg[each.value].arn
   }
 
   tags = {
-    Name        = "${var.xotocross-alb-name}-listener-${each.value}"
+    Name = "${var.xotocross-alb-name}-listener-${each.value}"
     environment = var.environment
   }
 }
 
 resource "aws_lb_listener" "xotocross-http-listener-200" {
   load_balancer_arn = aws_lb.xotocross-alb.arn
-  port              = 80
-  protocol          = "HTTP"
+  port = 80
+  protocol = "HTTP"
 
   default_action {
     type = "fixed-response"
@@ -45,7 +45,7 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
     fixed_response {
       content_type = "text/html"
       message_body = "<html><head><style>body{background-color:#282c34;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:calc(10px + 2vmin);color:white;}</style></head><body><h1>Welcome to our website! be sure to check the url 😊</h1></body></html>"
-      status_code  = "200"
+      status_code = "200"
     }
   }
 }
@@ -56,7 +56,7 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
 
   action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = aws_lb_target_group.xotocross-tg[each.value].arn
   }
 
@@ -82,34 +82,35 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
 resource "aws_lb_target_group" "xotocross-tg" {
   for_each = toset([for idx in range(0, length(var.xotocross-host-ports)) : tostring(idx)])
 
-  name                          = "${var.xotocross-tg-name}-${each.value}"
-  port                          = var.xotocross-host-ports[each.value]
-  protocol                      = "HTTP"
-  target_type                   = var.xotocross-target-type
-  vpc_id                        = var.xotocross-vpc-id
+  name = "${var.xotocross-tg-name}-${each.value}"
+  port = var.xotocross-host-ports[each.value]
+  protocol = "HTTP"
+  target_type = var.xotocross-target-type
+  vpc_id = var.xotocross-vpc-id
   load_balancing_algorithm_type = "round_robin"
 
   health_check {
-    enabled             = true
-    healthy_threshold   = var.xotocross-healthy-threshhold
+    enabled = true
+    healthy_threshold = var.xotocross-healthy-threshhold
     unhealthy_threshold = var.xotocross-unhealthy-threshhold
-    interval            = var.xotocross-health-check-interval
-    matcher             = "200"
+    interval = var.xotocross-health-check-interval
+    matcher = "200"
+    
     # todo important we have to fix according to the right helth checks of the apps bit include
-    path                = var.xotocross-health-check-paths[each.value]
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = var.xotocross-health-check-timeout
+    path = var.xotocross-health-check-paths[each.value]
+    port = "traffic-port"
+    protocol = "HTTP"
+    timeout = var.xotocross-health-check-timeout
   }
 
   stickiness {
     cookie_duration = 86400
-    enabled         = false
-    type            = "lb_cookie"
+    enabled = false
+    type = "lb_cookie"
   }
 
   tags = {
-    Name        = "${var.xotocross-tg-name}-${each.value}"
+    Name = "${var.xotocross-tg-name}-${each.value}"
     environment = var.environment
   }
 }

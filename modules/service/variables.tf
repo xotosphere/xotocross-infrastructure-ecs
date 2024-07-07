@@ -1,3 +1,5 @@
+variable "region" { description = "xotocross region" }
+variable "environment" { description = "xotocross environment (e.g. development, staging, production)" }
 variable "xotocross-cluster-name" { description = "xotocross ecs cluster name" }
 variable "xotocross-task-family" { description = "xotocross task family" }
 variable "xotocross-container-definition" { description = "xotocross container definition" }
@@ -21,6 +23,4 @@ variable "xotocross-health-check-grace-period" { description = "xotocross health
 variable "xotocross-iam-role" { description = "xotocross iam role" }
 variable "xotocross-network-mode" { description = "xotocross network mode" }
 variable "xotocross-target-group-arns" { description = "xotocross target group arn" }
-variable "environment" { description = "xotocross environment (e.g. development, staging, production)" }
-variable "region" { description = "xotocross region" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }

@@ -1,11 +1,11 @@
 locals {
   xotocross-container-definition-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
-    xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
-    xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
-    xotocross-container-cpu       = 0
-    xotocross-container-memory    = 256
+    xotocross-container-name = "xotocross-${var.xotocross-service-name}-fluentbit"
+    xotocross-container-image = "ghcr.io/xotosphere/fluentbit:latest"
+    xotocross-container-cpu = 0
+    xotocross-container-memory = 256
     xotocross-container-essential = false
-    xotocross-port-mapping        = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }])
+    xotocross-port-mapping = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }])
     xotocross-environment = jsonencode([
       { name = "environment", value = var.environment },
       { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
@@ -15,18 +15,18 @@ locals {
       { name = "ENVIRONMENT", value = var.environment },
       { name = "FLB_LOG_LEVEL", value = "debug" }
     ])
-    xotocross-log-group-name        = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
-    xotocross-region                = var.region
-    xotocross-container-command     = jsonencode([])
-    xotocross-container-dependency  = jsonencode([])
-    xotocross-container-entrypoint  = jsonencode([])
+    xotocross-log-group-name = "xotocross-${var.xotocross-service-name}-${var.environment}-logs"
+    xotocross-region = var.region
+    xotocross-container-command = jsonencode([])
+    xotocross-container-dependency = jsonencode([])
+    xotocross-container-entrypoint = jsonencode([])
     xotocross-container-healthcheck = "null"
     xotocross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
         enable-ecs-log-metadata = "true",
-        config-file-type        = "file",
-        config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
+        config-file-type = "file",
+        config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
     })
   }))
@@ -37,26 +37,23 @@ locals {
   )
 }
 
-
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
-  family                = var.xotocross-task-family
+  family = var.xotocross-task-family
   container_definitions = jsonencode(local.xotocross-container-list-definition)
-
-  # container_definitions    = jsonencode(var.xotocross-container-definition)
-  execution_role_arn       = var.xotocross-execution-role-arn
-  task_role_arn            = var.xotocross-task-role-arn
-  network_mode             = var.xotocross-network-mode
+  execution_role_arn = var.xotocross-execution-role-arn
+  task_role_arn = var.xotocross-task-role-arn
+  network_mode = var.xotocross-network-mode
   requires_compatibilities = ["EC2"]
 }
 
 resource "aws_ecs_service" "xotocross-service" {
-  name                               = "xotocross-${var.xotocross-service-name}-${var.environment}-service"
-  cluster                            = var.xotocross-cluster-name
-  task_definition                    = aws_ecs_task_definition.xotocross-ecs-task-definition.arn
-  deployment_maximum_percent         = var.xotocross-deployment-max
+  name = "xotocross-${var.xotocross-service-name}-${var.environment}-service"
+  cluster = var.xotocross-cluster-name
+  task_definition = aws_ecs_task_definition.xotocross-ecs-task-definition.arn
+  deployment_maximum_percent = var.xotocross-deployment-max
   deployment_minimum_healthy_percent = var.xotocross-deployment-min
-  desired_count                      = var.xotocross-desired-count
-  launch_type                        = var.xotocross-ecs-launch-type
+  desired_count = var.xotocross-desired-count
+  launch_type = var.xotocross-ecs-launch-type
 
   deployment_controller {
     type = "ECS"
@@ -68,23 +65,23 @@ resource "aws_ecs_service" "xotocross-service" {
     
     content {
       target_group_arn = var.xotocross-target-group-arns[count.value]
-      container_name   = local.xotocross-container-list-definition[count.value].name
-      container_port   = var.xotocross-container-port[count.value]
+      container_name = local.xotocross-container-list-definition[count.value].name
+      container_port = var.xotocross-container-port[count.value]
     }
   }
 
   deployment_circuit_breaker {
-    enable   = var.xotocross-enable-deployment-circuit-breaker
+    enable = var.xotocross-enable-deployment-circuit-breaker
     rollback = var.xotocross-enable-rollback
   }
 
   placement_constraints {
-    type       = var.xotocross-placement-constraint-type
+    type = var.xotocross-placement-constraint-type
     expression = var.xotocross-placement-constraint-expression
   }
 
-  enable_ecs_managed_tags           = var.xotocross-enable-ecs-managed-tags
-  propagate_tags                    = var.xotocross-propagate-tags
-  enable_execute_command            = var.xotocross-enable-execute-command
+  enable_ecs_managed_tags = var.xotocross-enable-ecs-managed-tags
+  propagate_tags = var.xotocross-propagate-tags
+  enable_execute_command = var.xotocross-enable-execute-command
   health_check_grace_period_seconds = var.xotocross-health-check-grace-period
 }
