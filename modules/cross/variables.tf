@@ -20,7 +20,6 @@ variable "region" {
 
 variable "xotocross-container-definition" {
   description = "Container definition for the xotocross service"
-  type        = list(any)
   default     = []
 }
 
