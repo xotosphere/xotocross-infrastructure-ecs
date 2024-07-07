@@ -12,3 +12,13 @@ output "xotocross-listener-hosts-global" {
   value       = local.xotocross-listener-hosts-global
   description = "Global listener hosts for the xotocross service, including the Fluent Bit monitoring host if monitoring is enabled."
 }
+
+output "xotocross-container-ports-global" {
+  value       = local.xotocross-container-ports-global
+  description = "Global container ports for the xotocross service, including the Fluent Bit monitoring port if monitoring is enabled."
+}
+
+output "xotocross-host-ports-global" {
+  value       = local.xotocross-host-ports-global
+  description = "Global host ports for the xotocross service, including the Fluent Bit monitoring port if monitoring is enabled."
+}

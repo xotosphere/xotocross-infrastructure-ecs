@@ -40,3 +40,15 @@ variable "xotocross-listener-hosts" {
   type        = list(string)
   default     = []
 }
+
+variable "xotocross-container-ports" {
+  description = "Container ports for the xotocross service"
+  type        = list(number)
+  default     = []
+}
+
+variable "xotocross-host-ports" {
+  description = "Host ports for the xotocross service"
+  type        = list(number)
+  default     = []
+}

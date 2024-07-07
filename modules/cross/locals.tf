@@ -45,4 +45,14 @@ locals {
     var.xotocross-listener-hosts,
     var.xotocross-has-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : []
   )
+
+  xotocross-container-ports-global = concat(
+    var.xotocross-container-ports,
+    var.xotocross-has-monitor ? [24224] : []
+  )
+
+  xotocross-host-ports-global = concat(
+    var.xotocross-host-ports,
+    var.xotocross-has-monitor ? [24224] : []
+  )
 }
