@@ -1,3 +1,9 @@
+data "aws_efs_file_system" "xotocross-ecs-fs" {
+  tags = {
+    Name = "${var.xotocross-cluster-name}-fs"
+  }
+}
+
 resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   family                   = var.xotocross-task-family
   container_definitions    = jsonencode(var.xotocross-container-definition)
@@ -5,6 +11,14 @@ resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   task_role_arn            = var.xotocross-task-role-arn
   network_mode             = var.xotocross-network-mode
   requires_compatibilities = ["EC2"]
+
+  volume {
+    name = "${var.xotocross-service-name}-volume"
+    efs_volume_configuration {
+      file_system_id = aws_efs_file_system.xotocross-ecs-fs.id
+      root_directory = "/${var.xotocross-service-name}/"
+    }
+  }
 
 }
 
