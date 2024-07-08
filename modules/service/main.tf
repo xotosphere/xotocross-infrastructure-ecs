@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
   volume {
     name = "${var.xotocross-service-name}-volume"
     efs_volume_configuration {
-      file_system_id = aws_efs_file_system.xotocross-ecs-fs.id
+      file_system_id = data.aws_efs_file_system.xotocross-ecs-fs.id
       root_directory = "/${var.xotocross-service-name}/"
     }
   }
