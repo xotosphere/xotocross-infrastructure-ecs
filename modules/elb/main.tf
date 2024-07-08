@@ -78,7 +78,7 @@ resource "aws_lb_target_group" "xotocross-tg" {
   load_balancing_algorithm_type = "round_robin"
 
   health_check {
-    enabled             = true
+    enabled             = false
     healthy_threshold   = var.xotocross-healthy-threshhold
     unhealthy_threshold = var.xotocross-unhealthy-threshhold
     interval            = var.xotocross-healthcheck-interval
