@@ -14,4 +14,3 @@ variable "xotocross-healthcheck-interval" { description = "xotocross interval be
 variable "xotocross-healthcheck-paths" { description = "xotocross path of the health check endpoint" }
 variable "xotocross-healthcheck-timeout" { description = "xotocross timeout for the health check (in seconds)" }
 variable "xotocross-listener-hosts" { description = "xotocross list of hosts for the listeners" }
-variable "xotocross-service-name" { description = "xotocross service name" }
