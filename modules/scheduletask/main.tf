@@ -70,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   statistic = "SampleCount"
   threshold = "1"
   alarm_description = "xotocross metric checks if there are any errors from the lambda function"
-  alarm_actions = [aws_sns_topic.xotocross-scheduletask-sns.arn]
+  alarm_actions = [data.aws_sns_topic.xotocross-sns.arn]
   dimensions = {
     FunctionName = var.xotocross-function-name
   }
@@ -80,13 +80,3 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   }
 }
 
-resource "aws_sns_topic" "xotocross-scheduletask-sns" {
-  name = "${var.xotocross-function-name}-sns"
-}
-
-resource "aws_sns_topic_subscription" "xotocross-scheduletask-email" {
-  for_each = toset(var.xotocross-email)
-  topic_arn = aws_sns_topic.xotocross-scheduletask-sns.arn
-  protocol = "email"
-  endpoint = each.value
-}
