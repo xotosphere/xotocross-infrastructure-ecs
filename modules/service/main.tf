@@ -7,7 +7,16 @@ data "aws_efs_file_system" "xotocross-ecs-fs" {
 resource "aws_efs_access_point" "xotocross-ecs-accesspoint" {
   file_system_id = data.aws_efs_file_system.xotocross-ecs-fs.id
   root_directory {
+    creation_info {
+      owner_gid   = 1000
+      owner_uid   = 1000
+      permissions = 755
+    }
     path = "/${var.xotocross-service-name}"
+  }
+  posix_user {
+    gid = 1000
+    uid = 1000
   }
 }
 
