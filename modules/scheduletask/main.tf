@@ -74,6 +74,10 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   dimensions = {
     FunctionName = var.xotocross-function-name
   }
+  tags = {
+    Name = "${var.xotocross-function-name}-alarm"
+    environment = var.environment
+  }
 }
 
 resource "aws_sns_topic" "xotocross-scheduletask-sns" {
