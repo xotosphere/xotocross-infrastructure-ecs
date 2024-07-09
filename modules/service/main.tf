@@ -27,6 +27,7 @@ resource "aws_ecs_task_definition" "xotocross-ecs-task-definition" {
 
       authorization_config {
         access_point_id = aws_efs_access_point.xotocross-ecs-accesspoint.id
+        iam             = "ENABLED"
       }
     }
   }
