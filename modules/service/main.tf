@@ -7,7 +7,7 @@ data "aws_efs_file_system" "xotocross-ecs-fs" {
 resource "aws_efs_access_point" "xotocross-ecs-accesspoint" {
   file_system_id = data.aws_efs_file_system.xotocross-ecs-fs.id
   root_directory {
-    path = "/${var.xotocross-service-name}/"
+    path = var.xotocross-service-name
   }
 }
 
