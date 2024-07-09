@@ -36,7 +36,7 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   dynamic "load_balancer" {
-    for_each = range(0, length(var.xotocross-container-port))
+    for_each = range(0, length(var.xotocross-listener-hosts))
     iterator = count
 
     content {
