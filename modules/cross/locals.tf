@@ -5,11 +5,11 @@ locals {
     xotocross-container-cpu       = 0
     xotocross-container-memory    = 256
     xotocross-container-essential = false
-    xotocross-container-portmap   = jsonencode([
+    xotocross-container-portmap = jsonencode([
       # { containerPort = 24224, hostPort = 24224, protocol = "tcp" }
-        { containerPort = 24224, hostPort = 24224, protocol = "tcp" },
-        { containerPort = 2020, hostPort = 2020, protocol = "tcp" }
-      ])
+      { containerPort = 24224, hostPort = 24224, protocol = "tcp" },
+      { containerPort = 2020, hostPort = 2020, protocol = "tcp" }
+    ])
     xotocross-container-environment = jsonencode([
       { name = "environment", value = var.environment },
       { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
@@ -34,14 +34,15 @@ locals {
       }
     })
   }))
-  
-  xotocross-container-definition-global = concat( var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : [] )
-  xotocross-healthcheck-paths-global = concat( var.xotocross-healthcheck-paths, var.xotocross-enable-monitor ? ["/api/v1/health"] : [] )
-  xotocross-listener-hosts-global = concat( var.xotocross-listener-hosts, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [] )
+
+  xotocross-container-definition-global = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : [])
+  xotocross-healthcheck-paths-global    = concat(var.xotocross-healthcheck-paths, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
+  # xotocross-listener-hosts-global = concat( var.xotocross-listener-hosts, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [] )
   # xotocross-container-ports-global = concat( var.xotocross-container-ports, var.xotocross-enable-monitor ? [24224] : [] )
   # xotocross-host-ports-global = concat( var.xotocross-host-ports, var.xotocross-enable-monitor ? [24224] : [])
-  
-  
-  xotocross-container-ports-global = concat( var.xotocross-container-ports, var.xotocross-enable-monitor ? [24224, 2020] : [] )
-  xotocross-host-ports-global = concat( var.xotocross-host-ports, var.xotocross-enable-monitor ? [24224, 2020] : [])
+
+
+  xotocross-listener-hosts-global  = var.xotocross-listener-hosts
+  xotocross-container-ports-global = concat(var.xotocross-container-ports, var.xotocross-enable-monitor ? [24224, 2020] : [])
+  xotocross-host-ports-global      = concat(var.xotocross-host-ports, var.xotocross-enable-monitor ? [24224, 2020] : [])
 }
