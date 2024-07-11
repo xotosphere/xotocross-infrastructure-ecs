@@ -1,7 +1,7 @@
 /**
 	{
-		"clusterName":"xotocross-staging-ecs",
-		"serviceName":"xotocross-demo-staging-service",
+		"clusterName":"xotocross-stage-ecs",
+		"serviceName":"xotocross-demo-stage-service",
 		"taskCount":0,
 		"action":"stop"
 	}

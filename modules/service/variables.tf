@@ -1,5 +1,5 @@
 variable "region" { description = "xotocross region" }
-variable "environment" { description = "xotocross environment (e.g. development, staging, production)" }
+variable "environment" { description = "xotocross environment (e.g. dev, stage, prod)" }
 variable "xotocross-cluster-name" { description = "xotocross ecs cluster name" }
 variable "xotocross-task-family" { description = "xotocross task family" }
 variable "xotocross-container-definition" { description = "xotocross container definition" }

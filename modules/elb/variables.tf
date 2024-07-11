@@ -1,4 +1,4 @@
-variable "environment" { description = "xotocross environment (e.g. development, staging, production)" }
+variable "environment" { description = "xotocross environment (e.g. dev, stage, prod)" }
 variable "xotocross-alb-name" { description = "xotocross name of the alb" }
 variable "xotocross-public-subnets" { description = "xotocross list of public subnet ids to place the alb in" }
 variable "xotocross-alb-sg" { description = "xotocross list of security group ids to attach to the alb" }

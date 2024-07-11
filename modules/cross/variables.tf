@@ -1,5 +1,5 @@
 variable "region" { description = "xotocross the aws region where the service is deployed" }
-variable "environment" { description = "xotocross the deployment environment (e.g., staging, production)" }
+variable "environment" { description = "xotocross the deployment environment (e.g., stage, prod)" }
 variable "xotocross-domain-name" { description = "xotocross the domain name for the xotocross service" }
 variable "xotocross-service-name" { description = "xotocross the name of the xotocross service" }
 variable "xotocross-service-version" { description = "xotocross application version" }
