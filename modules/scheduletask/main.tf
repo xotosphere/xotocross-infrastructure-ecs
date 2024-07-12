@@ -1,5 +1,5 @@
 
-module "xotocross-scheduletask-function" {
+module "xotocross-scheduletask" {
   source = "terraform-aws-modules/lambda/aws"
   function_name = var.xotocross-function-name
   handler = "lambda.handler"
@@ -35,7 +35,7 @@ resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
 resource "aws_cloudwatch_event_target" "xotocross-scheduletask-stop-target" {
   rule = aws_cloudwatch_event_rule.xotocross-scheduletask-stop-rule.name
   target_id = "${var.xotocross-function-name}-stop-resources"
-  arn = module.xotocross-scheduletask-function.lambda_function_arn
+  arn = module.xotocross-scheduletask.lambda_function_arn
 
   input = jsonencode({
     serviceName = var.xotocross-service-name,
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-start-rule" {
 resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
   rule = aws_cloudwatch_event_rule.xotocross-scheduletask-start-rule.name
   target_id = "${var.xotocross-function-name}-start-resources"
-  arn = module.xotocross-scheduletask-function.lambda_function_arn
+  arn = module.xotocross-scheduletask.lambda_function_arn
   input = jsonencode({
     serviceName = var.xotocross-service-name,
     taskCount = var.xotocross-task-count,
@@ -70,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   statistic = "SampleCount"
   threshold = "1"
   alarm_description = "xotocross metric checks if there are any errors from the lambda function"
-  alarm_actions = [data.aws_sns_topic.xotocross-sns.arn]
+  alarm_actions = [data.aws_sns_topic.xotocross-cloudwatch-sns.arn]
   dimensions = {
     FunctionName = var.xotocross-function-name
   }

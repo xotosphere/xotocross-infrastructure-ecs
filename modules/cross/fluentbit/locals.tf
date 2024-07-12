@@ -19,10 +19,10 @@ locals {
       { name = "COST_PROJECT_VERSION", value = var.xotocross-service-version },
       { name = "FLB_LOG_LEVEL", value = "debug" },
       { name = "AWS_REGION", value = var.region },
-      { name = "LOG_GROUP", value = "xotocross-${var.xotocross-service-name}-${var.environment}-ecs-log" },
+      { name = "LOG_GROUP", value = "xotocross-${var.xotocross-service-name}-${var.environment}-log" },
     ])
 
-    xotocross-container-loggroup    = "xotocross-${var.xotocross-service-name}-${var.environment}-ecs-log"
+    xotocross-container-loggroup    = "xotocross-${var.xotocross-service-name}-${var.environment}-log"
     xotocross-container-region      = var.region
     xotocross-container-command     = jsonencode([])
     xotocross-container-dependency  = jsonencode([])
@@ -32,7 +32,7 @@ locals {
     xotocross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
-        enable-ecs-log-metadata = "true",
+        enable-log-metadata = "true",
         config-file-type        = "file",
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
