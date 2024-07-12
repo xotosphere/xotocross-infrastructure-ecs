@@ -49,7 +49,7 @@ resource "grafana_dashboard" "xotocross-service-dashboard" {
       "datasource": "Loki",
       "targets": [
         {
-          "expr": "{app=\"$xotocross-service-name\"}",
+          "expr": "{cost_project=\"$xotocross-service-name\"}",
           "refId": "A"
         }
       ]
