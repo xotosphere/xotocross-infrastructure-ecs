@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "grafana" {
-  url  = "grafana.monitor.${var.environment}.${var.xotocross-domain-name}"
+  url  = "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}"
   auth = "admin:${var.xotocross-password}"
 }
 
