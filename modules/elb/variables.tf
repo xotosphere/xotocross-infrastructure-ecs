@@ -10,7 +10,11 @@ variable "xotocross-target-type" { description = "xotocross type of targets for 
 variable "xotocross-vpc-id" { description = "xotocross id of the vpc where the target group will be created" }
 variable "xotocross-healthy-threshhold" { description = "xotocross number of consecutive successful health checks required to consider a target healthy" }
 variable "xotocross-unhealthy-threshhold" { description = "xotocross number of consecutive failed health checks required to consider a target unhealthy" }
+<<<<<<< HEAD
 variable "xotocross-healthcheck-interval" { default = 10 }
+=======
+variable "xotocross-healthcheck-interval" { default = 4 }
+>>>>>>> 985d0b4 (Automated commit)
 variable "xotocross-healthcheck-paths" { description = "xotocross path of the health check endpoint" }
 variable "xotocross-healthcheck-timeout" { description = "xotocross timeout for the health check (in seconds)" }
 variable "xotocross-listener-hosts" { description = "xotocross list of hosts for the listeners" }
