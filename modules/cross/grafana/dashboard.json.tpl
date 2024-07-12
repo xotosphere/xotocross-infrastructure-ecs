@@ -1,6 +1,6 @@
 {
 	"uid": "Loki",
-	"title": "xotocross logs",
+	"title": "xotocross logs $xotocross-service-name",
 	"__inputs": [
 		{
 			"name": "Loki",
@@ -37,7 +37,7 @@
 	},
 	"panels": [
 		{
-			"title": "xotocross logs",
+			"title": "xotocross logs $xotocross-service-name",
 			"type": "logs",
 			"datasource": "Loki",
 			"targets": [

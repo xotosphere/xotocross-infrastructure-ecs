@@ -32,7 +32,7 @@ locals {
     xotocross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
-        enable-log-metadata = "true",
+        # enable-log-metadata = "true",
         config-file-type        = "file",
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
