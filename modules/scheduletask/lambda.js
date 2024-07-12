@@ -15,9 +15,7 @@ const config = {
 };
 
 exports.handler = async ({ clusterName, serviceName, action, taskCount }) => {
-	console.info(
-		`environment: ${config.environment}, serviceName: ${serviceName}, action: ${action}, taskCount: ${taskCount}`
-	);
+	console.info(`environment: ${config.environment}, serviceName: ${serviceName}, action: ${action}, taskCount: ${taskCount}`);
 	action === 'stop'
 		? await stopTasks(clusterName, serviceName)
 		: await changeTaskCount(clusterName, serviceName, taskCount);
@@ -43,12 +41,8 @@ const changeTaskCount = async (clusterName, serviceName, taskCount) => {
  */
 const stopTasks = async (clusterName, serviceName) => {
 	console.info(clusterName);
-	const { taskArns } = await config.client.send(
-		new ListTasksCommand({ serviceName, cluster: clusterName })
-	);
+	const { taskArns } = await config.client.send(new ListTasksCommand({ serviceName, cluster: clusterName }));
 	for (const taskArn of taskArns)
-		await config.client.send(
-			new StopTaskCommand({ task: taskArn, cluster: clusterName })
-		);
+		await config.client.send(new StopTaskCommand({ task: taskArn, cluster: clusterName }));
 	console.info(`all tasks of ${serviceName} stopped`);
 };
