@@ -50,7 +50,7 @@ resource "aws_ecs_service" "xotocross-service" {
   deployment_maximum_percent         = var.xotocross-deployment-max
   deployment_minimum_healthy_percent = var.xotocross-deployment-min
   desired_count                      = var.xotocross-desired-count
-  launch_type                        = var.xotocross-ecs-launch-type
+  launch_type                        = "EC2"
 
   deployment_controller {
     type = "ECS"
@@ -68,17 +68,17 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   deployment_circuit_breaker {
-    enable   = var.xotocross-enable-deployment-circuit-breaker
-    rollback = var.xotocross-enable-rollback
+    enable   = true
+    rollback = true
   }
 
   placement_constraints {
-    type       = var.xotocross-placement-constraint-type
-    expression = var.xotocross-placement-constraint-expression
+    type       = var.xotocross-constraint-placement
+    expression = var.xotocross-constraint-expression
   }
 
-  enable_ecs_managed_tags           = var.xotocross-enable-ecs-managed-tags
+  enable_ecs_managed_tags           = true
   propagate_tags                    = var.xotocross-propagate-tags
-  enable_execute_command            = var.xotocross-enable-execute-command
-  health_check_grace_period_seconds = var.xotocross-healthcheck-grace-period
+  enable_execute_command            = true
+  health_check_grace_period_seconds = var.xotocross-healthcheck-graceperiod
 }
