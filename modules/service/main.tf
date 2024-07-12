@@ -68,8 +68,8 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   deployment_circuit_breaker {
-    enable   = true
-    rollback = true
+    enable   = false
+    rollback = false
   }
 
   placement_constraints {
@@ -77,8 +77,8 @@ resource "aws_ecs_service" "xotocross-service" {
     expression = var.xotocross-constraint-expression
   }
 
-  enable_ecs_managed_tags           = true
+  enable_ecs_managed_tags           = false
   propagate_tags                    = var.xotocross-propagate-tags
-  enable_execute_command            = true
+  enable_execute_command            = false
   health_check_grace_period_seconds = var.xotocross-healthcheck-graceperiod
 }

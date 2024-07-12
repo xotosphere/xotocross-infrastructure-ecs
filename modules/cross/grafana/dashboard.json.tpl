@@ -1,6 +1,6 @@
 {
 	"uid": "Loki",
-	"title": "xotocross logs $xotocross-service-name",
+	"title": "xotocross logs \"$xotocross-service-name\"",
 	"__inputs": [
 		{
 			"name": "Loki",
@@ -28,7 +28,7 @@
 	"templating": {
 		"list": [
 			{
-				"name": "xotocross : $xotocross-service-name",
+				"name": "xotocross : \"$xotocross-service-name\"",
 				"query": "{cost_project=\"$xotocross-service-name\"}",  
 				"refresh": 1,
 				"type": "query"
@@ -37,7 +37,7 @@
 	},
 	"panels": [
 		{
-			"title": "xotocross logs $xotocross-service-name",
+			"title": "xotocross logs \"$xotocross-service-name\"",
 			"type": "logs",
 			"datasource": "Loki",
 			"targets": [
