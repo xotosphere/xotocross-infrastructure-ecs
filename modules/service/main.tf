@@ -57,7 +57,7 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   dynamic "load_balancer" {
-    for_each = range(0, length(var.xotocross-listener-hosts))
+    for_each = range(0, length(var.xotocross-listener-hostlist))
     iterator = count
 
     content {
@@ -78,7 +78,7 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   enable_ecs_managed_tags           = false
-  propagate_tags                    = var.xotocross-propagate-tags
+  propagate_tags                    = var.xotocross-propagate-tag
   enable_execute_command            = false
   health_check_grace_period_seconds = var.xotocross-healthcheck-graceperiod
 }

@@ -17,10 +17,10 @@ resource "aws_lb" "xotocross-alb" {
 }
 
 resource "aws_lb_listener" "xotocross-http-listener" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hosts)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
 
   load_balancer_arn = aws_lb.xotocross-alb.arn
-  port              = var.xotocross-listener-ports[each.value]
+  port              = var.xotocross-listener-portlist[each.value]
   protocol          = "HTTP"
 
   default_action {
@@ -51,7 +51,7 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
 }
 
 resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hosts)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
 
   listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
 
@@ -62,16 +62,16 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
 
   condition {
     host_header {
-      values = [var.xotocross-listener-hosts[each.value]]
+      values = [var.xotocross-listener-hostlist[each.value]]
     }
   }
 }
 
 resource "aws_lb_target_group" "xotocross-tg" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hosts)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
 
   name                          = "${var.xotocross-tg-name}-${each.value}"
-  port                          = var.xotocross-host-ports[each.value]
+  port                          = var.xotocross-host-portlist[each.value]
   protocol                      = "HTTP"
   target_type                   = var.xotocross-target-type
   vpc_id                        = var.xotocross-vpc-id
@@ -83,7 +83,7 @@ resource "aws_lb_target_group" "xotocross-tg" {
     unhealthy_threshold = var.xotocross-unhealthy-threshhold
     interval            = var.xotocross-healthcheck-interval
     matcher             = "200"
-    path                = var.xotocross-healthcheck-paths[each.value]
+    path                = var.xotocross-healthcheck-pathlist[each.value]
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = var.xotocross-healthcheck-timeout

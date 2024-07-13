@@ -40,8 +40,8 @@ locals {
   }))
 
   xotocross-container-definition = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : [])
-  xotocross-healthcheck-paths    = concat(var.xotocross-healthcheck-paths, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
-  xotocross-listener-hosts       = concat(var.xotocross-listener-hosts, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [])
-  xotocross-container-ports      = concat(var.xotocross-container-ports, var.xotocross-enable-monitor ? [2020, 24224] : [])
-  xotocross-host-ports           = concat(var.xotocross-host-ports, var.xotocross-enable-monitor ? [2020, 24224] : [])
+  xotocross-healthcheck-pathlist    = concat(var.xotocross-healthcheck-pathlist, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
+  xotocross-listener-hostlist       = concat(var.xotocross-listener-hostlist, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [])
+  xotocross-container-portlist      = concat(var.xotocross-container-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
+  xotocross-host-portlist           = concat(var.xotocross-host-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
 }

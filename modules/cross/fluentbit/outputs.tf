@@ -2,18 +2,18 @@ output "xotocross-container-definition" {
   value = local.xotocross-container-definition
 }
 
-output "xotocross-healthcheck-paths" {
-  value = local.xotocross-healthcheck-paths
+output "xotocross-healthcheck-pathlist" {
+  value = local.xotocross-healthcheck-pathlist
 }
 
-output "xotocross-listener-hosts" {
-  value = local.xotocross-listener-hosts
+output "xotocross-listener-hostlist" {
+  value = local.xotocross-listener-hostlist
 }
 
-output "xotocross-container-ports" {
-  value = local.xotocross-container-ports
+output "xotocross-container-portlist" {
+  value = local.xotocross-container-portlist
 }
 
-output "xotocross-host-ports" {
-  value = local.xotocross-host-ports
+output "xotocross-host-portlist" {
+  value = local.xotocross-host-portlist
 }

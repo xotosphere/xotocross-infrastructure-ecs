@@ -6,7 +6,7 @@ module "xotocross-scheduletask" {
   runtime = "nodejs20.x"
   
   layers = [
-    data.aws_lambda_layer_version.xotocross-core-layer.arn
+    data.aws_lambda_layer_version.xotocross-cross-layer.arn
   ]
   
   source_path = [
