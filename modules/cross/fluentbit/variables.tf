@@ -4,7 +4,6 @@ variable "xotocross-domain-name" { description = "xotocross the domain name for 
 variable "xotocross-service-name" { description = "xotocross the name of the xotocross service" }
 variable "xotocross-service-version" { description = "xotocross application version" }
 variable "xotocross-container-definition" { description = "xotocross container definition for the xotocross service" }
-variable "xotocross-enable-monitor" { description = "xotocross flag to indicate if monitoring is enabled" }
 variable "xotocross-healthcheck-pathlist" { description = "xotocross health check paths for the xotocross service" }
 variable "xotocross-listener-hostlist" { description = "xotocross listener hosts for the xotocross service" }
 variable "xotocross-container-portlist" { description = "xotocross container ports for the xotocross service" }

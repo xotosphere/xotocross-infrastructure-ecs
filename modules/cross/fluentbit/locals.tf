@@ -5,11 +5,7 @@ locals {
     xotocross-container-cpu       = 0
     xotocross-container-memory    = 256
     xotocross-container-essential = false
-
-    xotocross-container-portmap = jsonencode([
-      { containerPort = 24224, hostPort = 24224, protocol = "tcp" },
-      { containerPort = 2020, hostPort = 2020, protocol = "tcp" }
-    ])
+    xotocross-container-portmap = jsonencode([ { containerPort = 24224, hostPort = 24224, protocol = "tcp" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp" } ])
 
     xotocross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
@@ -32,16 +28,15 @@ locals {
     xotocross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
-        # enable-log-metadata = "true",
         config-file-type        = "file",
         config-file-value       = "/fluent-bit/etc/fluent-bit-filter.conf"
       }
     })
   }))
 
-  xotocross-container-definition = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : [])
-  xotocross-healthcheck-pathlist    = concat(var.xotocross-healthcheck-pathlist, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
-  xotocross-listener-hostlist       = concat(var.xotocross-listener-hostlist, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [])
-  xotocross-container-portlist      = concat(var.xotocross-container-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
-  xotocross-host-portlist           = concat(var.xotocross-host-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
+  xotocross-container-definition = concat(var.xotocross-container-definition, [local.xotocross-container-definition-fluentbit])
+  xotocross-healthcheck-pathlist    = concat(var.xotocross-healthcheck-pathlist, ["/api/v1/health"])
+  xotocross-listener-hostlist       = concat(var.xotocross-listener-hostlist, ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"])
+  xotocross-container-portlist      = concat(var.xotocross-container-portlist, [2020, 24224])
+  xotocross-host-portlist           = concat(var.xotocross-host-portlist, [2020, 24224])
 }
