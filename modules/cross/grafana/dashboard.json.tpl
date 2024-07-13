@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"id": null,
-		"title": "dashboard - ${cost_project}",
+		"title": "${cost_project}",
 		"panels": [
       {
         "id": 22,
