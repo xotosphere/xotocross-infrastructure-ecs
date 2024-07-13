@@ -1,6 +1,6 @@
 {
 	"uid": "Loki",
-	"title": "xotocross logs \"$$cost_project\"",
+	"title": "xotocross logs \"${cost_project}\"",
 	"__inputs": [
 		{
 			"name": "Loki",
@@ -28,8 +28,8 @@
 	"templating": {
 		"list": [
 			{
-				"name": "xotocross : \"$$cost_project\"",
-				"query": "{cost_project=\"$$cost_project\"}",  
+				"name": "xotocross : \"${cost_project}\"",
+				"query": "{cost_project=\"${cost_project}\"}",  
 				"refresh": 1,
 				"type": "query"
 			}
@@ -37,23 +37,23 @@
 	},
 	"panels": [
 		{
-			"title": "xotocross logs \"$$cost_project\"",
+			"title": "xotocross logs \"${cost_project}\"",
 			"type": "logs",
 			"datasource": "Loki",
 			"targets": [
 				{
-					"expr": "{cost_project=\"$$cost_project\"}",
+					"expr": "{cost_project=\"${cost_project}\"}",
 					"refId": "A"
 				}
 			]
 		},
 		{
 			"id": 20,
-			"title": "cpu busy - $$cost_project",
+			"title": "cpu busy - ${cost_project}",
 			"type": "gauge",
 			"targets": [
 				{
-					"expr": "(((count(count(node_cpu_seconds_total{cost_project=\"$$cost_project\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',cost_project=\"$$cost_project\"}[$__rate_interval])))) * 100) / count(count(node_cpu_seconds_total{cost_project=\"$$cost_project\"}) by (cpu))",
+					"expr": "(((count(count(node_cpu_seconds_total{cost_project=\"${cost_project}\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',cost_project=\"${cost_project}\"}[$__rate_interval])))) * 100) / count(count(node_cpu_seconds_total{cost_project=\"${cost_project}\"}) by (cpu))",
 					"hide": false,
 					"intervalFactor": 1,
 					"legendFormat": "",
@@ -64,11 +64,11 @@
 		},
 		{
 			"id": 21,
-			"title": "memory usage - $$cost_project",
+			"title": "memory usage - ${cost_project}",
 			"type": "gauge",
 			"targets": [
 				{
-					"expr": "node_memory_MemTotal_bytes{cost_project=\"$$cost_project\"} - node_memory_MemFree_bytes{cost_project=\"$$cost_project\"} - node_memory_Buffers_bytes{cost_project=\"$$cost_project\"} - node_memory_Cached_bytes{cost_project=\"$$cost_project\"}",
+					"expr": "node_memory_MemTotal_bytes{cost_project=\"${cost_project}\"} - node_memory_MemFree_bytes{cost_project=\"${cost_project}\"} - node_memory_Buffers_bytes{cost_project=\"${cost_project}\"} - node_memory_Cached_bytes{cost_project=\"${cost_project}\"}",
 					"hide": false,
 					"intervalFactor": 1,
 					"legendFormat": "",
