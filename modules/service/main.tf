@@ -80,5 +80,5 @@ resource "aws_ecs_service" "xotocross-service" {
   enable_ecs_managed_tags           = false
   propagate_tags                    = var.xotocross-propagate-tag
   enable_execute_command            = false
-  health_check_grace_period_seconds = var.xotocross-healthcheck-graceperiod
+  health_check_grace_period_seconds = var.xotocross-healthcheck-grace
 }
