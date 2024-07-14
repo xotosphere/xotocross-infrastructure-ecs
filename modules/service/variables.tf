@@ -14,7 +14,6 @@ variable "xotocross-constraint-placement" { description = "xotocross placement c
 variable "xotocross-constraint-expression" { description = "xotocross placement constraint expression" }
 variable "xotocross-propagate-tag" { description = "xotocross propagate tags" }
 variable "xotocross-healthcheck-grace" { description = "xotocross health check grace period" }
-# variable "xotocross-iam-role" { description = "xotocross iam role" }
 variable "xotocross-network-mode" { description = "xotocross network mode" }
 variable "xotocross-target-group-arnlist" { description = "xotocross target group arn" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }
