@@ -1,9 +1,9 @@
-resource "aws_lb" "xotocross-alb" {
-  name                             = var.xotocross-alb-name
+resource "aws_lb" "xotocross-loadbalaner" {
+  name                             = var.xotocross-loadbalaner-name
   internal                         = false
   load_balancer_type               = "application"
-  subnets                          = var.xotocross-public-subnets
-  security_groups                  = [var.xotocross-alb-sg]
+  subnets                          = var.xotocross-public-subnetlist
+  security_groups                  = [var.xotocross-loadbalaner-securitygroup]
   desync_mitigation_mode           = "defensive"
   enable_cross_zone_load_balancing = true
   enable_http2                     = true
@@ -11,7 +11,7 @@ resource "aws_lb" "xotocross-alb" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    Name        = var.xotocross-alb-name
+    Name        = var.xotocross-loadbalaner-name
     environment = var.environment
   }
 }
@@ -19,23 +19,23 @@ resource "aws_lb" "xotocross-alb" {
 resource "aws_lb_listener" "xotocross-http-listener" {
   for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
 
-  load_balancer_arn = aws_lb.xotocross-alb.arn
+  load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port              = var.xotocross-listener-portlist[each.value]
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xotocross-tg[each.value].arn
+    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
   }
 
   tags = {
-    Name        = "${var.xotocross-alb-name}-listener-${each.value}"
+    Name        = "${var.xotocross-loadbalaner-name}-listener-${each.value}"
     environment = var.environment
   }
 }
 
 resource "aws_lb_listener" "xotocross-http-listener-200" {
-  load_balancer_arn = aws_lb.xotocross-alb.arn
+  load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -57,7 +57,7 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xotocross-tg[each.value].arn
+    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
   }
 
   condition {
@@ -67,10 +67,10 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   }
 }
 
-resource "aws_lb_target_group" "xotocross-tg" {
+resource "aws_lb_target_group" "xotocross-targetgroup" {
   for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
 
-  name                          = "${var.xotocross-tg-name}-${each.value}"
+  name                          = "${var.xotocross-targetgroup-name}-${each.value}"
   port                          = var.xotocross-host-portlist[each.value]
   protocol                      = "HTTP"
   target_type                   = var.xotocross-target-type
@@ -96,7 +96,7 @@ resource "aws_lb_target_group" "xotocross-tg" {
   }
 
   tags = {
-    Name        = "${var.xotocross-tg-name}-${each.value}"
+    Name        = "${var.xotocross-targetgroup-name}-${each.value}"
     environment = var.environment
   }
 }

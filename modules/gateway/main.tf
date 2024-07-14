@@ -28,5 +28,5 @@ resource "aws_api_gateway_integration" "xotocross_integration" {
 
 	type = "HTTP_PROXY"
 	integration_http_method = "ANY"
-	uri = "http://${var.xotocross-alb-name}/{proxy}"
+	uri = "http://${var.xotocross-loadbalaner-name}/{proxy}"
 }

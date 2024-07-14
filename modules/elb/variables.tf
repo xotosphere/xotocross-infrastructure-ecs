@@ -1,11 +1,11 @@
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
-variable "xotocross-alb-name" { description = "xotocross name of the alb" }
-variable "xotocross-public-subnets" { description = "xotocross list of public subnet ids to place the alb in" }
-variable "xotocross-alb-sg" { description = "xotocross list of security group ids to attach to the alb" }
+variable "xotocross-loadbalaner-name" { description = "xotocross name of the alb" }
+variable "xotocross-public-subnetlist" { description = "xotocross list of public subnet ids to place the alb in" }
+variable "xotocross-loadbalaner-securitygroup" { description = "xotocross list of security group ids to attach to the alb" }
 variable "xotocross-listener-portlist" { description = "xotocross list of ports for the listeners" }
 variable "xotocross-host-portlist" { description = "xotocross list of target ports for the listeners" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }
-variable "xotocross-tg-name" { description = "xotocross name of the target group" }
+variable "xotocross-targetgroup-name" { description = "xotocross name of the target group" }
 variable "xotocross-target-type" { description = "xotocross type of targets for the target group" }
 variable "xotocross-vpc-id" { description = "xotocross id of the vpc where the target group will be created" }
 variable "xotocross-healthy-threshhold" { description = "xotocross number of consecutive successful health checks required to consider a target healthy" }

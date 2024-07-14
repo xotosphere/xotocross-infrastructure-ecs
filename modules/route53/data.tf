@@ -1,3 +1,3 @@
-data "aws_route53_zone" "xotocross-selected-zone" {
+data "aws_route53_zone" "xotocross-zone" {
   name = var.xotocross-domain-name
 }

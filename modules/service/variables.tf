@@ -15,6 +15,6 @@ variable "xotocross-constraint-expression" { description = "xotocross placement 
 variable "xotocross-propagate-tag" { description = "xotocross propagate tags" }
 variable "xotocross-healthcheck-grace" { description = "xotocross health check grace period" }
 variable "xotocross-network-mode" { description = "xotocross network mode" }
-variable "xotocross-target-group-arnlist" { description = "xotocross target group arn" }
+variable "xotocross-targetgroup-arnlist" { description = "xotocross target group arn" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }
 variable "xotocross-listener-hostlist" { description = "xotocross listener hosts" }
