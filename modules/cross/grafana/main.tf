@@ -13,8 +13,6 @@ provider "grafana" {
 }
 
 resource "grafana_dashboard" "xotocross-service-dashboard" {
-  config_json = templatefile("${path.module}/dashboard.json.tpl", {
-    cost_project = var.xotocross-service-name
-  })
+  config_json = templatefile("${path.module}/dashboard.json.tpl", {cost_project = var.xotocross-service-name})
   overwrite = true
 }
