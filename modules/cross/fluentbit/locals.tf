@@ -1,5 +1,5 @@
 locals {
-  xotocross-container-definition-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
+  xotocross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name      = "xotocross-${var.xotocross-service-name}-fluentbit"
     xotocross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
     xotocross-container-cpu       = 0
@@ -34,7 +34,7 @@ locals {
     })
   }))
 
-  xotocross-container-definition = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-definition-fluentbit] : [])
+  xotocross-container-definition = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-fluentbit] : [])
   xotocross-healthcheck-pathlist    = concat(var.xotocross-healthcheck-pathlist, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
   xotocross-listener-hostlist       = concat(var.xotocross-listener-hostlist, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}"] : [])
   xotocross-container-portlist      = concat(var.xotocross-container-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
