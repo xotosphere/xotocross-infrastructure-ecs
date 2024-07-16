@@ -15,10 +15,10 @@ locals {
       { name = "COST_PROJECT_VERSION", value = var.xotocross-service-version },
       { name = "FLB_LOG_LEVEL", value = "debug" },
       { name = "AWS_REGION", value = var.region },
-      { name = "LOG_GROUP", value = "xotocross-${var.xotocross-service-name}-${var.environment}-log" },
+      { name = "LOG_GROUP", value = "/aws/ecs/xotocross-${var.xotocross-service-name}-${var.environment}-log" },
     ])
 
-    xotocross-container-loggroup    = "xotocross-${var.xotocross-service-name}-${var.environment}-log"
+    xotocross-container-loggroup    = "/aws/ecs/xotocross-${var.xotocross-service-name}-${var.environment}-log"
     xotocross-container-region      = var.region
     xotocross-container-command     = jsonencode([])
     xotocross-container-dependency  = jsonencode([])
