@@ -1,6 +1,6 @@
 {
 	"uid": "Loki",
-	"title": "xotocross logs : ${cost_project}",
+	"title": "xotocross logs : ${cost_project} - ${environment}",
 	"__inputs": [
 		{ "name": "Loki", "label": "Loki", "description": "xotocross ", "type": "datasource", "pluginId": "loki", "pluginName": "Loki" },
 		{ "name": "prometheus", "label": "Prometheus", "description": "xotocross ", "type": "datasource", "pluginId": "prometheus", "pluginName": "Prometheus" }
