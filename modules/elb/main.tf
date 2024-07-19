@@ -9,7 +9,7 @@ resource "aws_lb" "xotocross-loadbalaner" {
   enable_http2                     = true
   idle_timeout                     = 300
   ip_address_type                  = "ipv4"
-
+  
   tags = {
     Name        = var.xotocross-loadbalaner-name
     environment = var.environment
