@@ -36,7 +36,7 @@ resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
 }
 
 resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
-  domain          = "authorizer.${var.xotocross-domain-name}"
+  domain          = "authorizer.${var.xotocross-domain-name}.com"
   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
 }
 

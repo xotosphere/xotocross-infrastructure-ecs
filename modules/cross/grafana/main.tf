@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "grafana" {
-  url  = var.environment == "prod" ? "http://grafana.${var.xotocross-domain-name}" : "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}"
+  url  = var.environment == "prod" ? "http://grafana.${var.xotocross-domain-name}.com" : "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}.com"
   auth = "${var.xotocross-username}:${var.xotocross-password}"
 }
 

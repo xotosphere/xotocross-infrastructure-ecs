@@ -2,7 +2,7 @@
 
 resource "aws_route53_record" "xotocross-service-record" {
   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-  name    = var.environment == "prod" ? "*.${var.xotocross-domain-name}" : "${var.xotocross-subdomain-name}.${var.environment}.${var.xotocross-domain-name}"
+  name    = var.environment == "prod" ? "*.${var.xotocross-domain-name}.com" : "${var.xotocross-subdomain-name}.${var.environment}.${var.xotocross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xotocross-loadbalaner-name]
@@ -10,7 +10,7 @@ resource "aws_route53_record" "xotocross-service-record" {
 
 resource "aws_route53_record" "xotocross-wildcard-record" {
   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-  name    = var.environment == "prod" ? "*.${var.xotocross-domain-name}" : "*.${var.xotocross-subdomain-name}.${var.environment}.${var.xotocross-domain-name}"
+  name    = var.environment == "prod" ? "*.${var.xotocross-domain-name}.com" : "*.${var.xotocross-subdomain-name}.${var.environment}.${var.xotocross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xotocross-loadbalaner-name]
@@ -18,7 +18,7 @@ resource "aws_route53_record" "xotocross-wildcard-record" {
 
 # resource "aws_route53_record" "xotocross-cognito-record" {
 #   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-#   name    = "authorizer.${var.xotocross-domain-name}"
+#   name    = "authorizer.${var.xotocross-domain-name}.com"
 #   type    = "A"
 
 #   alias {
@@ -29,7 +29,7 @@ resource "aws_route53_record" "xotocross-wildcard-record" {
 # }
 # resource "aws_route53_record" "xotocross-cognito-record" {
 #   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-#   name    = "authorizer.${var.xotocross-domain-name}"
+#   name    = "authorizer.${var.xotocross-domain-name}.com"
 #   type    = "CNAME"
 #   ttl     = "300"
 #   records = [var.xotocross-loadbalaner-name]
@@ -37,7 +37,7 @@ resource "aws_route53_record" "xotocross-wildcard-record" {
 
 resource "aws_route53_record" "xotocross-cognito-record" {
   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-  name    = "authorizer.${var.xotocross-domain-name}"
+  name    = "authorizer.${var.xotocross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xotocross-loadbalaner-name]
