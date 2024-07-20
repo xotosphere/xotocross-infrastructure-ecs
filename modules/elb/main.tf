@@ -1,3 +1,26 @@
+
+resource "aws_cognito_user_pool" "xotocross-cognito" {
+  name = "xotocross-${var.environment}-user-pool"
+}
+
+resource "aws_cognito_user_pool_client" "xotocross-cognito-pool" {
+  name = "xotocross-${var.environment}-user-pool-client"
+
+  user_pool_id = aws_cognito_user_pool.xotocross-cognito.id
+
+  explicit_auth_flows = [
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+
+  generate_secret = false
+}
+
+resource "aws_cognito_user_pool_domain" "xotocross-cognito" {
+  domain       = "xotocross-${var.environment}-cognito-domain"
+  user_pool_id = aws_cognito_user_pool.xotocross-cognito.id
+}
+
 resource "aws_lb" "xotocross-loadbalaner" {
   name = var.xotocross-loadbalaner-name
   internal = false
@@ -22,6 +45,15 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port = var.xotocross-listener-portlist[each.value]
   protocol = "HTTP"
+
+  default_action {
+    type = "authenticate-cognito"
+    authenticate_cognito {
+      user_pool_arn       = aws_cognito_user_pool.xotocross-cognito.arn
+      user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-pool.id
+      user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito.domain
+    }
+  }
 
   default_action {
     type = "forward"
