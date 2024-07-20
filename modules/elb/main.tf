@@ -103,7 +103,9 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
 }
 
 resource "aws_lb_listener_rule" "xotocross-http-cognito-rule" {
-  listener_arn = aws_lb_listener.example.arn
+  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+  
+  listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
   priority     = 100
 
   action {
@@ -116,8 +118,8 @@ resource "aws_lb_listener_rule" "xotocross-http-cognito-rule" {
   }
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.example.arn
+    type = "forward"
+    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
   }
 
   condition {
