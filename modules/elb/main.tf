@@ -36,8 +36,8 @@ resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
   allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
 
   generate_secret = true
-  callback_urls = ["https://www.example.com/callback"]
-  logout_urls = ["https://www.example.com/logout"]
+  callback_urls = ["http://www.example.com/callback"]
+  logout_urls = ["http://www.example.com/logout"]
 
   allowed_oauth_flows_user_pool_client = true
 }
@@ -46,6 +46,7 @@ resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
   domain          = "authorizer"
   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
 }
+
 
 resource "aws_lb" "xotocross-loadbalaner" {
   name = var.xotocross-loadbalaner-name
