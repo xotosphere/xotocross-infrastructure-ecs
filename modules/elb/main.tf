@@ -32,7 +32,7 @@ resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
     "ALLOW_REFRESH_TOKEN_AUTH"
   ]
 
-  allowed_oauth_flows = ["code", "implicit", "client_credentials"]
+  allowed_oauth_flows = ["code", "implicit"]
   allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
 
   generate_secret = true
