@@ -8,7 +8,7 @@ locals {
     xotocross-container-portmap = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" },{ containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
     xotocross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "LOKI_HOST", value = "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
+      { name = "LOKI_HOST", value = var.environment == "prod" ? "loki.${var.xotocross-domain-name}" : "loki.monitor.${var.environment}.${var.xotocross-domain-name}" },
       { name = "LOKI_PORT", value = "80" },
       { name = "COST_PROJECT_NAME", value = var.xotocross-service-name },
       { name = "COST_PROJECT_VERSION", value = var.xotocross-service-version },
