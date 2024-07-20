@@ -1,51 +1,51 @@
-resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
-  name = "xotocross-${var.environment}-pool"
+# resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
+#   name = "xotocross-${var.environment}-pool"
 
-  password_policy {
-    minimum_length    = 8
-    require_lowercase = true
-    require_numbers   = true
-    require_symbols   = true
-    require_uppercase = true
-  }
+#   password_policy {
+#     minimum_length    = 8
+#     require_lowercase = true
+#     require_numbers   = true
+#     require_symbols   = true
+#     require_uppercase = true
+#   }
 
-  mfa_configuration = "ON"
-  software_token_mfa_configuration {
-    enabled = true
-  }
+#   mfa_configuration = "ON"
+#   software_token_mfa_configuration {
+#     enabled = true
+#   }
 
-  account_recovery_setting {
-    recovery_mechanism {
-      name     = "verified_email"
-      priority = 1
-    }
-  }
-}
+#   account_recovery_setting {
+#     recovery_mechanism {
+#       name     = "verified_email"
+#       priority = 1
+#     }
+#   }
+# }
 
-resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
-  name = "xotocross-${var.environment}-client"
+# resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
+#   name = "xotocross-${var.environment}-client"
 
-  user_pool_id = aws_cognito_user_pool.xotocross-cognito-pool.id
+#   user_pool_id = aws_cognito_user_pool.xotocross-cognito-pool.id
 
-  explicit_auth_flows = [
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH"
-  ]
+#   explicit_auth_flows = [
+#     "ALLOW_USER_PASSWORD_AUTH",
+#     "ALLOW_REFRESH_TOKEN_AUTH"
+#   ]
 
-  allowed_oauth_flows = ["code", "implicit"]
-  allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
+#   allowed_oauth_flows = ["code", "implicit"]
+#   allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
 
-  generate_secret = true
-  callback_urls = ["http://www.example.com/callback"]
-  logout_urls = ["http://www.example.com/logout"]
+#   generate_secret = true
+#   callback_urls = ["http://www.example.com/callback"]
+#   logout_urls = ["http://www.example.com/logout"]
 
-  allowed_oauth_flows_user_pool_client = true
-}
+#   allowed_oauth_flows_user_pool_client = true
+# }
 
-resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
-  domain          = "authorizer"
-  user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
-}
+# resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
+#   domain          = "authorizer"
+#   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
+# }
 
 
 resource "aws_lb" "xotocross-loadbalaner" {
@@ -109,32 +109,32 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
   }
 }
 
-resource "aws_lb_listener_rule" "xotocross-http-cognito-rule" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+# resource "aws_lb_listener_rule" "xotocross-http-cognito-rule" {
+#   for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
   
-  listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
-  priority     = 100
+#   listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
+#   priority     = 100
 
-  action {
-    type = "authenticate-cognito"
-    authenticate_cognito {
-      user_pool_arn       = aws_cognito_user_pool.xotocross-cognito-pool.arn
-      user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-client.id
-      user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito-domain.domain
-    }
-  }
+#   action {
+#     type = "authenticate-cognito"
+#     authenticate_cognito {
+#       user_pool_arn       = aws_cognito_user_pool.xotocross-cognito-pool.arn
+#       user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-client.id
+#       user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito-domain.domain
+#     }
+#   }
 
-  action {
-    type = "forward"
-    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
-  }
+#   action {
+#     type = "forward"
+#     target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
+#   }
 
-  condition {
-    path_pattern {
-      values = ["/*"]
-    }
-  }
-}
+#   condition {
+#     path_pattern {
+#       values = ["/*"]
+#     }
+#   }
+# }
 
 resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
