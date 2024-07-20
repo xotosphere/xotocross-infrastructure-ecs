@@ -33,7 +33,7 @@ resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
     "ALLOW_REFRESH_TOKEN_AUTH"
   ]
 
-  generate_secret = false
+  generate_secret = true
 }
 
 resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
