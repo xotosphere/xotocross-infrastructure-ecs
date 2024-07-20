@@ -1,6 +1,6 @@
 {
 	"uid": "Loki",
-	"title": "xotocross logs : ${cost_project}",
+	"title": "xotocross logs : ${cost_project} - ${environment}",
 	"__inputs": [
 		{
 			"name": "Loki",
