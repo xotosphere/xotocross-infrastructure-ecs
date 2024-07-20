@@ -1,10 +1,30 @@
+resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
+  name = "xotocross-${var.environment}-pool"
 
-resource "aws_cognito_user_pool" "xotocross-cognito" {
-  name = "xotocross-${var.environment}-user-pool"
+  password_policy {
+    minimum_length    = 8
+    require_lowercase = true
+    require_numbers   = true
+    require_symbols   = true
+    require_uppercase = true
+  }
+
+  mfa_configuration = "ON"
+  software_token_mfa_configuration {
+    enabled = true
+  }
+
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+
+  }
 }
 
-resource "aws_cognito_user_pool_client" "xotocross-cognito-pool" {
-  name = "xotocross-${var.environment}-user-pool-client"
+resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
+  name = "xotocross-${var.environment}-client"
 
   user_pool_id = aws_cognito_user_pool.xotocross-cognito.id
 
@@ -16,10 +36,13 @@ resource "aws_cognito_user_pool_client" "xotocross-cognito-pool" {
   generate_secret = false
 }
 
-resource "aws_cognito_user_pool_domain" "xotocross-cognito" {
-  domain       = "xotocross-${var.environment}-cognito-domain"
-  user_pool_id = aws_cognito_user_pool.xotocross-cognito.id
+
+
+resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
+  domain          = "authorizer.${var.xotocross-domain-name}"
+  user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
 }
+
 
 resource "aws_lb" "xotocross-loadbalaner" {
   name = var.xotocross-loadbalaner-name
@@ -49,9 +72,9 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   default_action {
     type = "authenticate-cognito"
     authenticate_cognito {
-      user_pool_arn       = aws_cognito_user_pool.xotocross-cognito.arn
-      user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-pool.id
-      user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito.domain
+      user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-client.id
+      user_pool_arn       = aws_cognito_user_pool.xotocross-cognito-pool.arn
+      user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito-domain.domain
     }
   }
 
