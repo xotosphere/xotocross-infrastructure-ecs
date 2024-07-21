@@ -73,8 +73,8 @@ resource "aws_lb_listener" "xotocross-http-listener" {
 
   load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port = var.xotocross-listener-portlist[each.value]
-  certificate_arn   = data.external.certificate.result["stdout"] == "" ? null : data.external.certificate.result["stdout"]
-  protocol   = data.external.certificate.result["stdout"] == "" ? "HTTP" : "HTTPS"
+  certificate_arn   = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
+  protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
   # default_action {
   #   type = "authenticate-cognito"
@@ -99,7 +99,7 @@ resource "aws_lb_listener" "xotocross-http-listener" {
 resource "aws_lb_listener" "xotocross-http-listener-200" {
   load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port = 80
-  protocol   = data.external.certificate.result["stdout"] == "" ? "HTTP" : "HTTPS"
+  protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
 
   default_action {
@@ -162,7 +162,7 @@ resource "aws_lb_target_group" "xotocross-targetgroup" {
 
   name = "${var.xotocross-targetgroup-name}-${each.value}"
   port = var.xotocross-host-portlist[each.value]
-  protocol   = data.external.certificate.result["stdout"] == "" ? "HTTP" : "HTTPS"
+  protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
   target_type = var.xotocross-target-type
   vpc_id = var.xotocross-vpc-id
@@ -176,7 +176,7 @@ resource "aws_lb_target_group" "xotocross-targetgroup" {
     matcher = "200"
     path = var.xotocross-healthcheck-pathlist[each.value]
     port = "traffic-port"
-    protocol   = data.external.certificate.result["stdout"] == "" ? "HTTP" : "HTTPS"
+    protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
     
     timeout = var.xotocross-healthcheck-timeout
