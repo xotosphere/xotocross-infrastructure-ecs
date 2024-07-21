@@ -12,7 +12,6 @@ variable "xotocross-deployment-max" { description = "xotocross deployment max" }
 variable "xotocross-deployment-min" { description = "xotocross deployment min" }
 variable "xotocross-constraint-placement" { description = "xotocross placement constraint type" }
 variable "xotocross-constraint-expression" { description = "xotocross placement constraint expression" }
-variable "xotocross-propagate-tag" { description = "xotocross propagate tags" }
 variable "xotocross-healthcheck-grace" { description = "xotocross health check grace period" }
 variable "xotocross-network-mode" { description = "xotocross network mode" }
 variable "xotocross-targetgroup-arnlist" { description = "xotocross target group arn" }
