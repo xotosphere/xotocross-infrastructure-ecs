@@ -13,8 +13,6 @@ This module creates the following AWS resources:
 
 - **Elb**: This section includes the configuration for the Elastic Load Balancer (ELB). The ELB automatically distributes incoming application traffic across multiple targets, such as EC2 instances, to increase the availability and fault tolerance of your applications.
 
-- **Gateway**: This section contains the configuration for the API Gateway. The API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
-
 - **Route53**: This section includes the configuration for Amazon Route 53, a highly available and scalable cloud Domain Name System (DNS) web service. It is designed to give developers and businesses an extremely reliable and cost-effective way to route end users to Internet applications.
 
 - **Scheduletask**: This section contains the configuration for scheduled tasks. These are tasks that are set to run at specific times or at regular intervals. They can be used to automate routine tasks and ensure that they are performed consistently.
