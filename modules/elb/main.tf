@@ -86,6 +86,12 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   #   }
   # }
 
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+
   default_action {
     type = "forward"
     target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
@@ -157,6 +163,9 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
     host_header {
       values = [var.xotocross-listener-hostlist[each.value]]
     }
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
