@@ -73,7 +73,15 @@ resource "aws_lb_listener" "xotocross-http-listener" {
 
   load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
   port = var.xotocross-listener-portlist[each.value]
-  certificate_arn   = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
+  
+  dynamic "certificate" {
+    for_each = data.external.certificate.result["arn"] == "" ? [] : [1]
+    content {
+      certificate_arn = data.external.certificate.result["arn"]
+    }
+  }
+  
+  
   protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
   # default_action {
@@ -101,6 +109,12 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
   port = 80
   protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
+  dynamic "certificate" {
+    for_each = data.external.certificate.result["arn"] == "" ? [] : [1]
+    content {
+      certificate_arn = data.external.certificate.result["arn"]
+    }
+  }
 
   default_action {
     type = "fixed-response"
