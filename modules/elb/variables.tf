@@ -1,4 +1,5 @@
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
+variable "region" { description = "xotocross region" }
 variable "xotocross-loadbalaner-name" { description = "xotocross name of the alb" }
 variable "xotocross-public-subnetlist" { description = "xotocross list of public subnet ids to place the alb in" }
 variable "xotocross-loadbalaner-securitygroup" { description = "xotocross list of security group ids to attach to the alb" }
