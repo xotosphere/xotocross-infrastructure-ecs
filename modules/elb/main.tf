@@ -1,5 +1,26 @@
 
 
+output "xotocross-loadbalaner-listener-arnlist" {
+  value = { for k in keys(aws_lb_listener.xotocross-http-listener) : k => aws_lb_listener.xotocross-http-listener[k].arn }
+  description = "xotocross arn list of the alb listeners"
+}
+
+output "xotocross-targetgroup-arnlist" {
+  value = { for k in keys(aws_lb_target_group.xotocross-targetgroup) : k => aws_lb_target_group.xotocross-targetgroup[k].arn }
+  description = "xotocross arn list of the target groups"
+}
+
+output "xotocross-loadbalaner-name" {
+  value = aws_lb.xotocross-loadbalaner.dns_name
+  description = "xotocross dns name of the alb"
+}
+
+output "xotocross-loadbalaner-zone-id" {
+  value = aws_lb.xotocross-loadbalaner.zone_id
+  description = "xotocross zone id of the alb"
+}
+
+
 # resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
 #   name = "xotocross-${var.environment}-pool"
 
@@ -75,8 +96,6 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   port = var.xotocross-listener-portlist[each.value]
   
   certificate_arn = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
-
-  
   
   protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
@@ -198,9 +217,4 @@ resource "aws_lb_target_group" "xotocross-targetgroup" {
     Name = "${var.xotocross-targetgroup-name}-${each.value}"
     environment = var.environment
   }
-  
-  depends_on = [
-    aws_lb_listener.xotocross-http-listener,
-    aws_lb_listener.xotocross-http-listener-200
-  ]
 }
