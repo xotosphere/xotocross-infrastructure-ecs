@@ -45,7 +45,7 @@
 # }
 
 # resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
-#   domain          = "authorizer"
+#   domain          = "authorizer.${var.xotocross-domain-name}"
 #   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
 # }
 

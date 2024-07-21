@@ -37,7 +37,7 @@ resource "aws_route53_record" "xotocross-wildcard-record" {
 
 resource "aws_route53_record" "xotocross-cognito-record" {
   zone_id = data.aws_route53_zone.xotocross-zone.zone_id
-  name    = "authorizer.${var.xotocross-domain-name}.com"
+  name    = "authorizer.${var.xotocross-subdomain-name}.${var.xotocross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xotocross-loadbalaner-name]
