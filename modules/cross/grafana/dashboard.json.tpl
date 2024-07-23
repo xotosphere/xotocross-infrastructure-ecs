@@ -44,7 +44,7 @@
 				"current": {},
 				"datasource": {
 					"type": "prometheus",
-					"uid": "${DS_PROMETHEUS}"
+					"uid": "$${DS_PROMETHEUS}"
 				},
 				"definition": "",
 				"hide": 0,
@@ -70,7 +70,7 @@
 				"current": {},
 				"datasource": {
 					"type": "prometheus",
-					"uid": "${DS_PROMETHEUS}"
+					"uid": "$${DS_PROMETHEUS}"
 				},
 				"definition": "label_values(node_uname_info{job=\"$job\"}, instance)",
 				"hide": 0,
