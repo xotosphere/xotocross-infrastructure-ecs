@@ -14,7 +14,7 @@ provider "grafana" {
   auth = "${var.xotocross-username}:${var.xotocross-password}"
 }
 
-####################### VARIABLES
+####################### VARIABLE
 
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
 variable "xotocross-service-name" { description = "xotocross the name of the xotocross service" }

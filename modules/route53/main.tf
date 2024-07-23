@@ -4,7 +4,7 @@ data "aws_route53_zone" "xotocross-zone" {
   name = "${var.xotocross-domain-name}.com"
 }
 
-####################### VARIABLES
+####################### VARIABLE
 
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }

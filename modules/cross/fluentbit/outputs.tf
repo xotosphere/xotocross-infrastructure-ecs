@@ -1,4 +1,4 @@
-####################### OUTPUTS
+####################### OUTPUT
 
 output "xotocross-container-definition" {
   value = local.xotocross-container-definition

@@ -1,4 +1,4 @@
-####################### VARIABLES
+####################### VARIABLE
 
 variable "region" { description = "xotocross the aws region where the service is deployed" }
 variable "environment" { description = "xotocross the deployment environment (e.g., stage, prod)" }

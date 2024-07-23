@@ -1,4 +1,4 @@
-####################### LOCALS
+####################### LOCAL
 
 locals {
   xotocross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {

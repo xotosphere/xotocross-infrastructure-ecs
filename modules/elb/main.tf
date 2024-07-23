@@ -1,4 +1,4 @@
-####################### OUTPUTS
+####################### OUTPUT
 
 output "xotocross-loadbalaner-listener-arnlist" {
   value       = { for k in keys(aws_lb_listener.xotocross-http-listener) : k => aws_lb_listener.xotocross-http-listener[k].arn }
@@ -20,7 +20,7 @@ output "xotocross-loadbalaner-zone-id" {
   description = "xotocross zone id of the alb"
 }
 
-####################### VARIABLES
+####################### VARIABLE
 
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
 variable "region" { description = "xotocross region" }

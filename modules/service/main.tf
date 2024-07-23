@@ -1,4 +1,4 @@
-####################### VARIABLES
+####################### VARIABLE
 
 variable "region" { description = "xotocross region" }
 variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
