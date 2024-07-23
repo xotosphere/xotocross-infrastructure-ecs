@@ -1,5 +1,4 @@
 
-
 # resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
 #   name = "xotocross-${var.environment}-pool"
 
@@ -49,7 +48,6 @@
 #   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
 # }
 
-
 resource "aws_lb" "xotocross-loadbalaner" {
   name = var.xotocross-loadbalaner-name
   internal = false
@@ -87,11 +85,9 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   #   }
   # }
 
-
   lifecycle {
     create_before_destroy = true
   }
-
 
   default_action {
     type = "forward"
@@ -110,7 +106,6 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
   protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
   certificate_arn = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
-
 
   default_action {
     type = "fixed-response"
@@ -191,7 +186,6 @@ resource "aws_lb_target_group" "xotocross-targetgroup" {
     port = "traffic-port"
     protocol   = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
-    
     timeout = var.xotocross-healthcheck-timeout
   }
 
