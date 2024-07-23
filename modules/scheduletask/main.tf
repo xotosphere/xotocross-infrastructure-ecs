@@ -16,7 +16,7 @@ variable "xotocross-service-name" { description = "xotocross name of the service
 variable "xotocross-function-name" { description = "xotocross name of the function" }
 variable "xotocross-lambda-role-arn" { description = "xotocross arn of the lambda policy function" }
 
-####################### RESOURCE
+####################### MODULES
 
 module "xotocross-scheduletask" {
   source = "terraform-aws-modules/lambda/aws"
@@ -45,6 +45,8 @@ module "xotocross-scheduletask" {
   create_role = false
   lambda_role = var.xotocross-lambda-role-arn
 }
+
+####################### RESOURCE
 
 resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
   name = "${var.xotocross-function-name}-stop-rule"
