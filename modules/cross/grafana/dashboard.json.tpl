@@ -39,6 +39,79 @@
 				"regex": "",
 				"skipUrlSync": false,
 				"type": "datasource"
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "",
+				"hide": 0,
+				"includeAll": false,
+				"label": "Job",
+				"multi": false,
+				"name": "job",
+				"options": [],
+				"query": {
+					"query": "label_values(node_uname_info, job)",
+					"refId": "Prometheus-job-Variable-Query"
+				},
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 1,
+				"tagValuesQuery": "",
+				"tagsQuery": "",
+				"type": "query",
+				"useTags": false
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "label_values(node_uname_info{job=\"$job\"}, instance)",
+				"hide": 0,
+				"includeAll": false,
+				"label": "Host",
+				"multi": false,
+				"name": "node",
+				"options": [],
+				"query": {
+					"query": "label_values(node_uname_info{job=\"$job\"}, instance)",
+					"refId": "Prometheus-node-Variable-Query"
+				},
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 1,
+				"tagValuesQuery": "",
+				"tagsQuery": "",
+				"type": "query",
+				"useTags": false
+			},
+			{
+				"current": {
+					"selected": false,
+					"text": "[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+",
+					"value": "[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+"
+				},
+				"hide": 2,
+				"includeAll": false,
+				"multi": false,
+				"name": "diskdevices",
+				"options": [
+					{
+						"selected": true,
+						"text": "[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+",
+						"value": "[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+"
+					}
+				],
+				"query": "[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+",
+				"skipUrlSync": false,
+				"type": "custom"
 			}
 		]
 	},
