@@ -1,3 +1,22 @@
+####################### DATA
+
+data "aws_lambda_layer_version" "xotocross-cross-layer" {
+  layer_name = "xotocross-cross-layer" 
+}
+
+data "aws_sns_topic" "xotocross-cloudwatch-sns" {
+  name = "xotocross-${var.environment}-sns"
+}
+
+####################### VARIABLES
+
+variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
+variable "xotocross-task-count" { description = "xotocross task count" }
+variable "xotocross-service-name" { description = "xotocross name of the service" }
+variable "xotocross-function-name" { description = "xotocross name of the function" }
+variable "xotocross-lambda-role-arn" { description = "xotocross arn of the lambda policy function" }
+
+####################### RESOURCE
 
 module "xotocross-scheduletask" {
   source = "terraform-aws-modules/lambda/aws"

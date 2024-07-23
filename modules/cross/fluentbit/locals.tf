@@ -1,3 +1,5 @@
+####################### LOCALS
+
 locals {
   xotocross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
     xotocross-container-name = "xotocross-${var.xotocross-service-name}-fluentbit"

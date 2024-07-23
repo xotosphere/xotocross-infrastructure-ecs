@@ -1,3 +1,5 @@
+####################### OUTPUTS
+
 output "xotocross-container-definition" {
   value = local.xotocross-container-definition
   description = "xotocross container definition"
