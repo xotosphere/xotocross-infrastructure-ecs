@@ -1584,15 +1584,31 @@
 			}
 		},
 		{
-			"title": "xotocross logs ${cost_project}",
-			"type": "logs",
 			"datasource": "$${DS_LOKI}",
 			"targets": [
 				{
 					"expr": "{cost_project=\"${cost_project}\"}",
 					"refId": "A"
 				}
-			]
+			],
+			"title": "xotocross logs demo",
+			"type": "logs",
+			"gridPos": {
+				"x": 0,
+				"y": 1,
+				"h": 7,
+				"w": 24
+			},
+			"options": {
+				"showTime": false,
+				"showLabels": false,
+				"showCommonLabels": false,
+				"wrapLogMessage": false,
+				"prettifyLogMessage": false,
+				"enableLogDetails": true,
+				"dedupStrategy": "none",
+				"sortOrder": "Descending"
+			}
 		}
 	],
 	"schemaVersion": 16,

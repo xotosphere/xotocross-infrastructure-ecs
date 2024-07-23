@@ -3,7 +3,7 @@
 terraform {
   required_providers {
     grafana = {
-      source = "grafana/grafana"
+      source  = "grafana/grafana"
       version = "3.4.0"
     }
   }
@@ -25,6 +25,11 @@ variable "xotocross-username" { description = "xotocross username" }
 ####################### RESOURCE
 
 resource "grafana_dashboard" "xotocross-service-dashboard" {
-  config_json = templatefile("${path.module}/dashboard.json.tpl", {cost_project = var.xotocross-service-name, environment = var.environment})
-  overwrite = true
+  config_json = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xotocross-service-name, environment = var.environment })
+  overwrite   = true
+}
+
+resource "local_file" "foo" {
+  content  = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xotocross-service-name, environment = var.environment })
+  filename = "${path.module}/dashboard_output.json"
 }
