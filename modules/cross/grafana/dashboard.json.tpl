@@ -1626,7 +1626,7 @@
 					"refId": "A"
 				}
 			],
-			"title": "xotocross logs demo",
+			"title": "xotocross logs ${cost_project}",
 			"type": "logs",
 			"gridPos": {
 				"x": 0,
