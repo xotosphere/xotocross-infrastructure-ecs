@@ -1,24 +1,7 @@
 {
-	"annotations": {
-		"list": [
-			{
-				"builtIn": 1,
-				"datasource": {
-					"type": "grafana",
-					"uid": "-- Grafana --"
-				},
-				"enable": true,
-				"hide": true,
-				"iconColor": "rgba(0, 211, 255, 1)",
-				"name": "Annotations & Alerts",
-				"type": "dashboard"
-			}
-		]
-	},
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 7,
 	"links": [],
 	"liveNow": false,
 	"panels": [
@@ -64,15 +47,657 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"${cost_project}\"} | line_format `{{.log}}`",
+					"expr": "{cost_project=\"demo\", container=\"xotocross-demo-frontend\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "Cross App Logs ${cost_project}",
+			"title": "Cross App Logs demo frontend",
 			"transformations": [],
 			"transparent": true,
 			"type": "logs"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"gridPos": {
+				"h": 9,
+				"w": 24,
+				"x": 0,
+				"y": 10
+			},
+			"id": 275,
+			"options": {
+				"dedupStrategy": "none",
+				"enableLogDetails": true,
+				"prettifyLogMessage": false,
+				"showCommonLabels": true,
+				"showLabels": false,
+				"showTime": false,
+				"sortOrder": "Descending",
+				"wrapLogMessage": false
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "builder",
+					"expr": "{cost_project=\"demo\", container=\"xotocross-demo-backend\"} | line_format `{{.log}}`",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Logs demo backend",
+			"transformations": [],
+			"transparent": true,
+			"type": "logs"
+		},
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 19
+			},
+			"id": 269,
+			"panels": [],
+			"title": "Error",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 24,
+				"x": 0,
+				"y": 20
+			},
+			"id": 265,
+			"options": {
+				"dedupStrategy": "none",
+				"enableLogDetails": true,
+				"prettifyLogMessage": false,
+				"showCommonLabels": true,
+				"showLabels": false,
+				"showTime": false,
+				"sortOrder": "Descending",
+				"wrapLogMessage": false
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "builder",
+					"expr": "{cost_project=\"demo\", status_code=~\"4.*|5.*\"} | line_format `{{.log}}`",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Error Spot",
+			"transparent": true,
+			"type": "logs"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"displayName": "${__field.labels.method}",
+					"mappings": []
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 0,
+				"y": 27
+			},
+			"id": 272,
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true,
+					"values": []
+				},
+				"pieType": "pie",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "code",
+					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"GET\"} [$__interval]))",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Distribution Receive",
+			"transformations": [],
+			"transparent": true,
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"displayName": "${__field.labels.method}",
+					"mappings": []
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 6,
+				"y": 27
+			},
+			"id": 267,
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"pieType": "pie",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "builder",
+					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Distribution Send",
+			"transformations": [],
+			"transparent": true,
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 12,
+				"y": 27
+			},
+			"id": 274,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^id$/",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"2.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 200s Success",
+			"transformations": [],
+			"transparent": true,
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "#EAB839",
+								"value": 80
+							},
+							{
+								"color": "red",
+								"value": 100
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 18,
+				"y": 27
+			},
+			"id": 273,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^labels$/",
+					"values": false
+				},
+				"showThresholdLabels": true,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"3.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 300s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "Prometheus"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "packets out (-) / in (+)",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 16,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 3,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 1
+							}
+						]
+					},
+					"unit": "pps"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": "/.*Trans.*/"
+						},
+						"properties": [
+							{
+								"id": "custom.transform",
+								"value": "negative-Y"
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 12,
+				"x": 0,
+				"y": 34
+			},
+			"id": 142,
+			"links": [],
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"width": 300
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "Prometheus"
+					},
+					"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Receive errors",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "Prometheus"
+					},
+					"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Rransmit errors",
+					"refId": "B",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Network Traffic Errors",
+			"transparent": true,
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "#EAB839",
+								"value": 80
+							},
+							{
+								"color": "red",
+								"value": 100
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 12,
+				"y": 34
+			},
+			"id": 271,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^labels$/",
+					"values": false
+				},
+				"showThresholdLabels": true,
+				"showThresholdMarkers": true,
+				"text": {}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"4.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 400s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "#EAB839",
+								"value": 80
+							},
+							{
+								"color": "red",
+								"value": 100
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 18,
+				"y": 34
+			},
+			"id": 266,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^labels$/",
+					"values": false
+				},
+				"showThresholdLabels": true,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"5.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App 500s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"collapsed": false,
+			"datasource": {
+				"type": "prometheus",
+				"uid": "Prometheus"
+			},
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 41
+			},
+			"id": 261,
+			"panels": [],
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "Prometheus"
+					},
+					"refId": "A"
+				}
+			],
+			"title": "Cluster",
+			"type": "row"
 		},
 		{
 			"datasource": {
@@ -142,7 +767,7 @@
 				"h": 7,
 				"w": 24,
 				"x": 0,
-				"y": 10
+				"y": 42
 			},
 			"id": 62,
 			"links": [],
@@ -329,7 +954,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 0,
-				"y": 17
+				"y": 49
 			},
 			"id": 60,
 			"links": [],
@@ -805,7 +1430,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 12,
-				"y": 17
+				"y": 49
 			},
 			"id": 74,
 			"links": [],
@@ -851,589 +1476,6 @@
 			"title": "Cross Cluster Network Traffic",
 			"transparent": true,
 			"type": "timeseries"
-		},
-		{
-			"collapsed": false,
-			"gridPos": {
-				"h": 1,
-				"w": 24,
-				"x": 0,
-				"y": 24
-			},
-			"id": 269,
-			"panels": [],
-			"title": "Error",
-			"type": "row"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 24,
-				"x": 0,
-				"y": 25
-			},
-			"id": 265,
-			"options": {
-				"dedupStrategy": "none",
-				"enableLogDetails": true,
-				"prettifyLogMessage": false,
-				"showCommonLabels": true,
-				"showLabels": false,
-				"showTime": false,
-				"sortOrder": "Descending",
-				"wrapLogMessage": false
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "builder",
-					"expr": "{cost_project=\"${cost_project}\", status_code=~\"4.*|5.*\"} | line_format `{{.log}}`",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Error Spot",
-			"transparent": true,
-			"type": "logs"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "palette-classic"
-					},
-					"custom": {
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						}
-					},
-					"mappings": []
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 0,
-				"y": 32
-			},
-			"id": 272,
-			"options": {
-				"legend": {
-					"displayMode": "list",
-					"placement": "bottom",
-					"showLegend": true
-				},
-				"pieType": "pie",
-				"reduceOptions": {
-					"calcs": ["lastNotNull"],
-					"fields": "",
-					"values": false
-				},
-				"tooltip": {
-					"mode": "single",
-					"sort": "none"
-				}
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "code",
-					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"GET\"} [$__interval]))",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Distribution Receive",
-			"transformations": [],
-			"transparent": true,
-			"type": "piechart"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "palette-classic"
-					},
-					"custom": {
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						}
-					},
-					"mappings": []
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 6,
-				"y": 32
-			},
-			"id": 267,
-			"options": {
-				"legend": {
-					"displayMode": "list",
-					"placement": "bottom",
-					"showLegend": true
-				},
-				"pieType": "pie",
-				"reduceOptions": {
-					"calcs": ["lastNotNull"],
-					"fields": "",
-					"values": false
-				},
-				"tooltip": {
-					"mode": "single",
-					"sort": "none"
-				}
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "builder",
-					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Distribution Send",
-			"transformations": [],
-			"transparent": true,
-			"type": "piechart"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"neutral": -1
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green"
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 12,
-				"y": 32
-			},
-			"id": 274,
-			"options": {
-				"orientation": "auto",
-				"reduceOptions": {
-					"calcs": ["count"],
-					"fields": "/^id$/",
-					"values": false
-				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "code",
-					"expr": "{cost_project=\"${cost_project}\", status_code=~\"2.*\"}",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Client 200s Success",
-			"transformations": [],
-			"transparent": true,
-			"type": "gauge"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"neutral": -1
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green"
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 18,
-				"y": 32
-			},
-			"id": 273,
-			"options": {
-				"orientation": "auto",
-				"reduceOptions": {
-					"calcs": ["count"],
-					"fields": "/^id$/",
-					"values": false
-				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "code",
-					"expr": "{cost_project=\"${cost_project}\", status_code=~\"3.*\"}",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Client 300s Error",
-			"transformations": [],
-			"transparent": true,
-			"type": "gauge"
-		},
-		{
-			"datasource": {
-				"type": "prometheus",
-				"uid": "Prometheus"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "palette-classic"
-					},
-					"custom": {
-						"axisCenteredZero": false,
-						"axisColorMode": "text",
-						"axisLabel": "packets out (-) / in (+)",
-						"axisPlacement": "auto",
-						"barAlignment": 0,
-						"drawStyle": "line",
-						"fillOpacity": 16,
-						"gradientMode": "none",
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"lineInterpolation": "smooth",
-						"lineWidth": 3,
-						"pointSize": 5,
-						"scaleDistribution": {
-							"type": "linear"
-						},
-						"showPoints": "never",
-						"spanNulls": false,
-						"stacking": {
-							"group": "A",
-							"mode": "none"
-						},
-						"thresholdsStyle": {
-							"mode": "off"
-						}
-					},
-					"links": [],
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green"
-							},
-							{
-								"color": "red",
-								"value": 1
-							}
-						]
-					},
-					"unit": "pps"
-				},
-				"overrides": [
-					{
-						"matcher": {
-							"id": "byRegexp",
-							"options": "/.*Trans.*/"
-						},
-						"properties": [
-							{
-								"id": "custom.transform",
-								"value": "negative-Y"
-							}
-						]
-					}
-				]
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 12,
-				"x": 0,
-				"y": 39
-			},
-			"id": 142,
-			"links": [],
-			"options": {
-				"legend": {
-					"calcs": ["mean", "lastNotNull", "max", "min"],
-					"displayMode": "table",
-					"placement": "bottom",
-					"showLegend": true,
-					"width": 300
-				},
-				"tooltip": {
-					"mode": "multi",
-					"sort": "none"
-				}
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "Prometheus"
-					},
-					"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-					"format": "time_series",
-					"intervalFactor": 2,
-					"legendFormat": "{{device}} - Receive errors",
-					"refId": "A",
-					"step": 240
-				},
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "Prometheus"
-					},
-					"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-					"format": "time_series",
-					"intervalFactor": 2,
-					"legendFormat": "{{device}} - Rransmit errors",
-					"refId": "B",
-					"step": 240
-				}
-			],
-			"title": "Cross Cluster Network Traffic Errors",
-			"transparent": true,
-			"type": "timeseries"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"neutral": -1
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green"
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 12,
-				"y": 39
-			},
-			"id": 271,
-			"options": {
-				"orientation": "auto",
-				"reduceOptions": {
-					"calcs": ["count"],
-					"fields": "/^id$/",
-					"values": false
-				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "code",
-					"expr": "{cost_project=\"${cost_project}\", status_code=~\"4.*\"}",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App Client 400s Error",
-			"transformations": [],
-			"transparent": true,
-			"type": "gauge"
-		},
-		{
-			"datasource": {
-				"type": "loki",
-				"uid": "Loki"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"neutral": -1
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green"
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 7,
-				"w": 6,
-				"x": 18,
-				"y": 39
-			},
-			"id": 266,
-			"options": {
-				"orientation": "auto",
-				"reduceOptions": {
-					"calcs": ["count"],
-					"fields": "/^id$/",
-					"values": false
-				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "loki",
-						"uid": "Loki"
-					},
-					"editorMode": "code",
-					"expr": "{cost_project=\"${cost_project}\", status_code=~\"5.*\"}",
-					"queryType": "range",
-					"refId": "A"
-				}
-			],
-			"title": "Cross App 500s Error",
-			"transformations": [],
-			"transparent": true,
-			"type": "gauge"
-		},
-		{
-			"collapsed": false,
-			"datasource": {
-				"type": "prometheus",
-				"uid": "Prometheus"
-			},
-			"gridPos": {
-				"h": 1,
-				"w": 24,
-				"x": 0,
-				"y": 46
-			},
-			"id": 261,
-			"panels": [],
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "Prometheus"
-					},
-					"refId": "A"
-				}
-			],
-			"title": "Cluster",
-			"type": "row"
 		},
 		{
 			"datasource": {
@@ -1832,7 +1874,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 0,
-				"y": 47
+				"y": 56
 			},
 			"id": 270,
 			"links": [],
@@ -1950,7 +1992,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green"
+								"color": "green",
+								"value": null
 							},
 							{
 								"color": "red",
@@ -1974,7 +2017,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 47
+				"y": 56
 			},
 			"id": 14,
 			"links": [],
@@ -2037,7 +2080,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green"
+								"color": "green",
+								"value": null
 							},
 							{
 								"color": "red",
@@ -2061,7 +2105,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 18,
-				"y": 47
+				"y": 56
 			},
 			"hideTimeOverride": true,
 			"id": 15,
@@ -2123,7 +2167,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green"
+								"color": "green",
+								"value": null
 							},
 							{
 								"color": "red",
@@ -2147,7 +2192,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 52
+				"y": 61
 			},
 			"id": 75,
 			"links": [],
@@ -2184,7 +2229,7 @@
 		{
 			"datasource": {
 				"type": "prometheus",
-				"uid": "Prometheus"
+				"uid": "PBFA97CFB590B2093"
 			},
 			"description": "xotocross basic memory usage",
 			"fieldConfig": {
@@ -2199,7 +2244,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green"
+								"color": "green",
+								"value": null
 							}
 						]
 					},
@@ -2557,7 +2603,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 0,
-				"y": 57
+				"y": 66
 			},
 			"id": 78,
 			"links": [],
@@ -2622,18 +2668,6 @@
 					"legendFormat": "RAM Free",
 					"refId": "D",
 					"step": 240
-				},
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "Prometheus"
-					},
-					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
-					"format": "time_series",
-					"intervalFactor": 2,
-					"legendFormat": "SWAP Used",
-					"refId": "E",
-					"step": 240
 				}
 			],
 			"title": "Cross Cluster Memory",
@@ -2668,7 +2702,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)"
+								"color": "rgba(50, 172, 45, 0.97)",
+								"value": null
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -2688,7 +2723,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 57
+				"y": 66
 			},
 			"id": 20,
 			"links": [],
@@ -2749,7 +2784,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)"
+								"color": "rgba(50, 172, 45, 0.97)",
+								"value": null
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -2769,7 +2805,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 57
+				"y": 66
 			},
 			"id": 155,
 			"links": [],
@@ -2851,7 +2887,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green"
+								"color": "green",
+								"value": null
 							},
 							{
 								"color": "red",
@@ -3153,7 +3190,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 12,
-				"y": 57
+				"y": 66
 			},
 			"id": 77,
 			"links": [],
@@ -3178,7 +3215,7 @@
 						"uid": "Prometheus"
 					},
 					"editorMode": "code",
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"${cost_project}\"}[$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"demo\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -3272,7 +3309,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)"
+								"color": "rgba(50, 172, 45, 0.97)",
+								"value": null
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -3292,7 +3330,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 62
+				"y": 71
 			},
 			"hideTimeOverride": false,
 			"id": 16,
@@ -3366,7 +3404,8 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)"
+								"color": "rgba(50, 172, 45, 0.97)",
+								"value": null
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -3386,7 +3425,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 62
+				"y": 71
 			},
 			"id": 19,
 			"links": [],
@@ -3458,8 +3497,8 @@
 			{
 				"current": {
 					"selected": false,
-					"text": "172.31.0.50:2020",
-					"value": "172.31.0.50:2020"
+					"text": "172.31.0.26:2020",
+					"value": "172.31.0.26:2020"
 				},
 				"datasource": {
 					"type": "prometheus",
@@ -3509,7 +3548,7 @@
 		]
 	},
 	"time": {
-		"from": "now-2d",
+		"from": "now-15m",
 		"to": "now"
 	},
 	"timepicker": {
@@ -3528,5 +3567,5 @@
 		"time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 	},
 	"timezone": "browser",
-	"title": "xotocross logs : ${cost_project} - ${environment}"
+	"title": "xotocross logs : demo - dev"
 }
