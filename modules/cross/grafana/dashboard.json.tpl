@@ -47,12 +47,12 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\", container=\"xotocross-demo-frontend\"} | line_format `{{.log}}`",
+					"expr": "{cost_project=\"${cost_project}\", container=\"xotocross-${cost_project}-frontend\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "Cross App Logs demo frontend",
+			"title": "Cross App Logs ${cost_project} frontend",
 			"transformations": [],
 			"transparent": true,
 			"type": "logs"
@@ -86,12 +86,12 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\", container=\"xotocross-demo-backend\"} | line_format `{{.log}}`",
+					"expr": "{cost_project=\"${cost_project}\", container=\"xotocross-${cost_project}-backend\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "Cross App Logs demo backend",
+			"title": "Cross App Logs ${cost_project} backend",
 			"transformations": [],
 			"transparent": true,
 			"type": "logs"
@@ -139,7 +139,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\", status_code=~\"4.*|5.*\"} | line_format `{{.log}}`",
+					"expr": "{cost_project=\"${cost_project}\", status_code=~\"4.*|5.*\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -203,7 +203,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"GET\"} [$__interval]))",
+					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"GET\"} [$__interval]))",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -267,7 +267,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
+					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -331,7 +331,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "{cost_project=\"demo\", status_code=~\"2.*\"}",
+					"expr": "{cost_project=\"${cost_project}\", status_code=~\"2.*\"}",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -400,7 +400,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "{cost_project=\"demo\", status_code=~\"3.*\"}",
+					"expr": "{cost_project=\"${cost_project}\", status_code=~\"3.*\"}",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -594,7 +594,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "{cost_project=\"demo\", status_code=~\"4.*\"}",
+					"expr": "{cost_project=\"${cost_project}\", status_code=~\"4.*\"}",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -663,7 +663,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "{cost_project=\"demo\", status_code=~\"5.*\"}",
+					"expr": "{cost_project=\"${cost_project}\", status_code=~\"5.*\"}",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -3215,7 +3215,7 @@
 						"uid": "Prometheus"
 					},
 					"editorMode": "code",
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"demo\"}[$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"${cost_project}\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -3567,5 +3567,5 @@
 		"time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 	},
 	"timezone": "browser",
-	"title": "xotocross logs : demo - dev"
+	"title": "xotocross logs : ${cost_project} - ${environment}"
 }
