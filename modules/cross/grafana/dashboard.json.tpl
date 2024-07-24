@@ -165,7 +165,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_procs_blocked{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_procs_blocked{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Processes blocked waiting for I/O to complete",
@@ -177,7 +177,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_procs_running{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_procs_running{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Processes in runnable state",
@@ -353,7 +353,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_receive_packets_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])",
+					"expr": "rate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"interval": "",
 					"intervalFactor": 2,
@@ -366,7 +366,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_transmit_packets_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])",
+					"expr": "rate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"interval": "",
 					"intervalFactor": 2,
@@ -828,7 +828,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_receive_bytes_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])*8",
+					"expr": "rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "recv {{device}}",
@@ -840,7 +840,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_transmit_bytes_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])*8",
+					"expr": "rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "trans {{device}} ",
@@ -957,7 +957,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "code",
-					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"GET\"} [$$__interval]))",
+					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"GET\"} [$__interval]))",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -1020,7 +1020,7 @@
 						"uid": "Loki"
 					},
 					"editorMode": "builder",
-					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"POST|PUT|PATCH|DELETE\"} [$$__interval]))",
+					"expr": "sum by(method) (rate({cost_project=\"${cost_project}\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
 					"queryType": "range",
 					"refId": "A"
 				}
@@ -1257,7 +1257,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_receive_errs_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])",
+					"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "{{device}} - Receive errors",
@@ -1269,7 +1269,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "rate(node_network_transmit_errs_total{instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])",
+					"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "{{device}} - Rransmit errors",
@@ -1862,7 +1862,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -1875,7 +1875,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"} - node_memory_MemFree_bytes{instance=\"$$node\",job=\"$$job\"} - (node_memory_Cached_bytes{instance=\"$$node\",job=\"$$job\"} + node_memory_Buffers_bytes{instance=\"$$node\",job=\"$$job\"})",
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -1888,7 +1888,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_Cached_bytes{instance=\"$$node\",job=\"$$job\"} + node_memory_Buffers_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "RAM Cache + Buffer",
@@ -1900,7 +1900,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemFree_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "RAM Free",
@@ -1912,7 +1912,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "(node_memory_SwapTotal_bytes{instance=\"$$node\",job=\"$$job\"} - node_memory_SwapFree_bytes{instance=\"$$node\",job=\"$$job\"})",
+					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "SWAP Used",
@@ -1998,7 +1998,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "count(count(node_cpu_seconds_total{instance=\"$$node\",job=\"$$job\"}) by (cpu))",
+					"expr": "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
 					"interval": "",
 					"intervalFactor": 1,
 					"legendFormat": "",
@@ -2086,7 +2086,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_time_seconds{instance=\"$$node\",job=\"$$job\"} - node_boot_time_seconds{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_time_seconds{instance=\"$node\",job=\"$job\"} - node_boot_time_seconds{instance=\"$node\",job=\"$job\"}",
 					"intervalFactor": 2,
 					"refId": "A",
 					"step": 240
@@ -2171,7 +2171,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"intervalFactor": 1,
 					"refId": "A",
 					"step": 240
@@ -2578,7 +2578,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -2591,7 +2591,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"} - node_memory_MemFree_bytes{instance=\"$$node\",job=\"$$job\"} - (node_memory_Cached_bytes{instance=\"$$node\",job=\"$$job\"} + node_memory_Buffers_bytes{instance=\"$$node\",job=\"$$job\"})",
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -2604,7 +2604,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_Cached_bytes{instance=\"$$node\",job=\"$$job\"} + node_memory_Buffers_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "RAM Cache + Buffer",
@@ -2616,7 +2616,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "node_memory_MemFree_bytes{instance=\"$$node\",job=\"$$job\"}",
+					"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "RAM Free",
@@ -2628,7 +2628,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "(node_memory_SwapTotal_bytes{instance=\"$$node\",job=\"$$job\"} - node_memory_SwapFree_bytes{instance=\"$$node\",job=\"$$job\"})",
+					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "SWAP Used",
@@ -2709,7 +2709,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "(((count(count(node_cpu_seconds_total{instance=\"$$node\",job=\"$$job\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])))) * 100) / count(count(node_cpu_seconds_total{instance=\"$$node\",job=\"$$job\"}) by (cpu))",
+					"expr": "(((count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])))) * 100) / count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
 					"hide": false,
 					"intervalFactor": 1,
 					"legendFormat": "",
@@ -2790,7 +2790,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "avg(node_load5{instance=\"$$node\",job=\"$$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$$node\",job=\"$$job\"}) by (cpu)) * 100",
+					"expr": "avg(node_load5{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 1,
@@ -3178,7 +3178,7 @@
 						"uid": "Prometheus"
 					},
 					"editorMode": "code",
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$$node\",job=\"$$job\", cost_project=\"${cost_project}\"}[$$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"${cost_project}\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -3192,7 +3192,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 2,
@@ -3205,7 +3205,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Busy Iowait",
@@ -3217,7 +3217,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])) * 100",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Busy IRQs",
@@ -3229,7 +3229,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])) * 100",
+					"expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Busy Other",
@@ -3241,7 +3241,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$$node\",job=\"$$job\"}[$$__rate_interval])) * 100",
+					"expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
 					"legendFormat": "Idle",
@@ -3314,7 +3314,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "((node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"} - node_memory_MemFree_bytes{instance=\"$$node\",job=\"$$job\"}) / (node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"} )) * 100",
+					"expr": "((node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} )) * 100",
 					"format": "time_series",
 					"hide": true,
 					"intervalFactor": 1,
@@ -3326,7 +3326,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "100 - ((node_memory_MemAvailable_bytes{instance=\"$$node\",job=\"$$job\"} * 100) / node_memory_MemTotal_bytes{instance=\"$$node\",job=\"$$job\"})",
+					"expr": "100 - ((node_memory_MemAvailable_bytes{instance=\"$node\",job=\"$job\"} * 100) / node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"hide": false,
 					"intervalFactor": 1,
@@ -3407,7 +3407,7 @@
 						"type": "prometheus",
 						"uid": "Prometheus"
 					},
-					"expr": "avg(node_load15{instance=\"$$node\",job=\"$$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$$node\",job=\"$$job\"}) by (cpu)) * 100",
+					"expr": "avg(node_load15{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
 					"hide": false,
 					"intervalFactor": 1,
 					"refId": "A",
@@ -3465,7 +3465,7 @@
 					"type": "prometheus",
 					"uid": "Prometheus"
 				},
-				"definition": "label_values(node_uname_info{job=\"$$job\"}, instance)",
+				"definition": "label_values(node_uname_info{job=\"$job\"}, instance)",
 				"hide": 0,
 				"includeAll": false,
 				"label": "Host",
@@ -3473,7 +3473,7 @@
 				"name": "node",
 				"options": [],
 				"query": {
-					"query": "label_values(node_uname_info{job=\"$$job\"}, instance)",
+					"query": "label_values(node_uname_info{job=\"$job\"}, instance)",
 					"refId": "Prometheus-node-Variable-Query"
 				},
 				"refresh": 1,
