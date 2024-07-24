@@ -3,48 +3,10 @@
 	"templating": {
 		"list": [
 			{
-				"current": {
-					"selected": false,
-					"text": "default",
-					"value": "default"
-				},
-				"hide": 0,
-				"includeAll": false,
-				"label": "Prometheus Datasource",
-				"multi": false,
-				"name": "DS_PROMETHEUS",
-				"options": [],
-				"query": "prometheus",
-				"queryValue": "",
-				"refresh": 1,
-				"regex": "",
-				"skipUrlSync": false,
-				"type": "datasource"
-			},
-			{
-				"current": {
-					"selected": false,
-					"text": "default",
-					"value": "default"
-				},
-				"hide": 0,
-				"includeAll": false,
-				"label": "Loki Datasource",
-				"multi": false,
-				"name": "DS_LOKI",
-				"options": [],
-				"query": "loki",
-				"queryValue": "",
-				"refresh": 1,
-				"regex": "",
-				"skipUrlSync": false,
-				"type": "datasource"
-			},
-			{
 				"current": {},
 				"datasource": {
 					"type": "prometheus",
-					"uid": "$${DS_PROMETHEUS}"
+					"uid": "Prometheus"
 				},
 				"definition": "",
 				"hide": 0,
@@ -70,7 +32,7 @@
 				"current": {},
 				"datasource": {
 					"type": "prometheus",
-					"uid": "$${DS_PROMETHEUS}"
+					"uid": "Prometheus"
 				},
 				"definition": "label_values(node_uname_info{job=\"$job\"}, instance)",
 				"hide": 0,
@@ -118,7 +80,7 @@
 	"panels": [
 		{
 			"collapsed": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"gridPos": {
 				"h": 1,
 				"w": 24,
@@ -129,7 +91,7 @@
 			"panels": [],
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"refId": "A"
 				}
 			],
@@ -137,7 +99,7 @@
 			"type": "row"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross busy state of all cpu cores together",
 			"fieldConfig": {
 				"defaults": {
@@ -201,7 +163,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "(((count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])))) * 100) / count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
 					"hide": false,
 					"intervalFactor": 1,
@@ -214,7 +176,7 @@
 			"type": "gauge"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross busy state of all cpu cores together (5 min average)",
 			"fieldConfig": {
 				"defaults": {
@@ -278,7 +240,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "avg(node_load5{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
 					"format": "time_series",
 					"hide": false,
@@ -291,7 +253,7 @@
 			"type": "gauge"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross busy state of all cpu cores together (15 min average)",
 			"fieldConfig": {
 				"defaults": {
@@ -355,7 +317,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "avg(node_load15{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
 					"hide": false,
 					"intervalFactor": 1,
@@ -367,7 +329,7 @@
 			"type": "gauge"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross non available ram memory",
 			"fieldConfig": {
 				"defaults": {
@@ -423,7 +385,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "((node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} )) * 100",
 					"format": "time_series",
 					"hide": true,
@@ -432,7 +394,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "100 - ((node_memory_MemAvailable_bytes{instance=\"$node\",job=\"$job\"} * 100) / node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"hide": false,
@@ -445,7 +407,7 @@
 			"type": "gauge"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross total number of cpu cores",
 			"fieldConfig": {
 				"defaults": {
@@ -506,7 +468,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
 					"interval": "",
 					"intervalFactor": 1,
@@ -519,7 +481,7 @@
 			"type": "stat"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross system uptime",
 			"fieldConfig": {
 				"defaults": {
@@ -582,7 +544,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_time_seconds{instance=\"$node\",job=\"$job\"} - node_boot_time_seconds{instance=\"$node\",job=\"$job\"}",
 					"intervalFactor": 2,
 					"refId": "A",
@@ -593,7 +555,7 @@
 			"type": "stat"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross total rootfs",
 			"fieldConfig": {
 				"defaults": {
@@ -659,7 +621,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_filesystem_size_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"}",
 					"format": "time_series",
 					"hide": false,
@@ -672,7 +634,7 @@
 			"type": "stat"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross total ram",
 			"fieldConfig": {
 				"defaults": {
@@ -734,7 +696,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"intervalFactor": 1,
 					"refId": "A",
@@ -745,7 +707,7 @@
 			"type": "stat"
 		},
 		{
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross total swap",
 			"fieldConfig": {
 				"defaults": {
@@ -807,7 +769,7 @@
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"intervalFactor": 1,
 					"refId": "A",
@@ -819,7 +781,7 @@
 		},
 		{
 			"collapsed": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"gridPos": {
 				"h": 1,
 				"w": 24,
@@ -830,7 +792,7 @@
 			"panels": [],
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"refId": "A"
 				}
 			],
@@ -857,7 +819,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"decimals": 2,
 			"description": "xotocross basic cpu info",
 			"fieldConfig": {
@@ -928,7 +890,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"editorMode": "code",
 					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"${cost_project}\"}[$__rate_interval])) * 100",
 					"format": "time_series",
@@ -940,7 +902,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"hide": false,
@@ -950,7 +912,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -959,7 +921,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -968,7 +930,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -977,7 +939,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1046,7 +1008,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"decimals": 2,
 			"description": "xotocross basic memory usage",
 			"fieldConfig": {
@@ -1117,7 +1079,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"hide": false,
@@ -1127,7 +1089,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"hide": false,
@@ -1137,7 +1099,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1146,7 +1108,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1155,7 +1117,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1225,7 +1187,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"description": "xotocross basic network info per interface",
 			"fieldConfig": {
 				"defaults": {
@@ -1281,7 +1243,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1290,7 +1252,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1335,7 +1297,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"fieldConfig": {
 				"defaults": {
 					"links": []
@@ -1381,7 +1343,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_procs_blocked{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1390,7 +1352,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "node_procs_running{instance=\"$node\",job=\"$job\"}",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1443,7 +1405,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"fieldConfig": {
 				"defaults": {
 					"links": []
@@ -1495,7 +1457,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"interval": "",
@@ -1505,7 +1467,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"interval": "",
@@ -1551,7 +1513,7 @@
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
-			"datasource": "$${DS_PROMETHEUS}",
+			"datasource": "Prometheus",
 			"fieldConfig": {
 				"defaults": {
 					"links": []
@@ -1607,7 +1569,7 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1616,7 +1578,7 @@
 					"step": 240
 				},
 				{
-					"datasource": "$${DS_PROMETHEUS}",
+					"datasource": "Prometheus",
 					"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
 					"format": "time_series",
 					"intervalFactor": 2,
@@ -1657,7 +1619,7 @@
 			}
 		},
 		{
-			"datasource": "$${DS_LOKI}",
+			"datasource": "Loki",
 			"targets": [
 				{
 					"expr": "{cost_project=\"${cost_project}\"}",
