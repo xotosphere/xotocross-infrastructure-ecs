@@ -18,27 +18,40 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 5,
+	"id": 7,
 	"links": [],
 	"liveNow": false,
 	"panels": [
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 268,
+			"panels": [],
+			"title": "Traffic",
+			"type": "row"
+		},
 		{
 			"datasource": {
 				"type": "loki",
 				"uid": "P8E80F9AEF21F6940"
 			},
 			"gridPos": {
-				"h": 8,
+				"h": 9,
 				"w": 24,
 				"x": 0,
-				"y": 0
+				"y": 1
 			},
 			"id": 264,
 			"options": {
 				"dedupStrategy": "none",
 				"enableLogDetails": true,
 				"prettifyLogMessage": false,
-				"showCommonLabels": false,
+				"showCommonLabels": true,
 				"showLabels": false,
 				"showTime": false,
 				"sortOrder": "Descending",
@@ -51,65 +64,172 @@
 						"uid": "P8E80F9AEF21F6940"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\"}",
+					"expr": "{cost_project=\"demo\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "xotocross logs demo",
+			"title": "Cross App Logs demo",
+			"transformations": [],
+			"transparent": true,
 			"type": "logs"
 		},
 		{
 			"datasource": {
-				"type": "loki",
-				"uid": "P8E80F9AEF21F6940"
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "counter",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 11,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 2,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"min": 0,
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "#EAB839",
+								"value": 8
+							},
+							{
+								"color": "red",
+								"value": 10
+							}
+						]
+					},
+					"unit": "short"
+				},
+				"overrides": []
 			},
 			"gridPos": {
-				"h": 8,
-				"w": 20,
+				"h": 7,
+				"w": 24,
 				"x": 0,
-				"y": 8
+				"y": 10
 			},
-			"id": 265,
+			"id": 62,
+			"links": [],
 			"options": {
-				"dedupStrategy": "none",
-				"enableLogDetails": true,
-				"prettifyLogMessage": false,
-				"showCommonLabels": false,
-				"showLabels": false,
-				"showTime": false,
-				"sortOrder": "Descending",
-				"wrapLogMessage": false
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
 			},
 			"pluginVersion": "9.5.20",
 			"targets": [
 				{
 					"datasource": {
-						"type": "loki",
-						"uid": "P8E80F9AEF21F6940"
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
 					},
-					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\", status_code=~\"4.*|5.*\"}",
-					"queryType": "range",
-					"refId": "A"
+					"expr": "node_procs_blocked{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Processes blocked waiting for I/O to complete",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_procs_running{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Processes in runnable state",
+					"refId": "B",
+					"step": 240
 				}
 			],
-			"title": "Error spot",
-			"type": "logs"
+			"title": "Cross Cluster Processes Status",
+			"transparent": true,
+			"type": "timeseries"
 		},
 		{
 			"datasource": {
-				"type": "loki",
-				"uid": "P8E80F9AEF21F6940"
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
 			},
 			"fieldConfig": {
 				"defaults": {
 					"color": {
-						"mode": "thresholds"
+						"mode": "palette-classic"
 					},
 					"custom": {
-						"neutral": -1
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "packets out (-) / in (+)",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 10,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 2,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
 					},
+					"links": [],
 					"mappings": [],
 					"thresholds": {
 						"mode": "absolute",
@@ -119,30 +239,653 @@
 								"value": null
 							},
 							{
+								"color": "orange",
+								"value": 8
+							},
+							{
 								"color": "red",
-								"value": 80
+								"value": 10
+							}
+						]
+					},
+					"unit": "pps"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "receive_packets_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "receive_packets_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E24D42",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "transmit_packets_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "transmit_packets_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E24D42",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": "/.*Trans.*/"
+						},
+						"properties": [
+							{
+								"id": "custom.transform",
+								"value": "negative-Y"
 							}
 						]
 					}
-				},
-				"overrides": []
+				]
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 4,
-				"x": 20,
-				"y": 8
+				"h": 7,
+				"w": 12,
+				"x": 0,
+				"y": 17
 			},
-			"id": 266,
+			"id": 60,
+			"links": [],
 			"options": {
-				"orientation": "auto",
-				"reduceOptions": {
-					"calcs": ["count"],
-					"fields": "/^id$/",
-					"values": false
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"width": 300
 				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Receive",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Transmit",
+					"refId": "B",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Network Traffic by Packets",
+			"transparent": true,
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross basic network info per interface",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 10,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 2,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "orange",
+								"value": 10
+							},
+							{
+								"color": "red",
+								"value": 15
+							}
+						]
+					},
+					"unit": "bps"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_bytes_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_bytes_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_drop_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#6ED0E0",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_drop_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_errs_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recv_errs_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#CCA300",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_bytes_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_bytes_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_drop_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#6ED0E0",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_drop_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_errs_eth2"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Trans_errs_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#CCA300",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "recv_bytes_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "recv_drop_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#99440A",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "recv_drop_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#967302",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "recv_errs_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "recv_errs_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#890F02",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_bytes_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_bytes_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_drop_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#99440A",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_drop_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#967302",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_errs_eth0"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "trans_errs_lo"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#890F02",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": "/.*trans.*/"
+						},
+						"properties": [
+							{
+								"id": "custom.transform",
+								"value": "negative-Y"
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 12,
+				"x": 12,
+				"y": 17
+			},
+			"id": 74,
+			"links": [],
+			"options": {
+				"legend": {
+					"calcs": [],
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "recv {{device}}",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "trans {{device}} ",
+					"refId": "B",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Network Traffic",
+			"transparent": true,
+			"type": "timeseries"
+		},
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 24
+			},
+			"id": 269,
+			"panels": [],
+			"title": "Error",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 24,
+				"x": 0,
+				"y": 25
+			},
+			"id": 265,
+			"options": {
+				"dedupStrategy": "none",
+				"enableLogDetails": true,
+				"prettifyLogMessage": false,
+				"showCommonLabels": true,
+				"showLabels": false,
+				"showTime": false,
+				"sortOrder": "Descending",
+				"wrapLogMessage": false
 			},
 			"pluginVersion": "9.5.20",
 			"targets": [
@@ -152,14 +895,14 @@
 						"uid": "P8E80F9AEF21F6940"
 					},
 					"editorMode": "builder",
-					"expr": "{cost_project=\"demo\", status_code=~\"4.*|5.*\"}",
+					"expr": "{cost_project=\"demo\", status_code=~\"4.*|5.*\"} | line_format `{{.log}}`",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "Error count",
-			"transformations": [],
-			"type": "gauge"
+			"title": "Cross App Error Spot",
+			"transparent": true,
+			"type": "logs"
 		},
 		{
 			"datasource": {
@@ -183,10 +926,73 @@
 				"overrides": []
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 4,
-				"x": 20,
-				"y": 12
+				"h": 7,
+				"w": 6,
+				"x": 0,
+				"y": 32
+			},
+			"id": 272,
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"pieType": "pie",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "P8E80F9AEF21F6940"
+					},
+					"editorMode": "code",
+					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"GET\"} [$__interval]))",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Distribution Receive",
+			"transformations": [],
+			"transparent": true,
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"mappings": []
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 6,
+				"y": 32
 			},
 			"id": 267,
 			"options": {
@@ -214,14 +1020,394 @@
 						"uid": "P8E80F9AEF21F6940"
 					},
 					"editorMode": "builder",
-					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"GET|POST|PUT|PATCH|DELETE\"} [$__interval]))",
+					"expr": "sum by(method) (rate({cost_project=\"demo\", method=~\"POST|PUT|PATCH|DELETE\"} [$__interval]))",
 					"queryType": "range",
 					"refId": "A"
 				}
 			],
-			"title": "Error distribution",
+			"title": "Cross App Distribution Send",
 			"transformations": [],
+			"transparent": true,
 			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 12,
+				"y": 32
+			},
+			"id": 274,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^id$/",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "P8E80F9AEF21F6940"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"2.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 200s Success",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 18,
+				"y": 32
+			},
+			"id": 273,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^id$/",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "P8E80F9AEF21F6940"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"3.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 300s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "packets out (-) / in (+)",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 16,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 3,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 1
+							}
+						]
+					},
+					"unit": "pps"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": "/.*Trans.*/"
+						},
+						"properties": [
+							{
+								"id": "custom.transform",
+								"value": "negative-Y"
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 12,
+				"x": 0,
+				"y": 39
+			},
+			"id": 142,
+			"links": [],
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"width": 300
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Receive errors",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "{{device}} - Rransmit errors",
+					"refId": "B",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Network Traffic Errors",
+			"transparent": true,
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 12,
+				"y": 39
+			},
+			"id": 271,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^id$/",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "P8E80F9AEF21F6940"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"4.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App Client 400s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "P8E80F9AEF21F6940"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"neutral": -1
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 6,
+				"x": 18,
+				"y": 39
+			},
+			"id": 266,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["count"],
+					"fields": "/^id$/",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "P8E80F9AEF21F6940"
+					},
+					"editorMode": "code",
+					"expr": "{cost_project=\"demo\", status_code=~\"5.*\"}",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Cross App 500s Error",
+			"transformations": [],
+			"transparent": true,
+			"type": "gauge"
 		},
 		{
 			"collapsed": false,
@@ -233,7 +1419,7 @@
 				"h": 1,
 				"w": 24,
 				"x": 0,
-				"y": 16
+				"y": 46
 			},
 			"id": 261,
 			"panels": [],
@@ -246,8 +1432,1213 @@
 					"refId": "A"
 				}
 			],
-			"title": "Quick CPU / Mem / Disk",
+			"title": "Cluster",
 			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross basic memory usage",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"min": 0,
+					"unit": "bytes"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Apps"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#629E51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Buffers"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#614D93",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#6D1F62",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Cached"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#511749",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Committed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#508642",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A437C",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Hardware Corrupted - Amount of RAM that the kernel identified as corrupted / not working"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#CFFAFF",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Inactive"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#584477",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "PageTables"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Page_Tables"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM_Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "SWAP Used"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Slab"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#806EB7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Slab_Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0752D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap Used"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap_Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#C15C17",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap_Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#2F575E",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Unused"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#EAB839",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Total"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Cache + Buffer"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#052B51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Avaliable"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#DEDAF7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"__systemRef": "hideSeriesFrom",
+						"matcher": {
+							"id": "byNames",
+							"options": {
+								"mode": "exclude",
+								"names": ["RAM Used", "RAM Free"],
+								"prefix": "All except:",
+								"readOnly": true
+							}
+						},
+						"properties": [
+							{
+								"id": "custom.hideFrom",
+								"value": {
+									"legend": false,
+									"tooltip": false,
+									"viz": true
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 12,
+				"x": 0,
+				"y": 47
+			},
+			"id": 270,
+			"links": [],
+			"options": {
+				"displayLabels": ["percent"],
+				"legend": {
+					"displayMode": "table",
+					"placement": "right",
+					"showLegend": true,
+					"values": ["value"]
+				},
+				"pieType": "pie",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 2,
+					"legendFormat": "RAM Total",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 2,
+					"legendFormat": "RAM Used",
+					"refId": "B",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "RAM Cache + Buffer",
+					"refId": "C",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "RAM Free",
+					"refId": "D",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "SWAP Used",
+					"refId": "E",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Memory",
+			"transparent": true,
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross total number of cpu cores",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 0
+							},
+							{
+								"color": "#EAB839",
+								"value": 1
+							},
+							{
+								"color": "green",
+								"value": 2
+							}
+						]
+					},
+					"unit": "short"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 6,
+				"x": 12,
+				"y": 47
+			},
+			"id": 14,
+			"links": [],
+			"maxDataPoints": 100,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster CPU Cores",
+			"transparent": true,
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross system uptime",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 0
+							},
+							{
+								"color": "#EAB839",
+								"value": 1
+							},
+							{
+								"color": "green",
+								"value": 3
+							}
+						]
+					},
+					"unit": "s"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 6,
+				"x": 18,
+				"y": 47
+			},
+			"hideTimeOverride": true,
+			"id": 15,
+			"links": [],
+			"maxDataPoints": 100,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_time_seconds{instance=\"$node\",job=\"$job\"} - node_boot_time_seconds{instance=\"$node\",job=\"$job\"}",
+					"intervalFactor": 2,
+					"refId": "A",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Uptime",
+			"transparent": true,
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross total ram",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 0,
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							},
+							{
+								"color": "red",
+								"value": 1
+							},
+							{
+								"color": "#EAB839",
+								"value": 2
+							},
+							{
+								"color": "green",
+								"value": 4
+							}
+						]
+					},
+					"unit": "bytes"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 6,
+				"x": 12,
+				"y": 52
+			},
+			"id": 75,
+			"links": [],
+			"maxDataPoints": 100,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
+					"intervalFactor": 1,
+					"refId": "A",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster RAM Total",
+			"transparent": true,
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "xotocross basic memory usage",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"links": [],
+					"mappings": [],
+					"min": 0,
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green"
+							}
+						]
+					},
+					"unit": "bytes"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Apps"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#629E51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Buffers"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#614D93",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#6D1F62",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Cached"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#511749",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Committed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#508642",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A437C",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Hardware Corrupted - Amount of RAM that the kernel identified as corrupted / not working"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#CFFAFF",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Inactive"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#584477",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "PageTables"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Page_Tables"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A50A1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM_Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "SWAP Used"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Slab"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#806EB7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Slab_Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0752D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap Used"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap_Cache"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#C15C17",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Swap_Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#2F575E",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Unused"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#EAB839",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Total"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E0F9D7",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Cache + Buffer"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#052B51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "RAM Free"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Avaliable"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#DEDAF7",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 6,
+				"x": 0,
+				"y": 57
+			},
+			"id": 78,
+			"links": [],
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
+			},
+			"pluginVersion": "9.5.20",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 2,
+					"legendFormat": "RAM Total",
+					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 2,
+					"legendFormat": "RAM Used",
+					"refId": "B",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "RAM Cache + Buffer",
+					"refId": "C",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "RAM Free",
+					"refId": "D",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "SWAP Used",
+					"refId": "E",
+					"step": 240
+				}
+			],
+			"title": "Cross Cluster Memory",
+			"transparent": true,
+			"type": "gauge"
 		},
 		{
 			"datasource": {
@@ -277,8 +2668,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)",
-								"value": null
+								"color": "rgba(50, 172, 45, 0.97)"
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -295,10 +2685,10 @@
 				"overrides": []
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 5,
-				"x": 0,
-				"y": 17
+				"h": 5,
+				"w": 3,
+				"x": 6,
+				"y": 57
 			},
 			"id": 20,
 			"links": [],
@@ -327,7 +2717,8 @@
 					"step": 240
 				}
 			],
-			"title": "CPU Busy",
+			"title": "Cross Cluster CPU",
+			"transparent": true,
 			"type": "gauge"
 		},
 		{
@@ -358,8 +2749,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)",
-								"value": null
+								"color": "rgba(50, 172, 45, 0.97)"
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -376,10 +2766,10 @@
 				"overrides": []
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 4,
-				"x": 5,
-				"y": 17
+				"h": 5,
+				"w": 3,
+				"x": 9,
+				"y": 57
 			},
 			"id": 155,
 			"links": [],
@@ -408,7 +2798,8 @@
 					"step": 240
 				}
 			],
-			"title": "Sys Load (5m avg)",
+			"title": "Cross Cluster System Load (5m avg)",
+			"transparent": true,
 			"type": "gauge"
 		},
 		{
@@ -416,63 +2807,368 @@
 				"type": "prometheus",
 				"uid": "PBFA97CFB590B2093"
 			},
-			"description": "xotocross busy state of all cpu cores together (15 min average)",
+			"description": "xotocross basic cpu info",
 			"fieldConfig": {
 				"defaults": {
 					"color": {
-						"mode": "thresholds"
+						"mode": "palette-classic"
 					},
-					"mappings": [
-						{
-							"options": {
-								"match": "null",
-								"result": {
-									"text": "N/A"
-								}
-							},
-							"type": "special"
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 9,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "normal"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
 						}
-					],
-					"max": 100,
+					},
+					"links": [],
+					"mappings": [],
+					"max": 53,
 					"min": 0,
 					"thresholds": {
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)",
-								"value": null
+								"color": "green"
 							},
 							{
-								"color": "rgba(237, 129, 40, 0.89)",
-								"value": 85
-							},
-							{
-								"color": "rgba(245, 54, 54, 0.9)",
-								"value": 95
+								"color": "red",
+								"value": 80
 							}
 						]
 					},
-					"unit": "percent"
+					"unit": "short"
 				},
-				"overrides": []
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#EAB839",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy Iowait"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#890F02",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy other"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#1F78C1",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Idle"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#052B51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Idle - Waiting for something to happen"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#052B51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "guest"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#9AC48A",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "idle"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#052B51",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "iowait"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#EAB839",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "irq"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#BF1B00",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "nice"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#C15C17",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "softirq"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#E24D42",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "steal"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#FCE2DE",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "system"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#508642",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "user"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#5195CE",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy Iowait"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#890F02",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Idle"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#7EB26D",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy System"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#EAB839",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy User"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#0A437C",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Busy Other"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "#6D1F62",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 4,
-				"x": 9,
-				"y": 17
+				"h": 10,
+				"w": 12,
+				"x": 12,
+				"y": 57
 			},
-			"id": 19,
+			"id": 77,
 			"links": [],
 			"options": {
-				"orientation": "horizontal",
-				"reduceOptions": {
-					"calcs": ["lastNotNull"],
-					"fields": "",
-					"values": false
+				"legend": {
+					"calcs": [],
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true,
+					"width": 250
 				},
-				"showThresholdLabels": false,
-				"showThresholdMarkers": true
+				"tooltip": {
+					"mode": "multi",
+					"sort": "none"
+				}
 			},
 			"pluginVersion": "9.5.20",
 			"targets": [
@@ -481,15 +3177,81 @@
 						"type": "prometheus",
 						"uid": "PBFA97CFB590B2093"
 					},
-					"expr": "avg(node_load15{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
+					"editorMode": "code",
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"demo\"}[$__rate_interval])) * 100",
+					"format": "time_series",
 					"hide": false,
-					"intervalFactor": 1,
+					"intervalFactor": 2,
+					"legendFormat": "Busy System",
+					"range": true,
 					"refId": "A",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 2,
+					"legendFormat": "Busy User",
+					"refId": "B",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Busy Iowait",
+					"refId": "C",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Busy IRQs",
+					"refId": "D",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Busy Other",
+					"refId": "E",
+					"step": 240
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
+					"format": "time_series",
+					"intervalFactor": 2,
+					"legendFormat": "Idle",
+					"refId": "F",
 					"step": 240
 				}
 			],
-			"title": "Sys Load (15m avg)",
-			"type": "gauge"
+			"title": "Cross Cluster CPU",
+			"transparent": true,
+			"type": "timeseries"
 		},
 		{
 			"datasource": {
@@ -510,8 +3272,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "rgba(50, 172, 45, 0.97)",
-								"value": null
+								"color": "rgba(50, 172, 45, 0.97)"
 							},
 							{
 								"color": "rgba(237, 129, 40, 0.89)",
@@ -528,10 +3289,10 @@
 				"overrides": []
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 5,
-				"x": 13,
-				"y": 17
+				"h": 5,
+				"w": 3,
+				"x": 6,
+				"y": 62
 			},
 			"hideTimeOverride": false,
 			"id": 16,
@@ -573,7 +3334,8 @@
 					"step": 240
 				}
 			],
-			"title": "RAM Used",
+			"title": "Cross Cluster RAM Used",
+			"transparent": true,
 			"type": "gauge"
 		},
 		{
@@ -581,7 +3343,7 @@
 				"type": "prometheus",
 				"uid": "PBFA97CFB590B2093"
 			},
-			"description": "xotocross total number of cpu cores",
+			"description": "xotocross busy state of all cpu cores together (15 min average)",
 			"fieldConfig": {
 				"defaults": {
 					"color": {
@@ -598,43 +3360,45 @@
 							"type": "special"
 						}
 					],
+					"max": 100,
+					"min": 0,
 					"thresholds": {
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green",
-								"value": null
+								"color": "rgba(50, 172, 45, 0.97)"
 							},
 							{
-								"color": "red",
-								"value": 80
+								"color": "rgba(237, 129, 40, 0.89)",
+								"value": 85
+							},
+							{
+								"color": "rgba(245, 54, 54, 0.9)",
+								"value": 95
 							}
 						]
 					},
-					"unit": "short"
+					"unit": "percent"
 				},
 				"overrides": []
 			},
 			"gridPos": {
-				"h": 4,
-				"w": 2,
-				"x": 18,
-				"y": 17
+				"h": 5,
+				"w": 3,
+				"x": 9,
+				"y": 62
 			},
-			"id": 14,
+			"id": 19,
 			"links": [],
-			"maxDataPoints": 100,
 			"options": {
-				"colorMode": "none",
-				"graphMode": "none",
-				"justifyMode": "auto",
 				"orientation": "horizontal",
 				"reduceOptions": {
 					"calcs": ["lastNotNull"],
 					"fields": "",
 					"values": false
 				},
-				"textMode": "auto"
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true
 			},
 			"pluginVersion": "9.5.20",
 			"targets": [
@@ -643,1092 +3407,16 @@
 						"type": "prometheus",
 						"uid": "PBFA97CFB590B2093"
 					},
-					"expr": "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
-					"interval": "",
-					"intervalFactor": 1,
-					"legendFormat": "",
-					"refId": "A",
-					"step": 240
-				}
-			],
-			"title": "CPU Cores",
-			"type": "stat"
-		},
-		{
-			"datasource": {
-				"type": "prometheus",
-				"uid": "PBFA97CFB590B2093"
-			},
-			"description": "xotocross system uptime",
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"decimals": 1,
-					"mappings": [
-						{
-							"options": {
-								"match": "null",
-								"result": {
-									"text": "N/A"
-								}
-							},
-							"type": "special"
-						}
-					],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					},
-					"unit": "s"
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 2,
-				"w": 4,
-				"x": 20,
-				"y": 17
-			},
-			"hideTimeOverride": true,
-			"id": 15,
-			"links": [],
-			"maxDataPoints": 100,
-			"options": {
-				"colorMode": "none",
-				"graphMode": "none",
-				"justifyMode": "auto",
-				"orientation": "horizontal",
-				"reduceOptions": {
-					"calcs": ["lastNotNull"],
-					"fields": "",
-					"values": false
-				},
-				"textMode": "auto"
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"expr": "node_time_seconds{instance=\"$node\",job=\"$job\"} - node_boot_time_seconds{instance=\"$node\",job=\"$job\"}",
-					"intervalFactor": 2,
-					"refId": "A",
-					"step": 240
-				}
-			],
-			"title": "Uptime",
-			"type": "stat"
-		},
-		{
-			"datasource": {
-				"type": "prometheus",
-				"uid": "PBFA97CFB590B2093"
-			},
-			"description": "xotocross total ram",
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"decimals": 0,
-					"mappings": [
-						{
-							"options": {
-								"match": "null",
-								"result": {
-									"text": "N/A"
-								}
-							},
-							"type": "special"
-						}
-					],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					},
-					"unit": "bytes"
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 2,
-				"w": 4,
-				"x": 20,
-				"y": 19
-			},
-			"id": 75,
-			"links": [],
-			"maxDataPoints": 100,
-			"options": {
-				"colorMode": "none",
-				"graphMode": "none",
-				"justifyMode": "auto",
-				"orientation": "horizontal",
-				"reduceOptions": {
-					"calcs": ["lastNotNull"],
-					"fields": "",
-					"values": false
-				},
-				"textMode": "auto"
-			},
-			"pluginVersion": "9.5.20",
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
+					"expr": "avg(node_load15{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
+					"hide": false,
 					"intervalFactor": 1,
 					"refId": "A",
 					"step": 240
 				}
 			],
-			"title": "RAM Total",
-			"type": "stat"
-		},
-		{
-			"collapsed": true,
-			"datasource": {
-				"type": "prometheus",
-				"uid": "PBFA97CFB590B2093"
-			},
-			"gridPos": {
-				"h": 1,
-				"w": 24,
-				"x": 0,
-				"y": 21
-			},
-			"id": 263,
-			"panels": [
-				{
-					"aliasColors": {
-						"Busy": "#EAB839",
-						"Busy Iowait": "#890F02",
-						"Busy other": "#1F78C1",
-						"Idle": "#052B51",
-						"Idle - Waiting for something to happen": "#052B51",
-						"guest": "#9AC48A",
-						"idle": "#052B51",
-						"iowait": "#EAB839",
-						"irq": "#BF1B00",
-						"nice": "#C15C17",
-						"softirq": "#E24D42",
-						"steal": "#FCE2DE",
-						"system": "#508642",
-						"user": "#5195CE"
-					},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"decimals": 2,
-					"description": "xotocross basic cpu info",
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 4,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 7,
-						"w": 12,
-						"x": 0,
-						"y": 37
-					},
-					"hiddenSeries": false,
-					"id": 77,
-					"legend": {
-						"alignAsTable": false,
-						"avg": false,
-						"current": false,
-						"max": false,
-						"min": false,
-						"rightSide": false,
-						"show": true,
-						"sideWidth": 250,
-						"total": false,
-						"values": false
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"maxPerRow": 6,
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": true,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [
-						{
-							"alias": "Busy Iowait",
-							"color": "#890F02"
-						},
-						{
-							"alias": "Idle",
-							"color": "#7EB26D"
-						},
-						{
-							"alias": "Busy System",
-							"color": "#EAB839"
-						},
-						{
-							"alias": "Busy User",
-							"color": "#0A437C"
-						},
-						{
-							"alias": "Busy Other",
-							"color": "#6D1F62"
-						}
-					],
-					"spaceLength": 10,
-					"stack": true,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"editorMode": "code",
-							"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"$node\",job=\"$job\", cost_project=\"demo\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"hide": false,
-							"intervalFactor": 2,
-							"legendFormat": "Busy System",
-							"range": true,
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"hide": false,
-							"intervalFactor": 2,
-							"legendFormat": "Busy User",
-							"refId": "B",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Busy Iowait",
-							"refId": "C",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Busy IRQs",
-							"refId": "D",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Busy Other",
-							"refId": "E",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$node\",job=\"$job\"}[$__rate_interval])) * 100",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Idle",
-							"refId": "F",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "CPU Basic",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"$$hashKey": "object:123",
-							"format": "short",
-							"label": "",
-							"logBase": 1,
-							"max": "100",
-							"min": "0",
-							"show": true
-						},
-						{
-							"$$hashKey": "object:124",
-							"format": "short",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				},
-				{
-					"aliasColors": {
-						"Apps": "#629E51",
-						"Buffers": "#614D93",
-						"Cache": "#6D1F62",
-						"Cached": "#511749",
-						"Committed": "#508642",
-						"Free": "#0A437C",
-						"Hardware Corrupted - Amount of RAM that the kernel identified as corrupted / not working": "#CFFAFF",
-						"Inactive": "#584477",
-						"PageTables": "#0A50A1",
-						"Page_Tables": "#0A50A1",
-						"RAM_Free": "#E0F9D7",
-						"SWAP Used": "#BF1B00",
-						"Slab": "#806EB7",
-						"Slab_Cache": "#E0752D",
-						"Swap": "#BF1B00",
-						"Swap Used": "#BF1B00",
-						"Swap_Cache": "#C15C17",
-						"Swap_Free": "#2F575E",
-						"Unused": "#EAB839"
-					},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"decimals": 2,
-					"description": "xotocross basic memory usage",
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 4,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 7,
-						"w": 12,
-						"x": 12,
-						"y": 37
-					},
-					"hiddenSeries": false,
-					"id": 78,
-					"legend": {
-						"alignAsTable": false,
-						"avg": false,
-						"current": false,
-						"max": false,
-						"min": false,
-						"rightSide": false,
-						"show": true,
-						"sideWidth": 350,
-						"total": false,
-						"values": false
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"maxPerRow": 6,
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": false,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [
-						{
-							"alias": "RAM Total",
-							"color": "#E0F9D7",
-							"fill": 0,
-							"stack": false
-						},
-						{
-							"alias": "RAM Cache + Buffer",
-							"color": "#052B51"
-						},
-						{
-							"alias": "RAM Free",
-							"color": "#7EB26D"
-						},
-						{
-							"alias": "Avaliable",
-							"color": "#DEDAF7",
-							"fill": 0,
-							"stack": false
-						}
-					],
-					"spaceLength": 10,
-					"stack": true,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"}",
-							"format": "time_series",
-							"hide": false,
-							"intervalFactor": 2,
-							"legendFormat": "RAM Total",
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_memory_MemTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"})",
-							"format": "time_series",
-							"hide": false,
-							"intervalFactor": 2,
-							"legendFormat": "RAM Used",
-							"refId": "B",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_memory_Cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$node\",job=\"$job\"}",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "RAM Cache + Buffer",
-							"refId": "C",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_memory_MemFree_bytes{instance=\"$node\",job=\"$job\"}",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "RAM Free",
-							"refId": "D",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "SWAP Used",
-							"refId": "E",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "Memory Basic",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"format": "bytes",
-							"label": "",
-							"logBase": 1,
-							"min": "0",
-							"show": true
-						},
-						{
-							"format": "short",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				},
-				{
-					"aliasColors": {
-						"Recv_bytes_eth2": "#7EB26D",
-						"Recv_bytes_lo": "#0A50A1",
-						"Recv_drop_eth2": "#6ED0E0",
-						"Recv_drop_lo": "#E0F9D7",
-						"Recv_errs_eth2": "#BF1B00",
-						"Recv_errs_lo": "#CCA300",
-						"Trans_bytes_eth2": "#7EB26D",
-						"Trans_bytes_lo": "#0A50A1",
-						"Trans_drop_eth2": "#6ED0E0",
-						"Trans_drop_lo": "#E0F9D7",
-						"Trans_errs_eth2": "#BF1B00",
-						"Trans_errs_lo": "#CCA300",
-						"recv_bytes_lo": "#0A50A1",
-						"recv_drop_eth0": "#99440A",
-						"recv_drop_lo": "#967302",
-						"recv_errs_eth0": "#BF1B00",
-						"recv_errs_lo": "#890F02",
-						"trans_bytes_eth0": "#7EB26D",
-						"trans_bytes_lo": "#0A50A1",
-						"trans_drop_eth0": "#99440A",
-						"trans_drop_lo": "#967302",
-						"trans_errs_eth0": "#BF1B00",
-						"trans_errs_lo": "#890F02"
-					},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"description": "xotocross basic network info per interface",
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 4,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 10,
-						"w": 12,
-						"x": 0,
-						"y": 44
-					},
-					"hiddenSeries": false,
-					"id": 74,
-					"legend": {
-						"alignAsTable": false,
-						"avg": false,
-						"current": false,
-						"hideEmpty": false,
-						"hideZero": false,
-						"max": false,
-						"min": false,
-						"rightSide": false,
-						"show": true,
-						"sort": "current",
-						"sortDesc": true,
-						"total": false,
-						"values": false
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": false,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [
-						{
-							"alias": "/.*trans.*/",
-							"transform": "negative-Y"
-						}
-					],
-					"spaceLength": 10,
-					"stack": false,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "recv {{device}}",
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "trans {{device}} ",
-							"refId": "B",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "Network Traffic Basic",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"format": "bps",
-							"logBase": 1,
-							"show": true
-						},
-						{
-							"format": "pps",
-							"label": "",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				},
-				{
-					"aliasColors": {},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 2,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 10,
-						"w": 12,
-						"x": 12,
-						"y": 44
-					},
-					"hiddenSeries": false,
-					"id": 62,
-					"legend": {
-						"alignAsTable": true,
-						"avg": true,
-						"current": true,
-						"max": true,
-						"min": true,
-						"show": true,
-						"total": false,
-						"values": true
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"maxPerRow": 6,
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": false,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [],
-					"spaceLength": 10,
-					"stack": false,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_procs_blocked{instance=\"$node\",job=\"$job\"}",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Processes blocked waiting for I/O to complete",
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "node_procs_running{instance=\"$node\",job=\"$job\"}",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "Processes in runnable state",
-							"refId": "B",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "Processes Status",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"$$hashKey": "object:6500",
-							"format": "short",
-							"label": "counter",
-							"logBase": 1,
-							"min": "0",
-							"show": true
-						},
-						{
-							"$$hashKey": "object:6501",
-							"format": "short",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				},
-				{
-					"aliasColors": {
-						"receive_packets_eth0": "#7EB26D",
-						"receive_packets_lo": "#E24D42",
-						"transmit_packets_eth0": "#7EB26D",
-						"transmit_packets_lo": "#E24D42"
-					},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 2,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 10,
-						"w": 12,
-						"x": 0,
-						"y": 54
-					},
-					"hiddenSeries": false,
-					"id": 60,
-					"legend": {
-						"alignAsTable": true,
-						"avg": true,
-						"current": true,
-						"max": true,
-						"min": true,
-						"rightSide": false,
-						"show": true,
-						"sideWidth": 300,
-						"total": false,
-						"values": true
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": false,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [
-						{
-							"alias": "/.*Trans.*/",
-							"transform": "negative-Y"
-						}
-					],
-					"spaceLength": 10,
-					"stack": false,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-							"format": "time_series",
-							"interval": "",
-							"intervalFactor": 2,
-							"legendFormat": "{{device}} - Receive",
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-							"format": "time_series",
-							"interval": "",
-							"intervalFactor": 2,
-							"legendFormat": "{{device}} - Transmit",
-							"refId": "B",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "Network Traffic by Packets",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"format": "pps",
-							"label": "packets out (-) / in (+)",
-							"logBase": 1,
-							"show": true
-						},
-						{
-							"format": "short",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				},
-				{
-					"aliasColors": {},
-					"bars": false,
-					"dashLength": 10,
-					"dashes": false,
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"fieldConfig": {
-						"defaults": {
-							"links": []
-						},
-						"overrides": []
-					},
-					"fill": 2,
-					"fillGradient": 0,
-					"gridPos": {
-						"h": 10,
-						"w": 12,
-						"x": 12,
-						"y": 54
-					},
-					"hiddenSeries": false,
-					"id": 142,
-					"legend": {
-						"alignAsTable": true,
-						"avg": true,
-						"current": true,
-						"hideEmpty": false,
-						"hideZero": false,
-						"max": true,
-						"min": true,
-						"rightSide": false,
-						"show": true,
-						"sideWidth": 300,
-						"sort": "current",
-						"sortDesc": true,
-						"total": false,
-						"values": true
-					},
-					"lines": true,
-					"linewidth": 1,
-					"links": [],
-					"nullPointMode": "null",
-					"options": {
-						"alertThreshold": true
-					},
-					"percentage": false,
-					"pluginVersion": "9.5.20",
-					"pointradius": 5,
-					"points": false,
-					"renderer": "flot",
-					"seriesOverrides": [
-						{
-							"alias": "/.*Trans.*/",
-							"transform": "negative-Y"
-						}
-					],
-					"spaceLength": 10,
-					"stack": false,
-					"steppedLine": false,
-					"targets": [
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "{{device}} - Receive errors",
-							"refId": "A",
-							"step": 240
-						},
-						{
-							"datasource": {
-								"type": "prometheus",
-								"uid": "PBFA97CFB590B2093"
-							},
-							"expr": "rate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
-							"format": "time_series",
-							"intervalFactor": 2,
-							"legendFormat": "{{device}} - Rransmit errors",
-							"refId": "B",
-							"step": 240
-						}
-					],
-					"thresholds": [],
-					"timeRegions": [],
-					"title": "Network Traffic Errors",
-					"tooltip": {
-						"shared": true,
-						"sort": 0,
-						"value_type": "individual"
-					},
-					"type": "graph",
-					"xaxis": {
-						"mode": "time",
-						"show": true,
-						"values": []
-					},
-					"yaxes": [
-						{
-							"format": "pps",
-							"label": "packets out (-) / in (+)",
-							"logBase": 1,
-							"show": true
-						},
-						{
-							"format": "short",
-							"logBase": 1,
-							"show": false
-						}
-					],
-					"yaxis": {
-						"align": false
-					}
-				}
-			],
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "PBFA97CFB590B2093"
-					},
-					"refId": "A"
-				}
-			],
-			"title": "Basic CPU / Mem / Net / Disk",
-			"type": "row"
+			"title": "Cross Cluster System Load (15m avg)",
+			"transparent": true,
+			"type": "gauge"
 		}
 	],
 	"refresh": "",
@@ -1842,6 +3530,6 @@
 	"timezone": "browser",
 	"title": "xotocross logs : demo - stage",
 	"uid": "e1b81ecd-a60d-4272-8c35-c8e13456ce6d",
-	"version": 3,
+	"version": 35,
 	"weekStart": ""
 }
