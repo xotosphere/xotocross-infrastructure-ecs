@@ -196,10 +196,30 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 # }
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
-  count    = data.external.certificate.result.arn == "" ? 1 : 2
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xtcross-http-listener-200[count.index].arn
+  listener_arn = aws_lb_listener.xtcross-http-listener-200[0].arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
+  }
+
+  condition {
+    host_header {
+      values = [var.xtcross-listener-hostlist[each.value]]
+    }
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+## temporary, just to see if it works
+resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
+
+  listener_arn = aws_lb_listener.xtcross-http-listener-200[1].arn
 
   action {
     type             = "forward"
