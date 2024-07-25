@@ -5,7 +5,7 @@
     },
     "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 1
     },
@@ -32,7 +32,7 @@
             "refId": "A"
         }
     ],
-    "title": "Cross App Logs ${cost_project} frontend",
+    "title": "Cross App Logs ${cost_project} ${container_name}",
     "transformations": [],
     "transparent": true,
     "type": "logs"
