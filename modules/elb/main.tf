@@ -43,7 +43,7 @@ variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for 
 ####################### DATA
 
 data "external" "certificate" {
-  program = ["bash", "-c", "arn=$(aws acm list-certificates --region ${var.region} | jq -r '.CertificateSummaryList[] | select(.DomainName == \"${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn // \"\"'); if [ -z \"$arn\" ]; then echo -n '{\"arn\": \"\"}'; else echo -n '{\"arn\": \"$arn\"}'; fi"]
+  program = ["bash", "-c", "arn=$(aws acm list-certificates --region ${var.region} | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn // \"\"'); if [ -z \"$arn\" ]; then echo -n '{\"arn\": \"\"}'; else echo -n '{\"arn\": \"$arn\"}'; fi"]
 }
 
 ####################### RESOURCE
@@ -151,7 +151,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = 80
-  # protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+  # protocol          = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
   # certificate_arn   = try(data.external.certificate.result["arn"], null)
   protocol        = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
   certificate_arn = try(data.external.certificate.result["arn"], null)
@@ -219,7 +219,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
 
   name     = "${var.xtcross-targetgroup-name}-${each.value}"
   port     = var.xtcross-host-portlist[each.value]
-  protocol = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+  protocol = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
 
   target_type                   = var.xtcross-target-type
   vpc_id                        = var.xtcross-vpc-id
@@ -233,9 +233,8 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     matcher             = "200"
     path                = var.xtcross-healthcheck-pathlist[each.value]
     port                = "traffic-port"
-    protocol            = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
-
-    timeout = var.xtcross-healthcheck-timeout
+    protocol            = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
+    timeout             = var.xtcross-healthcheck-timeout
   }
 
   stickiness {
