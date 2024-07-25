@@ -232,7 +232,6 @@
               "viz": false
             }
           },
-          "displayName": "${__field.labels.method}",
           "mappings": []
         },
         "overrides": []
