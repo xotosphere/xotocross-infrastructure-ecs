@@ -198,7 +198,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist) * 2) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xtcross-http-listener-200[each.value >= var.xtcross-listener-hostlist ? 0 : 1].arn
+  listener_arn = aws_lb_listener.xtcross-http-listener-200[each.value >= length(var.xtcross-listener-hostlist) ? 0 : 1].arn
 
   action {
     type             = "forward"
@@ -220,7 +220,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
 
   name     = "${var.xtcross-targetgroup-name}-${each.value}"
   port     = var.xtcross-host-portlist[each.value % length(var.xtcross-listener-hostlist)]
-  protocol = each.value >= var.xtcross-listener-hostlist ? "HTTP" : "HTTPS"
+  protocol = each.value >= length(var.xtcross-listener-hostlist) ? "HTTP" : "HTTPS"
 
   target_type                   = var.xtcross-target-type
   vpc_id                        = var.xtcross-vpc-id
