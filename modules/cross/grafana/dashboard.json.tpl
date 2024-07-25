@@ -35,7 +35,7 @@
 			"title": "Traffic",
 			"type": "row"
 		},
-		${dashboard_container_panel},
+		${dashboard_container_panel_list},
 		{
 			"collapsed": false,
 			"gridPos": {

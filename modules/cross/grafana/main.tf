@@ -25,7 +25,7 @@ variable "xtcross-username" { description = "xtcross username" }
 ####################### RESOURCE
 
 locals {
-  dashboard_panel_list = [
+  dashboard_container_panel_list = [
     jsondecode(templatefile("${path.module}/dashboard-container-panel.json.tpl", {
       cost_project   = var.xtcross-service-name,
       container_name = "xtcross-demo-frontend"
@@ -36,8 +36,9 @@ locals {
     }))
   ]
   dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
-    cost_project = var.xtcross-service-name,
-    environment  = var.environment
+    cost_project                   = var.xtcross-service-name,
+    environment                    = var.environment,
+    dashboard_container_panel_list = local.dashboard_container_panel_list
   })
 }
 
