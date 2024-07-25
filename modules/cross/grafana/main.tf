@@ -35,15 +35,15 @@ locals {
       container_name = "xtcross-demo-backend"
     }))
   ]
-  # dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
-  #   cost_project                   = var.xtcross-service-name,
-  #   environment                    = var.environment,
-  #   dashboard_container_panel_list = jsonencode(local.dashboard_container_panel_list)
-  # })
+  dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
+    cost_project                   = var.xtcross-service-name,
+    environment                    = var.environment,
+    dashboard_container_panel_list = substr(jsonencode(local.dashboard_container_panel_list), 1, -2)
+  })
 }
 
 resource "local_file" "foo" {
-  content  = substr(jsonencode(local.dashboard_container_panel_list), 1, -1)
+  content  = local.dashboard_json
   filename = "${path.module}/dashboard_output.json"
 }
 
