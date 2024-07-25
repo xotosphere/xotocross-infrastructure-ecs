@@ -21,15 +21,11 @@ variable "xtcross-service-name" { description = "xtcross the name of the xtcross
 variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-password" { description = "xtcross password" }
 variable "xtcross-username" { description = "xtcross username" }
+variable "container_name_list" { description = "xtcross list of container names" }
 
 ####################### RESOURCE
 
 locals {
-  container_name_list = [
-    "xtcross-demo-frontend",
-    "xtcross-demo-backend"
-  ]
-
   dashboard_container_panel_list = [
     for container_name in local.container_name_list : jsondecode(templatefile("${path.module}/dashboard-container-panel.json.tpl", {
       cost_project   = var.xtcross-service-name,
