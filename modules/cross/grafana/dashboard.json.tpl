@@ -166,7 +166,7 @@
               "viz": false
             }
           },
-          "displayName": "${__field.labels.method}",
+          "displayName": "$${__field.labels.method}",
           "mappings": []
         },
         "overrides": []
