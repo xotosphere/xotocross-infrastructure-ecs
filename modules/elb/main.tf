@@ -196,7 +196,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 # }
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
-  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist * 2)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist) * 2) : tostring(idx)])
 
   listener_arn = aws_lb_listener.xtcross-http-listener-200[each.value >= var.xtcross-listener-hostlist ? 0 : 1].arn
 
@@ -216,7 +216,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup" {
-  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist * 2)) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist) * 2) : tostring(idx)])
 
   name     = "${var.xtcross-targetgroup-name}-${each.value}"
   port     = var.xtcross-host-portlist[each.value % length(var.xtcross-listener-hostlist)]
