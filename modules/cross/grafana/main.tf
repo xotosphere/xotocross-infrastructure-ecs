@@ -43,12 +43,12 @@ locals {
 }
 
 resource "local_file" "foo" {
-  content  = jsonencode(local.dashboard_json)
+  content  = local.dashboard_json
   filename = "${path.module}/dashboard_output.json"
 }
 
-# resource "grafana_dashboard" "xtcross-service-dashboard" {
-#   config_json = local.dashboard_json
-#   overwrite   = true
-# }
+resource "grafana_dashboard" "xtcross-service-dashboard" {
+  config_json = local.dashboard_json
+  overwrite   = true
+}
 
