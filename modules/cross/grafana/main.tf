@@ -35,20 +35,20 @@ locals {
       container_name = "xtcross-demo-backend"
     }))
   ]
-  dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
-    cost_project                   = var.xtcross-service-name,
-    environment                    = var.environment,
-    dashboard_container_panel_list = jsonencode(local.dashboard_container_panel_list)
-  })
+  # dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
+  #   cost_project                   = var.xtcross-service-name,
+  #   environment                    = var.environment,
+  #   dashboard_container_panel_list = jsonencode(local.dashboard_container_panel_list)
+  # })
 }
 
 resource "local_file" "foo" {
-  content  = local.dashboard_json
+  content  = jsonencode(local.dashboard_container_panel_list)
   filename = "${path.module}/dashboard_output.json"
 }
 
-resource "grafana_dashboard" "xtcross-service-dashboard" {
-  config_json = local.dashboard_json
-  overwrite   = true
-}
+# resource "grafana_dashboard" "xtcross-service-dashboard" {
+#   config_json = local.dashboard_json
+#   overwrite   = true
+# }
 
