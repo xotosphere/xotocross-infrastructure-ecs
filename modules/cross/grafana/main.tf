@@ -38,12 +38,12 @@ locals {
   dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
     cost_project                   = var.xtcross-service-name,
     environment                    = var.environment,
-    dashboard_container_panel_list = substr(jsonencode(local.dashboard_container_panel_list), 1, -2)
+    dashboard_container_panel_list = trim(jsonencode(local.dashboard_container_panel_list), "[]")
   })
 }
 
 resource "local_file" "foo" {
-  content  = substr(jsonencode(local.dashboard_container_panel_list), 1, -2)
+  content  = jsonencode(local.dashboard_json)
   filename = "${path.module}/dashboard_output.json"
 }
 
