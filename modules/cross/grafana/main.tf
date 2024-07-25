@@ -43,7 +43,7 @@ locals {
 }
 
 resource "local_file" "foo" {
-  content  = local.dashboard_json
+  content  = substr(jsonencode(local.dashboard_container_panel_list), 1, -2)
   filename = "${path.module}/dashboard_output.json"
 }
 
