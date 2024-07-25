@@ -48,7 +48,7 @@
             "uid": "Loki"
           },
           "editorMode": "builder",
-          "expr": "{cost_project=\"${cost_project}\", container=\"xotocross-${cost_project}-frontend\"} | line_format `{{.log}}`",
+          "expr": "{cost_project=\"${cost_project}\", container=\"xtcross-${cost_project}-frontend\"} | line_format `{{.log}}`",
           "queryType": "range",
           "refId": "A"
         }
@@ -87,7 +87,7 @@
             "uid": "Loki"
           },
           "editorMode": "builder",
-          "expr": "{cost_project=\"${cost_project}\", container=\"xotocross-${cost_project}-backend\"} | line_format `{{.log}}`",
+          "expr": "{cost_project=\"${cost_project}\", container=\"xtcross-${cost_project}-backend\"} | line_format `{{.log}}`",
           "queryType": "range",
           "refId": "A"
         }
@@ -1037,7 +1037,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross basic network info per interface",
+      "description": "xtcross basic network info per interface",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1510,7 +1510,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross basic memory usage",
+      "description": "xtcross basic memory usage",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2008,7 +2008,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross total number of cpu cores",
+      "description": "xtcross total number of cpu cores",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2097,7 +2097,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross system uptime",
+      "description": "xtcross system uptime",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2186,7 +2186,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross total ram",
+      "description": "xtcross total ram",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2273,7 +2273,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "xotocross basic memory usage",
+      "description": "xtcross basic memory usage",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2722,7 +2722,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross busy state of all cpu cores together",
+      "description": "xtcross busy state of all cpu cores together",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2805,7 +2805,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross busy state of all cpu cores together (5 min average)",
+      "description": "xtcross busy state of all cpu cores together (5 min average)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2888,7 +2888,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross basic cpu info",
+      "description": "xtcross basic cpu info",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3339,7 +3339,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross non available ram memory",
+      "description": "xtcross non available ram memory",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3426,7 +3426,7 @@
         "type": "prometheus",
         "uid": "Prometheus"
       },
-      "description": "xotocross busy state of all cpu cores together (15 min average)",
+      "description": "xtcross busy state of all cpu cores together (15 min average)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3623,5 +3623,5 @@
     ]
   },
   "timezone": "browser",
-  "title": "xotocross logs : ${cost_project} - ${environment}"
+  "title": "xtcross logs : ${cost_project} - ${environment}"
 }

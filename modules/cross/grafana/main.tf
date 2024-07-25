@@ -10,26 +10,26 @@ terraform {
 }
 
 provider "grafana" {
-  url  = var.environment == "production" ? "http://grafana.${var.xotocross-domain-name}.com" : "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}.com"
-  auth = "${var.xotocross-username}:${var.xotocross-password}"
+  url  = var.environment == "production" ? "http://grafana.${var.xtcross-domain-name}.com" : "http://grafana.monitor.${var.environment}.${var.xtcross-domain-name}.com"
+  auth = "${var.xtcross-username}:${var.xtcross-password}"
 }
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment" }
-variable "xotocross-service-name" { description = "xotocross the name of the xotocross service" }
-variable "xotocross-domain-name" { description = "xotocross domain name" }
-variable "xotocross-password" { description = "xotocross password" }
-variable "xotocross-username" { description = "xotocross username" }
+variable "environment" { description = "xtcross environment" }
+variable "xtcross-service-name" { description = "xtcross the name of the xtcross service" }
+variable "xtcross-domain-name" { description = "xtcross domain name" }
+variable "xtcross-password" { description = "xtcross password" }
+variable "xtcross-username" { description = "xtcross username" }
 
 ####################### RESOURCE
 
-resource "grafana_dashboard" "xotocross-service-dashboard" {
-  config_json = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xotocross-service-name, environment = var.environment })
+resource "grafana_dashboard" "xtcross-service-dashboard" {
+  config_json = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xtcross-service-name, environment = var.environment })
   overwrite   = true
 }
 
 resource "local_file" "foo" {
-  content  = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xotocross-service-name, environment = var.environment })
+  content  = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xtcross-service-name, environment = var.environment })
   filename = "${path.module}/dashboard_output.json"
 }

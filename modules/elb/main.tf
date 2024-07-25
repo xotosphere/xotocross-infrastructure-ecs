@@ -1,55 +1,55 @@
 ####################### OUTPUT
 
-output "xotocross-loadbalaner-listener-arnlist" {
-  value       = { for k in keys(aws_lb_listener.xotocross-http-listener) : k => aws_lb_listener.xotocross-http-listener[k].arn }
-  description = "xotocross arn list of the alb listeners"
+output "xtcross-loadbalaner-listener-arnlist" {
+  value       = { for k in keys(aws_lb_listener.xtcross-http-listener) : k => aws_lb_listener.xtcross-http-listener[k].arn }
+  description = "xtcross arn list of the alb listeners"
 }
 
-output "xotocross-targetgroup-arnlist" {
-  value       = { for k in keys(aws_lb_target_group.xotocross-targetgroup) : k => aws_lb_target_group.xotocross-targetgroup[k].arn }
-  description = "xotocross arn list of the target groups"
+output "xtcross-targetgroup-arnlist" {
+  value       = { for k in keys(aws_lb_target_group.xtcross-targetgroup) : k => aws_lb_target_group.xtcross-targetgroup[k].arn }
+  description = "xtcross arn list of the target groups"
 }
 
-output "xotocross-loadbalaner-name" {
-  value       = aws_lb.xotocross-loadbalaner.dns_name
-  description = "xotocross dns name of the alb"
+output "xtcross-loadbalaner-name" {
+  value       = aws_lb.xtcross-loadbalaner.dns_name
+  description = "xtcross dns name of the alb"
 }
 
-output "xotocross-loadbalaner-zone-id" {
-  value       = aws_lb.xotocross-loadbalaner.zone_id
-  description = "xotocross zone id of the alb"
+output "xtcross-loadbalaner-zone-id" {
+  value       = aws_lb.xtcross-loadbalaner.zone_id
+  description = "xtcross zone id of the alb"
 }
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment" }
-variable "region" { description = "xotocross region" }
-variable "xotocross-loadbalaner-name" { description = "xotocross name of the alb" }
-variable "xotocross-public-subnetlist" { description = "xotocross list of public subnet ids to place the alb in" }
-variable "xotocross-loadbalaner-securitygroup" { description = "xotocross list of security group ids to attach to the alb" }
-variable "xotocross-listener-portlist" { description = "xotocross list of ports for the listeners" }
-variable "xotocross-host-portlist" { description = "xotocross list of target ports for the listeners" }
-variable "xotocross-domain-name" { description = "xotocross domain name" }
-variable "xotocross-targetgroup-name" { description = "xotocross name of the target group" }
-variable "xotocross-target-type" { description = "xotocross type of targets for the target group" }
-variable "xotocross-vpc-id" { description = "xotocross id of the vpc where the target group will be created" }
-variable "xotocross-healthy-threshhold" { description = "xotocross number of consecutive successful health checks required to consider a target healthy" }
-variable "xotocross-unhealthy-threshhold" { description = "xotocross number of consecutive failed health checks required to consider a target unhealthy" }
-variable "xotocross-healthcheck-interval" { description = "xotocross interval between health checks (in seconds)" }
-variable "xotocross-healthcheck-pathlist" { description = "xotocross path of the health check endpoint" }
-variable "xotocross-healthcheck-timeout" { description = "xotocross timeout for the health check (in seconds)" }
-variable "xotocross-listener-hostlist" { description = "xotocross list of hosts for the listeners" }
+variable "environment" { description = "xtcross environment" }
+variable "region" { description = "xtcross region" }
+variable "xtcross-loadbalaner-name" { description = "xtcross name of the alb" }
+variable "xtcross-public-subnetlist" { description = "xtcross list of public subnet ids to place the alb in" }
+variable "xtcross-loadbalaner-securitygroup" { description = "xtcross list of security group ids to attach to the alb" }
+variable "xtcross-listener-portlist" { description = "xtcross list of ports for the listeners" }
+variable "xtcross-host-portlist" { description = "xtcross list of target ports for the listeners" }
+variable "xtcross-domain-name" { description = "xtcross domain name" }
+variable "xtcross-targetgroup-name" { description = "xtcross name of the target group" }
+variable "xtcross-target-type" { description = "xtcross type of targets for the target group" }
+variable "xtcross-vpc-id" { description = "xtcross id of the vpc where the target group will be created" }
+variable "xtcross-healthy-threshhold" { description = "xtcross number of consecutive successful health checks required to consider a target healthy" }
+variable "xtcross-unhealthy-threshhold" { description = "xtcross number of consecutive failed health checks required to consider a target unhealthy" }
+variable "xtcross-healthcheck-interval" { description = "xtcross interval between health checks (in seconds)" }
+variable "xtcross-healthcheck-pathlist" { description = "xtcross path of the health check endpoint" }
+variable "xtcross-healthcheck-timeout" { description = "xtcross timeout for the health check (in seconds)" }
+variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for the listeners" }
 
 ####################### DATA
 
 data "external" "certificate" {
-  program = ["bash", "-c", "arn=$(aws acm list-certificates --region ${var.region} | jq -r '.CertificateSummaryList[] | select(.DomainName == \"${var.xotocross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn // \"\"'); if [ -z \"$arn\" ]; then echo -n '{\"arn\": \"\"}'; else echo -n '{\"arn\": \"$arn\"}'; fi"]
+  program = ["bash", "-c", "arn=$(aws acm list-certificates --region ${var.region} | jq -r '.CertificateSummaryList[] | select(.DomainName == \"${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn // \"\"'); if [ -z \"$arn\" ]; then echo -n '{\"arn\": \"\"}'; else echo -n '{\"arn\": \"$arn\"}'; fi"]
 }
 
 ####################### RESOURCE
 
-# resource "aws_cognito_user_pool" "xotocross-cognito-pool" {
-#   name = "xotocross-${var.environment}-pool"
+# resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
+#   name = "xtcross-${var.environment}-pool"
 
 #   password_policy {
 #     minimum_length    = 8
@@ -72,10 +72,10 @@ data "external" "certificate" {
 #   }
 # }
 
-# resource "aws_cognito_user_pool_client" "xotocross-cognito-client" {
-#   name = "xotocross-${var.environment}-client"
+# resource "aws_cognito_user_pool_client" "xtcross-cognito-client" {
+#   name = "xtcross-${var.environment}-client"
 
-#   user_pool_id = aws_cognito_user_pool.xotocross-cognito-pool.id
+#   user_pool_id = aws_cognito_user_pool.xtcross-cognito-pool.id
 
 #   explicit_auth_flows = [
 #     "ALLOW_USER_PASSWORD_AUTH",
@@ -92,17 +92,17 @@ data "external" "certificate" {
 #   allowed_oauth_flows_user_pool_client = true
 # }
 
-# resource "aws_cognito_user_pool_domain" "xotocross-cognito-domain" {
-#   domain          = "authorizer.${var.xotocross-subdomain-name}.${var.xotocross-domain-name}.com"
-#   user_pool_id    = aws_cognito_user_pool.xotocross-cognito-pool.id
+# resource "aws_cognito_user_pool_domain" "xtcross-cognito-domain" {
+#   domain          = "authorizer.${var.xtcross-subdomain-name}.${var.xtcross-domain-name}.com"
+#   user_pool_id    = aws_cognito_user_pool.xtcross-cognito-pool.id
 # }
 
-resource "aws_lb" "xotocross-loadbalaner" {
-  name                             = var.xotocross-loadbalaner-name
+resource "aws_lb" "xtcross-loadbalaner" {
+  name                             = var.xtcross-loadbalaner-name
   internal                         = false
   load_balancer_type               = "application"
-  subnets                          = var.xotocross-public-subnetlist
-  security_groups                  = [var.xotocross-loadbalaner-securitygroup]
+  subnets                          = var.xtcross-public-subnetlist
+  security_groups                  = [var.xtcross-loadbalaner-securitygroup]
   desync_mitigation_mode           = "defensive"
   enable_cross_zone_load_balancing = true
   enable_http2                     = true
@@ -110,16 +110,16 @@ resource "aws_lb" "xotocross-loadbalaner" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    Name        = var.xotocross-loadbalaner-name
+    Name        = var.xtcross-loadbalaner-name
     environment = var.environment
   }
 }
 
-resource "aws_lb_listener" "xotocross-http-listener" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+resource "aws_lb_listener" "xtcross-http-listener" {
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
-  port              = var.xotocross-listener-portlist[each.value]
+  load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
+  port              = var.xtcross-listener-portlist[each.value]
 
   certificate_arn = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
 
@@ -128,9 +128,9 @@ resource "aws_lb_listener" "xotocross-http-listener" {
   # default_action {
   #   type = "authenticate-cognito"
   #   authenticate_cognito {
-  #     user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-client.id
-  #     user_pool_arn       = aws_cognito_user_pool.xotocross-cognito-pool.arn
-  #     user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito-domain.domain
+  #     user_pool_client_id = aws_cognito_user_pool_client.xtcross-cognito-client.id
+  #     user_pool_arn       = aws_cognito_user_pool.xtcross-cognito-pool.arn
+  #     user_pool_domain    = aws_cognito_user_pool_domain.xtcross-cognito-domain.domain
   #   }
   # }
 
@@ -140,17 +140,17 @@ resource "aws_lb_listener" "xotocross-http-listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
   }
 
   tags = {
-    Name        = "${var.xotocross-loadbalaner-name}-listener-${each.value}"
+    Name        = "${var.xtcross-loadbalaner-name}-listener-${each.value}"
     environment = var.environment
   }
 }
 
-resource "aws_lb_listener" "xotocross-http-listener-200" {
-  load_balancer_arn = aws_lb.xotocross-loadbalaner.arn
+resource "aws_lb_listener" "xtcross-http-listener-200" {
+  load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = 80
   protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
@@ -167,24 +167,24 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
   }
 }
 
-# resource "aws_lb_listener_rule" "xotocross-http-cognito-rule" {
-#   for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+# resource "aws_lb_listener_rule" "xtcross-http-cognito-rule" {
+#   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-#   listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
+#   listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
 #   priority     = 100
 
 #   action {
 #     type = "authenticate-cognito"
 #     authenticate_cognito {
-#       user_pool_arn       = aws_cognito_user_pool.xotocross-cognito-pool.arn
-#       user_pool_client_id = aws_cognito_user_pool_client.xotocross-cognito-client.id
-#       user_pool_domain    = aws_cognito_user_pool_domain.xotocross-cognito-domain.domain
+#       user_pool_arn       = aws_cognito_user_pool.xtcross-cognito-pool.arn
+#       user_pool_client_id = aws_cognito_user_pool_client.xtcross-cognito-client.id
+#       user_pool_domain    = aws_cognito_user_pool_domain.xtcross-cognito-domain.domain
 #     }
 #   }
 
 #   action {
 #     type = "forward"
-#     target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
+#     target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
 #   }
 
 #   condition {
@@ -194,19 +194,19 @@ resource "aws_lb_listener" "xotocross-http-listener-200" {
 #   }
 # }
 
-resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xotocross-http-listener-200.arn
+  listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xotocross-targetgroup[each.value].arn
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
   }
 
   condition {
     host_header {
-      values = [var.xotocross-listener-hostlist[each.value]]
+      values = [var.xtcross-listener-hostlist[each.value]]
     }
   }
   lifecycle {
@@ -214,28 +214,28 @@ resource "aws_lb_listener_rule" "xotocross-http-listener-rule" {
   }
 }
 
-resource "aws_lb_target_group" "xotocross-targetgroup" {
-  for_each = toset([for idx in range(0, length(var.xotocross-listener-hostlist)) : tostring(idx)])
+resource "aws_lb_target_group" "xtcross-targetgroup" {
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  name     = "${var.xotocross-targetgroup-name}-${each.value}"
-  port     = var.xotocross-host-portlist[each.value]
+  name     = "${var.xtcross-targetgroup-name}-${each.value}"
+  port     = var.xtcross-host-portlist[each.value]
   protocol = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
-  target_type                   = var.xotocross-target-type
-  vpc_id                        = var.xotocross-vpc-id
+  target_type                   = var.xtcross-target-type
+  vpc_id                        = var.xtcross-vpc-id
   load_balancing_algorithm_type = "round_robin"
 
   health_check {
     enabled             = true
-    healthy_threshold   = var.xotocross-healthy-threshhold
-    unhealthy_threshold = var.xotocross-unhealthy-threshhold
-    interval            = var.xotocross-healthcheck-interval
+    healthy_threshold   = var.xtcross-healthy-threshhold
+    unhealthy_threshold = var.xtcross-unhealthy-threshhold
+    interval            = var.xtcross-healthcheck-interval
     matcher             = "200"
-    path                = var.xotocross-healthcheck-pathlist[each.value]
+    path                = var.xtcross-healthcheck-pathlist[each.value]
     port                = "traffic-port"
     protocol            = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
 
-    timeout = var.xotocross-healthcheck-timeout
+    timeout = var.xtcross-healthcheck-timeout
   }
 
   stickiness {
@@ -245,7 +245,7 @@ resource "aws_lb_target_group" "xotocross-targetgroup" {
   }
 
   tags = {
-    Name        = "${var.xotocross-targetgroup-name}-${each.value}"
+    Name        = "${var.xtcross-targetgroup-name}-${each.value}"
     environment = var.environment
   }
 }

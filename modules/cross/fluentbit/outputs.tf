@@ -1,26 +1,26 @@
 ####################### OUTPUT
 
-output "xotocross-container-definition" {
-  value = local.xotocross-container-definition
-  description = "xotocross container definition"
+output "xtcross-container-definition" {
+  value = local.xtcross-container-definition
+  description = "xtcross container definition"
 }
 
-output "xotocross-healthcheck-pathlist" {
-  value = local.xotocross-healthcheck-pathlist
-  description = "xotocross healthcheck pathlist"
+output "xtcross-healthcheck-pathlist" {
+  value = local.xtcross-healthcheck-pathlist
+  description = "xtcross healthcheck pathlist"
 }
 
-output "xotocross-listener-hostlist" {
-  value = local.xotocross-listener-hostlist
-  description = "xotocross listener hostlist"
+output "xtcross-listener-hostlist" {
+  value = local.xtcross-listener-hostlist
+  description = "xtcross listener hostlist"
 }
 
-output "xotocross-container-portlist" {
-  value = local.xotocross-container-portlist
-  description = "xotocross container portlist"
+output "xtcross-container-portlist" {
+  value = local.xtcross-container-portlist
+  description = "xtcross container portlist"
 }
 
-output "xotocross-host-portlist" {
-  value = local.xotocross-host-portlist
-  description = "xotocross host portlist"
+output "xtcross-host-portlist" {
+  value = local.xtcross-host-portlist
+  description = "xtcross host portlist"
 }

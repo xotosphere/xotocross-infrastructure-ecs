@@ -1,42 +1,42 @@
 ####################### VARIABLE
 
-variable "region" { description = "xotocross region" }
-variable "environment" { description = "xotocross environment" }
-variable "xotocross-cluster-name" { description = "xotocross ecs cluster name" }
-variable "xotocross-task-family" { description = "xotocross task family" }
-variable "xotocross-container-definition" { description = "xotocross container definition" }
-variable "xotocross-execution-role-arn" { description = "xotocross execution role arn" }
-variable "xotocross-task-role-arn" { description = "xotocross task role arn" }
-variable "xotocross-service-name" { description = "xotocross service name" }
-variable "xotocross-container-port" { description = "xotocross list of ports" }
-variable "xotocross-desired-count" { description = "xotocross desired count" }
-variable "xotocross-deployment-max" { description = "xotocross deployment max" }
-variable "xotocross-deployment-min" { description = "xotocross deployment min" }
-variable "xotocross-constraint-placement" { description = "xotocross placement constraint type" }
-variable "xotocross-constraint-expression" { description = "xotocross placement constraint expression" }
-variable "xotocross-healthcheck-grace" { description = "xotocross health check grace period" }
-variable "xotocross-network-mode" { description = "xotocross network mode" }
-variable "xotocross-targetgroup-arnlist" { description = "xotocross target group arn" }
-variable "xotocross-domain-name" { description = "xotocross domain name" }
-variable "xotocross-listener-hostlist" { description = "xotocross listener hosts" }
+variable "region" { description = "xtcross region" }
+variable "environment" { description = "xtcross environment" }
+variable "xtcross-cluster-name" { description = "xtcross ecs cluster name" }
+variable "xtcross-task-family" { description = "xtcross task family" }
+variable "xtcross-container-definition" { description = "xtcross container definition" }
+variable "xtcross-execution-role-arn" { description = "xtcross execution role arn" }
+variable "xtcross-task-role-arn" { description = "xtcross task role arn" }
+variable "xtcross-service-name" { description = "xtcross service name" }
+variable "xtcross-container-port" { description = "xtcross list of ports" }
+variable "xtcross-desired-count" { description = "xtcross desired count" }
+variable "xtcross-deployment-max" { description = "xtcross deployment max" }
+variable "xtcross-deployment-min" { description = "xtcross deployment min" }
+variable "xtcross-constraint-placement" { description = "xtcross placement constraint type" }
+variable "xtcross-constraint-expression" { description = "xtcross placement constraint expression" }
+variable "xtcross-healthcheck-grace" { description = "xtcross health check grace period" }
+variable "xtcross-network-mode" { description = "xtcross network mode" }
+variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn" }
+variable "xtcross-domain-name" { description = "xtcross domain name" }
+variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
 
 ####################### RESOURCE
 
-data "aws_efs_file_system" "xotocross-fs" {
+data "aws_efs_file_system" "xtcross-fs" {
   tags = {
-    Name = "${var.xotocross-cluster-name}-fs"
+    Name = "${var.xtcross-cluster-name}-fs"
   }
 }
 
-resource "aws_efs_access_point" "xotocross-accesspoint" {
-  file_system_id = data.aws_efs_file_system.xotocross-fs.id
+resource "aws_efs_access_point" "xtcross-accesspoint" {
+  file_system_id = data.aws_efs_file_system.xtcross-fs.id
   root_directory {
     creation_info {
       owner_gid = 0
       owner_uid = 0
       permissions = 755
     }
-    path = "/${var.xotocross-service-name}"
+    path = "/${var.xtcross-service-name}"
   }
   posix_user {
     gid = 0
@@ -44,22 +44,22 @@ resource "aws_efs_access_point" "xotocross-accesspoint" {
   }
 }
 
-resource "aws_ecs_task_definition" "xotocross-task-definition" {
-  family = var.xotocross-task-family
-  container_definitions = jsonencode(var.xotocross-container-definition)
-  execution_role_arn = var.xotocross-execution-role-arn
-  task_role_arn = var.xotocross-task-role-arn
-  network_mode = var.xotocross-network-mode
+resource "aws_ecs_task_definition" "xtcross-task-definition" {
+  family = var.xtcross-task-family
+  container_definitions = jsonencode(var.xtcross-container-definition)
+  execution_role_arn = var.xtcross-execution-role-arn
+  task_role_arn = var.xtcross-task-role-arn
+  network_mode = var.xtcross-network-mode
   requires_compatibilities = ["EC2"]
 
   volume {
-    name = "${var.xotocross-service-name}-volume"
+    name = "${var.xtcross-service-name}-volume"
     efs_volume_configuration {
-      file_system_id = data.aws_efs_file_system.xotocross-fs.id
+      file_system_id = data.aws_efs_file_system.xtcross-fs.id
       transit_encryption = "ENABLED"
 
       authorization_config {
-        access_point_id = aws_efs_access_point.xotocross-accesspoint.id
+        access_point_id = aws_efs_access_point.xtcross-accesspoint.id
         iam = "ENABLED"
       }
     }
@@ -67,13 +67,13 @@ resource "aws_ecs_task_definition" "xotocross-task-definition" {
 
 }
 
-resource "aws_ecs_service" "xotocross-service" {
-  name = "xotocross-${var.xotocross-service-name}-${var.environment}-service"
-  cluster = var.xotocross-cluster-name
-  task_definition = aws_ecs_task_definition.xotocross-task-definition.arn
-  deployment_maximum_percent = var.xotocross-deployment-max
-  deployment_minimum_healthy_percent = var.xotocross-deployment-min
-  desired_count = var.xotocross-desired-count
+resource "aws_ecs_service" "xtcross-service" {
+  name = "xtcross-${var.xtcross-service-name}-${var.environment}-service"
+  cluster = var.xtcross-cluster-name
+  task_definition = aws_ecs_task_definition.xtcross-task-definition.arn
+  deployment_maximum_percent = var.xtcross-deployment-max
+  deployment_minimum_healthy_percent = var.xtcross-deployment-min
+  desired_count = var.xtcross-desired-count
   launch_type = "EC2"
 
   deployment_controller {
@@ -81,13 +81,13 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   dynamic "load_balancer" {
-    for_each = range(0, length(var.xotocross-listener-hostlist))
+    for_each = range(0, length(var.xtcross-listener-hostlist))
     iterator = count
 
     content {
-      target_group_arn = var.xotocross-targetgroup-arnlist[count.value]
-      container_name = var.xotocross-container-definition[count.value].name
-      container_port = var.xotocross-container-port[count.value]
+      target_group_arn = var.xtcross-targetgroup-arnlist[count.value]
+      container_name = var.xtcross-container-definition[count.value].name
+      container_port = var.xtcross-container-port[count.value]
     }
   }
 
@@ -97,12 +97,12 @@ resource "aws_ecs_service" "xotocross-service" {
   }
 
   placement_constraints {
-    type = var.xotocross-constraint-placement
-    expression = var.xotocross-constraint-expression
+    type = var.xtcross-constraint-placement
+    expression = var.xtcross-constraint-expression
   }
 
   enable_ecs_managed_tags = false
   propagate_tags = "SERVICE"
   enable_execute_command = false
-  health_check_grace_period_seconds = var.xotocross-healthcheck-grace
+  health_check_grace_period_seconds = var.xtcross-healthcheck-grace
 }

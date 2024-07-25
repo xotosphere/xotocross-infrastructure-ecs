@@ -1,31 +1,31 @@
 ####################### LOCAL
 
 locals {
-  xotocross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
-    xotocross-container-name = "xotocross-${var.xotocross-service-name}-fluentbit"
-    xotocross-container-image = "ghcr.io/xotosphere/fluentbit:latest"
-    xotocross-container-cpu = 0
-    xotocross-container-memory = 256
-    xotocross-container-essential = false
-    xotocross-container-portmap = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" },{ containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
-    xotocross-container-environment = jsonencode([
+  xtcross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
+    xtcross-container-name = "xtcross-${var.xtcross-service-name}-fluentbit"
+    xtcross-container-image = "ghcr.io/xotosphere/fluentbit:latest"
+    xtcross-container-cpu = 0
+    xtcross-container-memory = 256
+    xtcross-container-essential = false
+    xtcross-container-portmap = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" },{ containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
+    xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "LOKI_HOST", value = var.environment == "production" ? "loki.${var.xotocross-domain-name}.com" : "loki.monitor.${var.environment}.${var.xotocross-domain-name}.com" },
+      { name = "LOKI_HOST", value = var.environment == "production" ? "loki.${var.xtcross-domain-name}.com" : "loki.monitor.${var.environment}.${var.xtcross-domain-name}.com" },
       { name = "LOKI_PORT", value = "80" },
-      { name = "COST_PROJECT_NAME", value = var.xotocross-service-name },
-      { name = "COST_PROJECT_VERSION", value = var.xotocross-service-version },
+      { name = "COST_PROJECT_NAME", value = var.xtcross-service-name },
+      { name = "COST_PROJECT_VERSION", value = var.xtcross-service-version },
       { name = "FLB_LOG_LEVEL", value = "debug" },
       { name = "AWS_REGION", value = var.region },
-      { name = "LOG_GROUP", value = "/aws/ecs/xotocross-${var.xotocross-service-name}-${var.environment}-log" },
+      { name = "LOG_GROUP", value = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log" },
     ])
-    xotocross-container-loggroup = "/aws/ecs/xotocross-${var.xotocross-service-name}-${var.environment}-log"
-    xotocross-container-region = var.region
-    xotocross-container-command = jsonencode([])
-    xotocross-container-dependency = jsonencode([])
-    xotocross-container-entrypoint = jsonencode([])
-    xotocross-container-healthcheck = "null"
+    xtcross-container-loggroup = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log"
+    xtcross-container-region = var.region
+    xtcross-container-command = jsonencode([])
+    xtcross-container-dependency = jsonencode([])
+    xtcross-container-entrypoint = jsonencode([])
+    xtcross-container-healthcheck = "null"
 
-    xotocross-container-firelensconfiguration = jsonencode({
+    xtcross-container-firelensconfiguration = jsonencode({
       type = "fluentbit",
       options = {
         config-file-type = "file",
@@ -34,9 +34,9 @@ locals {
     })
   }))
 
-  xotocross-container-definition = concat(var.xotocross-container-definition, var.xotocross-enable-monitor ? [local.xotocross-container-fluentbit] : [])
-  xotocross-healthcheck-pathlist = concat(var.xotocross-healthcheck-pathlist, var.xotocross-enable-monitor ? ["/api/v1/health"] : [])
-  xotocross-listener-hostlist = concat(var.xotocross-listener-hostlist, var.xotocross-enable-monitor ? ["fluentbit.${var.xotocross-service-name}.${var.environment}.${var.xotocross-domain-name}.com"] : [])
-  xotocross-container-portlist = concat(var.xotocross-container-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
-  xotocross-host-portlist = concat(var.xotocross-host-portlist, var.xotocross-enable-monitor ? [2020, 24224] : [])
+  xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [])
+  xtcross-healthcheck-pathlist = concat(var.xtcross-healthcheck-pathlist, var.xtcross-enable-monitor ? ["/api/v1/health"] : [])
+  xtcross-listener-hostlist = concat(var.xtcross-listener-hostlist, var.xtcross-enable-monitor ? ["fluentbit.${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [])
+  xtcross-container-portlist = concat(var.xtcross-container-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
+  xtcross-host-portlist = concat(var.xtcross-host-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
 }

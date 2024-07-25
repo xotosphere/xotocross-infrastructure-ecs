@@ -45,7 +45,7 @@ terraform.rc
 .ionide
 **/.terraform
 **/.terraform.lock.hcl
-**/xotocross-scheduletask-layer.zip
+**/xtcross-scheduletask-layer.zip
 **/nodejs
 id_rsa
 builds

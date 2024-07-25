@@ -1,31 +1,31 @@
 ####################### DATA
 
-data "aws_lambda_layer_version" "xotocross-cross-layer" {
-  layer_name = "xotocross-cross-layer" 
+data "aws_lambda_layer_version" "xtcross-cross-layer" {
+  layer_name = "xtcross-cross-layer" 
 }
 
-data "aws_sns_topic" "xotocross-cloudwatch-sns" {
-  name = "xotocross-${var.environment}-sns"
+data "aws_sns_topic" "xtcross-cloudwatch-sns" {
+  name = "xtcross-${var.environment}-sns"
 }
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment" }
-variable "xotocross-task-count" { description = "xotocross task count" }
-variable "xotocross-service-name" { description = "xotocross name of the service" }
-variable "xotocross-function-name" { description = "xotocross name of the function" }
-variable "xotocross-lambda-role-arn" { description = "xotocross arn of the lambda policy function" }
+variable "environment" { description = "xtcross environment" }
+variable "xtcross-task-count" { description = "xtcross task count" }
+variable "xtcross-service-name" { description = "xtcross name of the service" }
+variable "xtcross-function-name" { description = "xtcross name of the function" }
+variable "xtcross-lambda-role-arn" { description = "xtcross arn of the lambda policy function" }
 
 ####################### MODULE
 
-module "xotocross-scheduletask" {
+module "xtcross-scheduletask" {
   source = "terraform-aws-modules/lambda/aws"
-  function_name = var.xotocross-function-name
+  function_name = var.xtcross-function-name
   handler = "lambda.handler"
   runtime = "nodejs20.x"
   
   layers = [
-    data.aws_lambda_layer_version.xotocross-cross-layer.arn
+    data.aws_lambda_layer_version.xtcross-cross-layer.arn
   ]
   
   source_path = [
@@ -43,46 +43,46 @@ module "xotocross-scheduletask" {
   }
 
   create_role = false
-  lambda_role = var.xotocross-lambda-role-arn
+  lambda_role = var.xtcross-lambda-role-arn
 }
 
 ####################### RESOURCE
 
-resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-stop-rule" {
-  name = "${var.xotocross-function-name}-stop-rule"
+resource "aws_cloudwatch_event_rule" "xtcross-scheduletask-stop-rule" {
+  name = "${var.xtcross-function-name}-stop-rule"
   schedule_expression = "cron(0 22 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "xotocross-scheduletask-stop-target" {
-  rule = aws_cloudwatch_event_rule.xotocross-scheduletask-stop-rule.name
-  target_id = "${var.xotocross-function-name}-stop-resources"
-  arn = module.xotocross-scheduletask.lambda_function_arn
+resource "aws_cloudwatch_event_target" "xtcross-scheduletask-stop-target" {
+  rule = aws_cloudwatch_event_rule.xtcross-scheduletask-stop-rule.name
+  target_id = "${var.xtcross-function-name}-stop-resources"
+  arn = module.xtcross-scheduletask.lambda_function_arn
 
   input = jsonencode({
-    serviceName = var.xotocross-service-name,
-    taskCount = var.xotocross-task-count,
+    serviceName = var.xtcross-service-name,
+    taskCount = var.xtcross-task-count,
     action = "stop"
   })
 }
 
-resource "aws_cloudwatch_event_rule" "xotocross-scheduletask-start-rule" {
-  name = "${var.xotocross-function-name}-start-rule"
+resource "aws_cloudwatch_event_rule" "xtcross-scheduletask-start-rule" {
+  name = "${var.xtcross-function-name}-start-rule"
   schedule_expression = "cron(0 6 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "xotocross-scheduletask-start-target" {
-  rule = aws_cloudwatch_event_rule.xotocross-scheduletask-start-rule.name
-  target_id = "${var.xotocross-function-name}-start-resources"
-  arn = module.xotocross-scheduletask.lambda_function_arn
+resource "aws_cloudwatch_event_target" "xtcross-scheduletask-start-target" {
+  rule = aws_cloudwatch_event_rule.xtcross-scheduletask-start-rule.name
+  target_id = "${var.xtcross-function-name}-start-resources"
+  arn = module.xtcross-scheduletask.lambda_function_arn
   input = jsonencode({
-    serviceName = var.xotocross-service-name,
-    taskCount = var.xotocross-task-count,
+    serviceName = var.xtcross-service-name,
+    taskCount = var.xtcross-task-count,
     action = "start"
   })
 }
 
-resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
-  alarm_name = "${var.xotocross-function-name}-alarm"
+resource "aws_cloudwatch_metric_alarm" "xtcross-scheduletask-alarm" {
+  alarm_name = "${var.xtcross-function-name}-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods = "2"
   metric_name = "Errors"
@@ -90,13 +90,13 @@ resource "aws_cloudwatch_metric_alarm" "xotocross-scheduletask-alarm" {
   period = "300"
   statistic = "SampleCount"
   threshold = "1"
-  alarm_description = "xotocross metric checks if there are any errors from the lambda function"
-  alarm_actions = [data.aws_sns_topic.xotocross-cloudwatch-sns.arn]
+  alarm_description = "xtcross metric checks if there are any errors from the lambda function"
+  alarm_actions = [data.aws_sns_topic.xtcross-cloudwatch-sns.arn]
   dimensions = {
-    FunctionName = var.xotocross-function-name
+    FunctionName = var.xtcross-function-name
   }
   tags = {
-    Name = "${var.xotocross-function-name}-alarm"
+    Name = "${var.xtcross-function-name}-alarm"
     environment = var.environment
   }
 }
