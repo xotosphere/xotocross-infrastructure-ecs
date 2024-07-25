@@ -150,11 +150,12 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener-200" {
+  count             = data.external.certificate.result.arn == "" ? 1 : 2
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = data.external.certificate.result.arn == "" ? 80 : 443
-  protocol          = data.external.certificate.result.arn == "" ? "HTTP" : "HTTPS"
+  port              = count.index == 1 ? 80 : 443
+  protocol          = count.index == 1 ? "HTTP" : "HTTPS"
 
-  certificate_arn = data.external.certificate.result.arn == "" ? null : data.external.certificate.result.arn
+  certificate_arn = count.index == 1 ? null : data.external.certificate.result.arn
 
   default_action {
     type = "fixed-response"
@@ -195,9 +196,10 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 # }
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
+  count    = data.external.certificate.result.arn == "" ? 1 : 2
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
+  listener_arn = aws_lb_listener.xtcross-http-listener-200[count.index].arn
 
   action {
     type             = "forward"
