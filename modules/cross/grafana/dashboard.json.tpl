@@ -105,7 +105,7 @@
 							"viz": false
 						}
 					},
-					"displayName": "$${__field.labels.method}",
+					"displayName": "{__field.labels.method}",
 					"mappings": []
 				},
 				"overrides": []
@@ -170,7 +170,7 @@
 							"viz": false
 						}
 					},
-					"displayName": "$${__field.labels.method}",
+					"displayName": "{__field.labels.method}",
 					"mappings": []
 				},
 				"overrides": []
@@ -367,7 +367,7 @@
 							"viz": false
 						}
 					},
-					"displayName": "$$${__field.labels.path}",
+					"displayName": "${__field.labels.path}",
 					"mappings": []
 				},
 				"overrides": []
