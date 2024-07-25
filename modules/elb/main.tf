@@ -44,7 +44,7 @@ variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for 
 
 data "external" "certificate" {
   # program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"xotosphere.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn $arn '{\"arn\": $arn}'"]
-  program = ["bash", "-c", "jq --arg arn $arn '{\"arn\": \"\"}'"]
+  program = ["bash", "-c", "jq --arg arn \"\" '{\"arn\": $arn}'"]
 }
 
 ####################### RESOURCE
