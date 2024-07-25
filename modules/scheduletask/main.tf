@@ -10,7 +10,7 @@ data "aws_sns_topic" "xotocross-cloudwatch-sns" {
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
+variable "environment" { description = "xotocross environment" }
 variable "xotocross-task-count" { description = "xotocross task count" }
 variable "xotocross-service-name" { description = "xotocross name of the service" }
 variable "xotocross-function-name" { description = "xotocross name of the function" }

@@ -22,7 +22,7 @@ output "xotocross-loadbalaner-zone-id" {
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
+variable "environment" { description = "xotocross environment" }
 variable "region" { description = "xotocross region" }
 variable "xotocross-loadbalaner-name" { description = "xotocross name of the alb" }
 variable "xotocross-public-subnetlist" { description = "xotocross list of public subnet ids to place the alb in" }

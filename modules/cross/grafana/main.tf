@@ -10,13 +10,13 @@ terraform {
 }
 
 provider "grafana" {
-  url  = var.environment == "prod" ? "http://grafana.${var.xotocross-domain-name}.com" : "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}.com"
+  url  = var.environment == "production" ? "http://grafana.${var.xotocross-domain-name}.com" : "http://grafana.monitor.${var.environment}.${var.xotocross-domain-name}.com"
   auth = "${var.xotocross-username}:${var.xotocross-password}"
 }
 
 ####################### VARIABLE
 
-variable "environment" { description = "xotocross environment (e.g. dev, stage, prod, infra)" }
+variable "environment" { description = "xotocross environment" }
 variable "xotocross-service-name" { description = "xotocross the name of the xotocross service" }
 variable "xotocross-domain-name" { description = "xotocross domain name" }
 variable "xotocross-password" { description = "xotocross password" }
