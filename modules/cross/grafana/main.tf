@@ -42,12 +42,13 @@ locals {
   })
 }
 
+resource "local_file" "foo" {
+  content  = local.dashboard_json
+  filename = "${path.module}/dashboard_output.json"
+}
+
 resource "grafana_dashboard" "xtcross-service-dashboard" {
   config_json = local.dashboard_json
   overwrite   = true
 }
 
-resource "local_file" "foo" {
-  content  = local.dashboard_json
-  filename = "${path.module}/dashboard_output.json"
-}
