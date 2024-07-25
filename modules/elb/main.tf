@@ -120,9 +120,8 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = var.xtcross-listener-portlist[each.value]
-  certificate_arn   = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
-  protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
-
+  certificate_arn   = try(data.external.certificate.result["arn"], null)
+  protocol          = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
   # default_action {
   #   type = "authenticate-cognito"
   #   authenticate_cognito {
@@ -148,11 +147,14 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener-200" {
+
+
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = 80
-  protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
-
-  certificate_arn = data.external.certificate.result["arn"] == "" ? null : data.external.certificate.result["arn"]
+  # protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+  # certificate_arn   = try(data.external.certificate.result["arn"], null)
+  protocol        = try(data.external.certificate.result["arn"], "") == "" ? "HTTP" : "HTTPS"
+  certificate_arn = try(data.external.certificate.result["arn"], null)
 
   default_action {
     type = "fixed-response"
