@@ -150,12 +150,11 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener-200" {
-  count             = data.external.certificate.result.arn == "" ? 1 : 2
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = count.index == 1 ? 80 : 443
-  protocol          = count.index == 1 ? "HTTP" : "HTTPS"
+  port              = data.external.certificate.result.arn == "" ? "HTTP" : "HTTPS"
+  protocol          = data.external.certificate.result.arn == "" ? "HTTP" : "HTTPS"
 
-  certificate_arn = count.index == 1 ? null : data.external.certificate.result.arn
+  certificate_arn = data.external.certificate.result.arn == "" ? null : data.external.certificate.result.arn
 
   default_action {
     type = "fixed-response"
@@ -196,9 +195,9 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 # }
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
-  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist) * 2) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xtcross-http-listener-200[each.value >= length(var.xtcross-listener-hostlist) ? 0 : 1].arn
+  listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
 
   action {
     type             = "forward"
@@ -207,7 +206,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
 
   condition {
     host_header {
-      values = [var.xtcross-listener-hostlist[each.value % length(var.xtcross-listener-hostlist)]]
+      values = [var.xtcross-listener-hostlist[each.value]]
     }
   }
   lifecycle {
@@ -216,11 +215,11 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup" {
-  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist) * 2) : tostring(idx)])
+  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
   name     = "${var.xtcross-targetgroup-name}-${each.value}"
-  port     = var.xtcross-host-portlist[each.value % length(var.xtcross-listener-hostlist)]
-  protocol = each.value >= length(var.xtcross-listener-hostlist) ? "HTTP" : "HTTPS"
+  port     = var.xtcross-host-portlist[each.value]
+  protocol = data.external.certificate.result.arn == "" ? "HTTP" : "HTTPS"
 
   target_type                   = var.xtcross-target-type
   vpc_id                        = var.xtcross-vpc-id
@@ -232,7 +231,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     unhealthy_threshold = var.xtcross-unhealthy-threshhold
     interval            = var.xtcross-healthcheck-interval
     matcher             = "200"
-    path                = var.xtcross-healthcheck-pathlist[each.value % length(var.xtcross-listener-hostlist)]
+    path                = var.xtcross-healthcheck-pathlist[each.value]
     port                = "traffic-port"
     protocol            = data.external.certificate.result.arn == "" ? "HTTP" : "HTTPS"
 
