@@ -430,7 +430,7 @@
 		{
 			"datasource": {
 				"type": "loki",
-				"uid": "P8E80F9AEF21F6940"
+				"uid": "Loki"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -2186,7 +2186,7 @@
 		{
 			"datasource": {
 				"type": "prometheus",
-				"uid": "PBFA97CFB590B2093"
+				"uid": "Prometheus"
 			},
 			"description": "xtcross basic memory usage",
 			"fieldConfig": {
