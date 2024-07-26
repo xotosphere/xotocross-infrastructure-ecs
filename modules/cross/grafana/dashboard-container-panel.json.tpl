@@ -5,7 +5,7 @@
     },
     "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 12
     },
     "options": {
         "dedupStrategy": "none",

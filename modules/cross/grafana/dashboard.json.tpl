@@ -106,7 +106,7 @@
 						}
 					},
 					"mappings": [],
-					"displayName": "${__field.labels.method}",
+					"displayName": "$${__field.labels.method}"
 				},
 				"overrides": []
 			},
@@ -227,7 +227,7 @@
 						"mode": "thresholds"
 					},
 					"mappings": [],
-					"displayName": "${__field.labels.method}",
+					"displayName": "$${__field.labels.method}",
 					"thresholds": {
 						"mode": "absolute",
 						"steps": [
@@ -419,6 +419,7 @@
 				"uid": "Loki"
 			},
 			"fieldConfig": {
+				"displayName": "$${__field.labels.path}",
 				"defaults": {
 					"color": {
 						"mode": "thresholds"
@@ -427,7 +428,6 @@
 						"neutral": -1
 					},
 					"mappings": [],
-					"displayName": "${__field.labels.path}",
 					"thresholds": {
 						"mode": "absolute",
 						"steps": [
