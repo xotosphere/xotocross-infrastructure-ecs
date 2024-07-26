@@ -21,15 +21,31 @@ variable "xtcross-service-name" { description = "xtcross the name of the xtcross
 variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-password" { description = "xtcross password" }
 variable "xtcross-username" { description = "xtcross username" }
+variable "container_name_list" { description = "xtcross list of container names" }
 
 ####################### RESOURCE
 
-resource "grafana_dashboard" "xtcross-service-dashboard" {
-  config_json = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xtcross-service-name, environment = var.environment })
-  overwrite   = true
+locals {
+  dashboard_container_panel_list = [
+    for container_name in var.container_name_list : jsondecode(templatefile("${path.module}/dashboard-container-panel.json.tpl", {
+      cost_project   = var.xtcross-service-name,
+      container_name = container_name
+    }))
+  ]
+  dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
+    cost_project                   = var.xtcross-service-name,
+    environment                    = var.environment,
+    dashboard_container_panel_list = trim(jsonencode(local.dashboard_container_panel_list), "[]")
+  })
 }
 
 resource "local_file" "foo" {
-  content  = templatefile("${path.module}/dashboard.json.tpl", { cost_project = var.xtcross-service-name, environment = var.environment })
+  content  = local.dashboard_json
   filename = "${path.module}/dashboard_output.json"
 }
+
+resource "grafana_dashboard" "xtcross-service-dashboard" {
+  config_json = local.dashboard_json
+  overwrite   = true
+}
+
