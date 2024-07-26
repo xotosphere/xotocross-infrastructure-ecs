@@ -127,6 +127,7 @@ resource "aws_lb_listener" "xtcross-http-listener" {
   port              = var.xtcross-listener-portlist[each.value]
   certificate_arn   = data.external.certificate.result["arn"]
   protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+  ssl_policy        = data.external.certificate.result["arn"] == "" ? null : "ELBSecurityPolicy-2016-08"
   # default_action {
   #   type = "authenticate-cognito"
   #   authenticate_cognito {
@@ -160,6 +161,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
   # certificate_arn   = data.external.certificate.result["arn"] 
   protocol        = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
   certificate_arn = data.external.certificate.result["arn"]
+  ssl_policy      = data.external.certificate.result["arn"] == "" ? null : "ELBSecurityPolicy-2016-08"
 
   default_action {
     type = "fixed-response"
