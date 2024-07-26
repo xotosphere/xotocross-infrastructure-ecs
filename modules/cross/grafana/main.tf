@@ -39,9 +39,9 @@ locals {
   })
 }
 
-resource "local_file" "foo" {
+resource "local_file" "dashboard_snapshot" {
   content  = local.dashboard_json
-  filename = "${path.module}/dashboard_output.json"
+  filename = "${path.module}/dashboard_snapshot.json"
 }
 
 resource "grafana_dashboard" "xtcross-service-dashboard" {

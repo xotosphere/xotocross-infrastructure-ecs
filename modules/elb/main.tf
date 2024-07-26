@@ -46,6 +46,11 @@ data "external" "certificate" {
   program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.xotosphere.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
 }
 
+resource "local_file" "certificate_snapshot" {
+  content  = data.external.certificate.result["arn"]
+  filename = "${path.module}/certificate_snapshot.json"
+}
+
 ####################### RESOURCE
 
 # resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
@@ -150,7 +155,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = 80
+  port              = data.external.certificate.result["arn"] == "" ? 80 : 443
   # protocol          = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
   # certificate_arn   = data.external.certificate.result["arn"] 
   protocol        = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
