@@ -18,7 +18,7 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 2,
+	"id": 14,
 	"links": [],
 	"liveNow": false,
 	"panels": [
@@ -35,14 +35,14 @@
 			"title": "Traffic",
 			"type": "row"
 		},
-		${dashboard_container_panel_list},
+		${dashboard_container_panel_list},		
 		{
 			"collapsed": false,
 			"gridPos": {
 				"h": 1,
 				"w": 24,
 				"x": 0,
-				"y": 9
+				"y": 17
 			},
 			"id": 269,
 			"panels": [],
@@ -58,7 +58,7 @@
 				"h": 5,
 				"w": 24,
 				"x": 0,
-				"y": 10
+				"y": 18
 			},
 			"id": 265,
 			"options": {
@@ -105,8 +105,8 @@
 							"viz": false
 						}
 					},
-					"mappings": [],
-					"displayName": "$${__field.labels.method}"
+					"displayName": "${__field.labels.method}",
+					"mappings": []
 				},
 				"overrides": []
 			},
@@ -114,7 +114,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 0,
-				"y": 15
+				"y": 23
 			},
 			"id": 272,
 			"options": {
@@ -170,6 +170,7 @@
 							"viz": false
 						}
 					},
+					"displayName": "${__field.labels.method}",
 					"mappings": []
 				},
 				"overrides": []
@@ -178,7 +179,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 6,
-				"y": 15
+				"y": 23
 			},
 			"id": 267,
 			"options": {
@@ -226,8 +227,8 @@
 					"color": {
 						"mode": "thresholds"
 					},
+					"displayName": "${__field.labels.method}",
 					"mappings": [],
-					"displayName": "$${__field.labels.method}",
 					"thresholds": {
 						"mode": "absolute",
 						"steps": [
@@ -248,7 +249,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 12,
-				"y": 15
+				"y": 23
 			},
 			"id": 274,
 			"options": {
@@ -319,7 +320,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 18,
-				"y": 15
+				"y": 23
 			},
 			"id": 273,
 			"options": {
@@ -367,6 +368,7 @@
 							"viz": false
 						}
 					},
+					"displayName": "${__field.labels.path}",
 					"mappings": []
 				},
 				"overrides": []
@@ -375,7 +377,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 0,
-				"y": 22
+				"y": 30
 			},
 			"id": 276,
 			"options": {
@@ -419,7 +421,6 @@
 				"uid": "Loki"
 			},
 			"fieldConfig": {
-				"displayName": "$${__field.labels.path}",
 				"defaults": {
 					"color": {
 						"mode": "thresholds"
@@ -452,7 +453,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 12,
-				"y": 22
+				"y": 30
 			},
 			"id": 271,
 			"options": {
@@ -522,7 +523,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 18,
-				"y": 22
+				"y": 30
 			},
 			"id": 266,
 			"options": {
@@ -563,7 +564,7 @@
 				"h": 1,
 				"w": 24,
 				"x": 0,
-				"y": 29
+				"y": 37
 			},
 			"id": 261,
 			"panels": [],
@@ -647,7 +648,7 @@
 				"h": 7,
 				"w": 24,
 				"x": 0,
-				"y": 30
+				"y": 38
 			},
 			"id": 62,
 			"links": [],
@@ -834,7 +835,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 0,
-				"y": 37
+				"y": 45
 			},
 			"id": 60,
 			"links": [],
@@ -1310,7 +1311,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 12,
-				"y": 37
+				"y": 45
 			},
 			"id": 74,
 			"links": [],
@@ -1754,7 +1755,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 0,
-				"y": 44
+				"y": 52
 			},
 			"id": 270,
 			"links": [],
@@ -1897,7 +1898,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 44
+				"y": 52
 			},
 			"id": 14,
 			"links": [],
@@ -1985,7 +1986,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 18,
-				"y": 44
+				"y": 52
 			},
 			"hideTimeOverride": true,
 			"id": 15,
@@ -2072,7 +2073,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 49
+				"y": 57
 			},
 			"id": 75,
 			"links": [],
@@ -2483,7 +2484,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 0,
-				"y": 54
+				"y": 62
 			},
 			"id": 78,
 			"links": [],
@@ -2603,7 +2604,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 54
+				"y": 62
 			},
 			"id": 20,
 			"links": [],
@@ -2685,7 +2686,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 54
+				"y": 62
 			},
 			"id": 155,
 			"links": [],
@@ -3070,7 +3071,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 12,
-				"y": 54
+				"y": 62
 			},
 			"id": 77,
 			"links": [],
@@ -3210,7 +3211,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 59
+				"y": 67
 			},
 			"hideTimeOverride": false,
 			"id": 16,
@@ -3305,7 +3306,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 59
+				"y": 67
 			},
 			"id": 19,
 			"links": [],
@@ -3377,8 +3378,8 @@
 			{
 				"current": {
 					"selected": false,
-					"text": "172.31.0.61:2020",
-					"value": "172.31.0.61:2020"
+					"text": "172.31.0.62:2020",
+					"value": "172.31.0.62:2020"
 				},
 				"datasource": {
 					"type": "prometheus",
@@ -3447,5 +3448,7 @@
 		"time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 	},
 	"timezone": "browser",
-	"title": "xotocross logs : ${cost_project} - ${environment}"
+	"title": "xotocross logs : ${cost_project} - ${environment}",
+	"version": 2,
+	"weekStart": ""
 }
