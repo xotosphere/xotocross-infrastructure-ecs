@@ -22,13 +22,13 @@ resource "aws_route53_record" "xtcross-service-record" {
   records = [var.xtcross-loadbalaner-name]
 }
 
-resource "aws_route53_record" "xtcross-wildcard-record" {
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = var.environment == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.xtcross-subdomain-name}.${var.environment}.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [var.xtcross-loadbalaner-name]
-}
+# resource "aws_route53_record" "xtcross-wildcard-record" {
+#   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
+#   name    = var.environment == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.xtcross-subdomain-name}.${var.environment}.${var.xtcross-domain-name}.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [var.xtcross-loadbalaner-name]
+# }
 
 # resource "aws_route53_record" "xtcross-cognito-record" {
 #   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
@@ -49,10 +49,10 @@ resource "aws_route53_record" "xtcross-wildcard-record" {
 #   records = [var.xtcross-loadbalaner-name]
 # }
 
-resource "aws_route53_record" "xtcross-cognito-record" {
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "authorizer.${var.xtcross-subdomain-name}.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [var.xtcross-loadbalaner-name]
-}
+# resource "aws_route53_record" "xtcross-cognito-record" {
+#   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
+#   name    = "authorizer.${var.xtcross-subdomain-name}.${var.xtcross-domain-name}.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [var.xtcross-loadbalaner-name]
+# }
