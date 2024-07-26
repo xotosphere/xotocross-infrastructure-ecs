@@ -5,8 +5,11 @@
     },
     "gridPos": {
         "h": 8,
-        "w": 12
+        "w": 12,
+        "x": 0,
+        "y": 1
     },
+    "id": 277,
     "options": {
         "dedupStrategy": "none",
         "enableLogDetails": true,
