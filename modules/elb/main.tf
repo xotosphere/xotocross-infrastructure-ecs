@@ -126,8 +126,8 @@ resource "aws_lb_listener" "xtcross-http-listener" {
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = var.xtcross-listener-portlist[each.value]
   certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
-  protocol          = data.external.certificate.result["arn"] != "" || var.environment == "production" ? "HTTPS" : "HTTP"
-  ssl_policy        = data.external.certificate.result["arn"] != "" || var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
+  protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
+  ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
   # default_action {
   #   type = "authenticate-cognito"
   #   authenticate_cognito {
@@ -156,10 +156,10 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = data.external.certificate.result["arn"] != "" || var.environment == "production" ? 443 : 80 
+  port              = data.external.certificate.result["arn"] != "" && var.environment == "production" ? 443 : 80 
   certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
-  protocol          = data.external.certificate.result["arn"] != "" || var.environment == "production" ? "HTTPS" : "HTTP"
-  ssl_policy        = data.external.certificate.result["arn"] != "" || var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
+  protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
+  ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
 
   default_action {
     type = "fixed-response"
