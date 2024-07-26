@@ -155,7 +155,7 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 resource "aws_lb_listener" "xtcross-http-listener-200" {
 
 
-  load_balancer_arn = aws_lb.xtcross-loadbalaner.ar
+  load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = data.external.certificate.result["arn"] != "" || var.environment == "production" ? 443 : 80 
   certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
   protocol          = data.external.certificate.result["arn"] != "" || var.environment == "production" ? "HTTPS" : "HTTP"
