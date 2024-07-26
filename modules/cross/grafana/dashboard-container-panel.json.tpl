@@ -4,12 +4,9 @@
         "uid": "Loki"
     },
     "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 1
+        "h": 8,
+        "w": 12,
     },
-    "id": 264,
     "options": {
         "dedupStrategy": "none",
         "enableLogDetails": true,
