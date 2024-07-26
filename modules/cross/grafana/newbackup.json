@@ -18,7 +18,7 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 2,
+	"id": 14,
 	"links": [],
 	"liveNow": false,
 	"panels": [
@@ -42,11 +42,11 @@
 			},
 			"gridPos": {
 				"h": 8,
-				"w": 11,
+				"w": 24,
 				"x": 0,
 				"y": 1
 			},
-			"id": 264,
+			"id": 277,
 			"options": {
 				"dedupStrategy": "none",
 				"enableLogDetails": true,
@@ -81,11 +81,11 @@
 			},
 			"gridPos": {
 				"h": 8,
-				"w": 13,
-				"x": 11,
-				"y": 1
+				"w": 24,
+				"x": 0,
+				"y": 9
 			},
-			"id": 277,
+			"id": 278,
 			"options": {
 				"dedupStrategy": "none",
 				"enableLogDetails": true,
@@ -119,7 +119,7 @@
 				"h": 1,
 				"w": 24,
 				"x": 0,
-				"y": 9
+				"y": 17
 			},
 			"id": 269,
 			"panels": [],
@@ -135,7 +135,7 @@
 				"h": 5,
 				"w": 24,
 				"x": 0,
-				"y": 10
+				"y": 18
 			},
 			"id": 265,
 			"options": {
@@ -182,6 +182,7 @@
 							"viz": false
 						}
 					},
+					"displayName": "${__field.labels.method}",
 					"mappings": []
 				},
 				"overrides": []
@@ -190,7 +191,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 0,
-				"y": 15
+				"y": 23
 			},
 			"id": 272,
 			"options": {
@@ -246,6 +247,7 @@
 							"viz": false
 						}
 					},
+					"displayName": "${__field.labels.method}",
 					"mappings": []
 				},
 				"overrides": []
@@ -254,7 +256,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 6,
-				"y": 15
+				"y": 23
 			},
 			"id": 267,
 			"options": {
@@ -302,6 +304,7 @@
 					"color": {
 						"mode": "thresholds"
 					},
+					"displayName": "${__field.labels.method}",
 					"mappings": [],
 					"thresholds": {
 						"mode": "absolute",
@@ -323,7 +326,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 12,
-				"y": 15
+				"y": 23
 			},
 			"id": 274,
 			"options": {
@@ -394,7 +397,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 18,
-				"y": 15
+				"y": 23
 			},
 			"id": 273,
 			"options": {
@@ -442,6 +445,7 @@
 							"viz": false
 						}
 					},
+					"displayName": "${__field.labels.path}",
 					"mappings": []
 				},
 				"overrides": []
@@ -450,7 +454,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 0,
-				"y": 22
+				"y": 30
 			},
 			"id": 276,
 			"options": {
@@ -526,7 +530,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 12,
-				"y": 22
+				"y": 30
 			},
 			"id": 271,
 			"options": {
@@ -596,7 +600,7 @@
 				"h": 7,
 				"w": 6,
 				"x": 18,
-				"y": 22
+				"y": 30
 			},
 			"id": 266,
 			"options": {
@@ -637,7 +641,7 @@
 				"h": 1,
 				"w": 24,
 				"x": 0,
-				"y": 29
+				"y": 37
 			},
 			"id": 261,
 			"panels": [],
@@ -721,7 +725,7 @@
 				"h": 7,
 				"w": 24,
 				"x": 0,
-				"y": 30
+				"y": 38
 			},
 			"id": 62,
 			"links": [],
@@ -908,7 +912,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 0,
-				"y": 37
+				"y": 45
 			},
 			"id": 60,
 			"links": [],
@@ -1384,7 +1388,7 @@
 				"h": 7,
 				"w": 12,
 				"x": 12,
-				"y": 37
+				"y": 45
 			},
 			"id": 74,
 			"links": [],
@@ -1828,7 +1832,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 0,
-				"y": 44
+				"y": 52
 			},
 			"id": 270,
 			"links": [],
@@ -1971,7 +1975,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 44
+				"y": 52
 			},
 			"id": 14,
 			"links": [],
@@ -2059,7 +2063,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 18,
-				"y": 44
+				"y": 52
 			},
 			"hideTimeOverride": true,
 			"id": 15,
@@ -2146,7 +2150,7 @@
 				"h": 5,
 				"w": 6,
 				"x": 12,
-				"y": 49
+				"y": 57
 			},
 			"id": 75,
 			"links": [],
@@ -2557,7 +2561,7 @@
 				"h": 10,
 				"w": 6,
 				"x": 0,
-				"y": 54
+				"y": 62
 			},
 			"id": 78,
 			"links": [],
@@ -2677,7 +2681,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 54
+				"y": 62
 			},
 			"id": 20,
 			"links": [],
@@ -2759,7 +2763,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 54
+				"y": 62
 			},
 			"id": 155,
 			"links": [],
@@ -3144,7 +3148,7 @@
 				"h": 10,
 				"w": 12,
 				"x": 12,
-				"y": 54
+				"y": 62
 			},
 			"id": 77,
 			"links": [],
@@ -3284,7 +3288,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 6,
-				"y": 59
+				"y": 67
 			},
 			"hideTimeOverride": false,
 			"id": 16,
@@ -3379,7 +3383,7 @@
 				"h": 5,
 				"w": 3,
 				"x": 9,
-				"y": 59
+				"y": 67
 			},
 			"id": 19,
 			"links": [],
@@ -3451,8 +3455,8 @@
 			{
 				"current": {
 					"selected": false,
-					"text": "172.31.0.61:2020",
-					"value": "172.31.0.61:2020"
+					"text": "172.31.0.62:2020",
+					"value": "172.31.0.62:2020"
 				},
 				"datasource": {
 					"type": "prometheus",
@@ -3522,7 +3526,7 @@
 	},
 	"timezone": "browser",
 	"title": "xotocross logs : demo - development",
-	"uid": "a688add1-fedf-47f2-9f7d-3caa0dcb0e16",
-	"version": 3,
+	"uid": "bd230669-d9f2-4a54-b311-f502d605c266",
+	"version": 2,
 	"weekStart": ""
 }
