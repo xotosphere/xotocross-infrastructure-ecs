@@ -226,7 +226,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
 
   name     = "${var.xtcross-targetgroup-name}-${each.value}"
   port     = var.xtcross-host-portlist[each.value]
-  protocol = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+  protocol = "HTTP"
 
   target_type                   = var.xtcross-target-type
   vpc_id                        = var.xtcross-vpc-id
@@ -240,7 +240,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     matcher             = "200"
     path                = var.xtcross-healthcheck-pathlist[each.value]
     port                = "traffic-port"
-    protocol            = data.external.certificate.result["arn"] == "" ? "HTTP" : "HTTPS"
+    protocol            = "HTTP"
     timeout             = var.xtcross-healthcheck-timeout
   }
 
