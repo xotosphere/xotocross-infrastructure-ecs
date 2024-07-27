@@ -1,4 +1,4 @@
-####################### OUTPUT
+######################
 
 output "xtcross-loadbalaner-listener-arnlist" {
   value       = { for k in keys(aws_lb_listener.xtcross-http-listener) : k => aws_lb_listener.xtcross-http-listener[k].arn }
@@ -20,7 +20,7 @@ output "xtcross-loadbalaner-zone-id" {
   description = "xtcross zone id of the alb"
 }
 
-####################### VARIABLE
+######################
 
 variable "environment" { description = "xtcross environment" }
 variable "region" { description = "xtcross region" }
@@ -40,7 +40,7 @@ variable "xtcross-healthcheck-pathlist" { description = "xtcross path of the hea
 variable "xtcross-healthcheck-timeout" { description = "xtcross timeout for the health check (in seconds)" }
 variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for the listeners" }
 
-####################### DATA
+######################
 
 data "external" "certificate" {
   program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
@@ -51,56 +51,49 @@ resource "local_file" "certificate_snapshot" {
   filename = "${path.module}/certificate_snapshot.json"
 }
 
-####################### RESOURCE
+######################
 
-# resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
-#   name = "xtcross-${var.environment}-pool"
+resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
+  count = var.environment == "production" ? 1 : 0
+  name = "xtcross-${var.environment}-pool"
 
-#   password_policy {
-#     minimum_length    = 8
-#     require_lowercase = true
-#     require_numbers   = true
-#     require_symbols   = true
-#     require_uppercase = true
-#   }
+  password_policy {
+    minimum_length    = 8
+    require_lowercase = true
+    require_numbers   = true
+    require_symbols   = true
+    require_uppercase = true
+  }
 
-#   mfa_configuration = "ON"
-#   software_token_mfa_configuration {
-#     enabled = true
-#   }
+  mfa_configuration = "ON"
+  software_token_mfa_configuration {
+    enabled = true
+  }
 
-#   account_recovery_setting {
-#     recovery_mechanism {
-#       name     = "verified_email"
-#       priority = 1
-#     }
-#   }
-# }
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+  }
+}
 
-# resource "aws_cognito_user_pool_client" "xtcross-cognito-client" {
-#   name = "xtcross-${var.environment}-client"
+resource "aws_cognito_user_pool_client" "xtcross-cognito-client" {
+  count = var.environment == "production" ? 1 : 0
+  name = "xtcross-${var.environment}-client"
+  user_pool_id = aws_cognito_user_pool.xtcross-cognito-pool.id
+  explicit_auth_flows = [
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+  generate_secret = false
+}
 
-#   user_pool_id = aws_cognito_user_pool.xtcross-cognito-pool.id
-
-#   explicit_auth_flows = [
-#     "ALLOW_USER_PASSWORD_AUTH",
-#     "ALLOW_REFRESH_TOKEN_AUTH"
-#   ]
-
-#   allowed_oauth_flows = ["code", "implicit"]
-#   allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
-
-#   generate_secret = true
-#   callback_urls = ["http://www.example.com/callback"]
-#   logout_urls = ["http://www.example.com/logout"]
-
-#   allowed_oauth_flows_user_pool_client = true
-# }
-
-# resource "aws_cognito_user_pool_domain" "xtcross-cognito-domain" {
-#   domain          = "authorizer.${var.xtcross-subdomain-name}.${var.xtcross-domain-name}.com"
-#   user_pool_id    = aws_cognito_user_pool.xtcross-cognito-pool.id
-# }
+resource "aws_cognito_user_pool_domain" "xtcross-cognito-domain" {
+  count           = var.environment == "production" ? 1 : 0
+  domain          = "authorizer.${var.xtcross-domain-name}.com"
+  user_pool_id    = aws_cognito_user_pool.xtcross-cognito-pool.id
+}
 
 resource "aws_lb" "xtcross-loadbalaner" {
   name                             = var.xtcross-loadbalaner-name
@@ -128,15 +121,7 @@ resource "aws_lb_listener" "xtcross-http-listener" {
   certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
   protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
   ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
-  # default_action {
-  #   type = "authenticate-cognito"
-  #   authenticate_cognito {
-  #     user_pool_client_id = aws_cognito_user_pool_client.xtcross-cognito-client.id
-  #     user_pool_arn       = aws_cognito_user_pool.xtcross-cognito-pool.arn
-  #     user_pool_domain    = aws_cognito_user_pool_domain.xtcross-cognito-domain.domain
-  #   }
-  # }
-
+  
   lifecycle {
     create_before_destroy = true
   }
@@ -153,7 +138,6 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener-200" {
-
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = data.external.certificate.result["arn"] != "" && var.environment == "production" ? 443 : 80
@@ -172,32 +156,32 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
   }
 }
 
-# resource "aws_lb_listener_rule" "xtcross-http-cognito-rule" {
-#   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
+resource "aws_lb_listener_rule" "xtcross-http-cognito-rule" {
+  count = var.environment == "production" ? length(var.xtcross-listener-hostlist) : 0
 
-#   listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
-#   priority     = 100
+  listener_arn = aws_lb_listener.xtcross-http-listener-200.arn
+  priority     = 100
 
-#   action {
-#     type = "authenticate-cognito"
-#     authenticate_cognito {
-#       user_pool_arn       = aws_cognito_user_pool.xtcross-cognito-pool.arn
-#       user_pool_client_id = aws_cognito_user_pool_client.xtcross-cognito-client.id
-#       user_pool_domain    = aws_cognito_user_pool_domain.xtcross-cognito-domain.domain
-#     }
-#   }
+  action {
+    type = "authenticate-cognito"
+    authenticate_cognito {
+      user_pool_arn       = aws_cognito_user_pool.xtcross-cognito-pool[0].arn
+      user_pool_client_id = aws_cognito_user_pool_client.xtcross-cognito-client[0].id
+      user_pool_domain    = aws_cognito_user_pool_domain.xtcross-cognito-domain[0].domain
+    }
+  }
 
-#   action {
-#     type = "forward"
-#     target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
-#   }
+  action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup[count.index].arn
+  }
 
-#   condition {
-#     path_pattern {
-#       values = ["/*"]
-#     }
-#   }
-# }
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
