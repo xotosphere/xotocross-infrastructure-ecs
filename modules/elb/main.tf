@@ -42,30 +42,21 @@ variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for 
 
 ######################
 
-data "external" "xtcross-prodcert-certificate" {
-  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
-}
-
-data "external" "xtcross-wildcert-certificate" {
-  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.*.*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
+data "external" "xtcross-certificate" {
+  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
 }
 
 resource "local_file" "certificate_snapshot" {
-  content  = local.isprod ? data.external.xtcross-wildcert-certificate.result["arn"] : "HTTP MODE"
+  content  = local.isprod ? data.external.xtcross-certificate.result["arn"] : "HTTP MODE"
   filename = "${path.module}/certificate_snapshot.json"
 }
 
 ######################
 
-
 locals {
-  prod_cert_arn = data.external.xtcross-prodcert-certificate.result["arn"]
-  wild_cert_arn = data.external.xtcross-wildcert-certificate.result["arn"]
-
-  isprod = var.environment == "production" && prod_cert_arn != ""
-  iswild = var.environment != "production" && wild_cert_arn != ""
-
-  certificate = local.isprod ? local.prod_cert_arn : (local.iswild ? local.wild_cert_arn : null)
+  prod_cert_arn = data.external.xtcross-certificate.result["arn"]
+  isprod = var.environment == "production" && local.prod_cert_arn != ""
+  certificate = local.isprod ? local.prod_cert_arn : null
 }
 
 # resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
