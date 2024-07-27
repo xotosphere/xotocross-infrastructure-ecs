@@ -1,4 +1,6 @@
+
 ####################### DATA
+
 data "aws_route53_zone" "xtcross-zone" {
   name = "${var.xtcross-domain-name}.com"
 }
@@ -11,9 +13,28 @@ variable "xtcross-loadbalaner-zone-id" { description = "xtcross zone id of the a
 variable "xtcross-service-name" { description = "xtcross the name of the xtcross service" }
 
 ####################### RESOURCE
+
+# resource "aws_route53_record" "xtcross-service-record" {
+#   count   = var.environment == "production" ? 0 : 1
+#   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
+#   name    = "*.${var.environment}.${var.xtcross-domain-name}.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [var.xtcross-loadbalaner-name]
+# }
+
+
+# resource "aws_route53_record" "xtcross-service-record" {
+#   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
+#   name    = var.environment == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.environment}.${var.xtcross-domain-name}.com"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [var.xtcross-loadbalaner-name]
+# }
+
 resource "aws_route53_record" "xtcross-service-record" {
   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = var.environment == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.environment}.${var.xtcross-domain-name}.com"
+  name    = "*${var.xtcross-service-name}-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xtcross-loadbalaner-name]
