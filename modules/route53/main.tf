@@ -11,18 +11,16 @@ data "external" "xtcross-record-exist" {
   program = ["bash", "-c", "aws route53 list-resource-record-sets --hosted-zone-id ${data.aws_route53_zone.xtcross-zone.zone_id} --query \"ResourceRecordSets[?Name=='*.${var.environment}.${var.xtcross-domain-name}.com.']\" --output json | jq -c '{exist: . | length > 0}'"]
 }
 
+locals {
+  records_to_create = {for k in toset(["production", "wildcard"]) : k => k if var.environment == k && data.external.xtcross-record-exist.result.exist == "false"}
+}
+
 resource "aws_route53_record" "xtcross-service-record" {
-  for_each = toset(["production", "wildcard"])
+  for_each = local.records_to_create
 
   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
   name    = each.key == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.environment}.${var.xtcross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
-
-  dynamic "records" {
-    for_each = var.environment == each.key && data.external.xtcross-record-exist.result.exist == "false" ? [var.xtcross-loadbalaner-name] : []
-    content {
-      records = records.value
-    }
-  }
+  records = [var.xtcross-loadbalaner-name]
 }
