@@ -36,7 +36,7 @@ locals {
   dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
     cost_project                   = var.xtcross-service-name,
     environment                    = var.environment,
-    dashboard_container_panel_list = [for item in local.dashboard_container_panel_list : jsonencode(item)] 
+    dashboard_container_panel_list = join(",", [for item in local.dashboard_container_panel_list : jsonencode(item)]) 
   })
 }
 
