@@ -19,6 +19,10 @@ resource "aws_route53_record" "xtcross-service-record" {
   type    = "CNAME"
   ttl     = "300"
   records = [var.xtcross-loadbalaner-name]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # resource "aws_route53_record" "xtcross-cognito-record" {
