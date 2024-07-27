@@ -27,10 +27,10 @@ variable "container_name_list" { description = "xtcross list of container names"
 
 locals {
   dashboard_container_panel_list = [
-    for container_name in var.container_name_list : [jsondecode(templatefile("${path.module}/dashboard-container-panel.json.tpl", {
+    for container_name in var.container_name_list : jsondecode(templatefile("${path.module}/dashboard-container-panel.json.tpl", {
       cost_project   = var.xtcross-service-name,
       container_name = container_name
-    }))]
+    }))
   ]
   
   dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
@@ -49,4 +49,3 @@ resource "grafana_dashboard" "xtcross-service-dashboard" {
   config_json = local.dashboard_json
   overwrite   = true
 }
-
