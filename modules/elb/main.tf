@@ -47,7 +47,7 @@ data "external" "certificate" {
 }
 
 resource "local_file" "certificate_snapshot" {
-  content  = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
+  content  = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : "HTTP MODE"
   filename = "${path.module}/certificate_snapshot.json"
 }
 
