@@ -42,16 +42,31 @@ variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for 
 
 ######################
 
-data "external" "certificate" {
-  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
+data "external" "xtcross-prodcert-certificate" {
+  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
+}
+
+data "external" "xtcross-wildcert-certificate" {
+  program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.*.*.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
 }
 
 resource "local_file" "certificate_snapshot" {
-  content  = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : "HTTP MODE"
+  content  = local.isprod ? data.external.xtcross-wildcert-certificate.result["arn"] : "HTTP MODE"
   filename = "${path.module}/certificate_snapshot.json"
 }
 
 ######################
+
+
+locals {
+  prod_cert_arn = data.external.xtcross-prodcert-certificate.result["arn"]
+  wild_cert_arn = data.external.xtcross-wildcert-certificate.result["arn"]
+
+  isprod = var.environment == "production" && prod_cert_arn != ""
+  iswild = var.environment != "production" && wild_cert_arn != ""
+
+  certificate = local.isprod ? local.prod_cert_arn : (local.iswild ? local.wild_cert_arn : null)
+}
 
 # resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
 #   count = var.environment == "production" ? 1 : 0
@@ -118,9 +133,9 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
   port              = var.xtcross-listener-portlist[each.value]
-  certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
-  protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
-  ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
+  certificate_arn   = local.certificate
+  protocol          = local.isprod ? "HTTPS" : "HTTP"
+  ssl_policy        = local.isprod ? "ELBSecurityPolicy-2016-08" : null
   
   lifecycle {
     create_before_destroy = true
@@ -140,10 +155,10 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 resource "aws_lb_listener" "xtcross-http-listener-200" {
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = data.external.certificate.result["arn"] != "" && var.environment == "production" ? 443 : 80
-  certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
-  protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
-  ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
+  port              = local.isprod ? 443 : 80
+  certificate_arn   = local.certificate
+  protocol          = local.isprod ? "HTTPS" : "HTTP"
+  ssl_policy        = local.isprod ? "ELBSecurityPolicy-2016-08" : null
 
   default_action {
     type = "fixed-response"
