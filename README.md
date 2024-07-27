@@ -1,6 +1,7 @@
 # ECS Service Module
 
-This repository contains the Terraform module for creating a scalable and highly available ECS service on AWS. 
+This repository contains the Terraform module for creating a scalable and highly available ECS service on AWS.
+
 This module is designed to be used with external services.
 
 ## Features 🔥
