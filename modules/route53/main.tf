@@ -1,3 +1,10 @@
+
+####################### VARIABLE
+variable "environment" { description = "xtcross environment" }
+variable "xtcross-domain-name" { description = "xtcross domain name" }
+variable "xtcross-loadbalaner-name" { description = "xtcross dns name of the alb" }
+variable "xtcross-loadbalaner-zone-id" { description = "xtcross zone id of the alb" }
+
 ####################### DATA
 
 data "aws_route53_zone" "xtcross-zone" {
