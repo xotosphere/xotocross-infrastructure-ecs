@@ -47,7 +47,7 @@ data "external" "certificate" {
 }
 
 resource "local_file" "certificate_snapshot" {
-  content  = data.external.certificate.result["arn"]
+  content  = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
   filename = "${path.module}/certificate_snapshot.json"
 }
 
@@ -156,7 +156,7 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 
 
   load_balancer_arn = aws_lb.xtcross-loadbalaner.arn
-  port              = data.external.certificate.result["arn"] != "" && var.environment == "production" ? 443 : 80 
+  port              = data.external.certificate.result["arn"] != "" && var.environment == "production" ? 443 : 80
   certificate_arn   = data.external.certificate.result["arn"] != "" && var.environment == "production" ? data.external.certificate.result["arn"] : null
   protocol          = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "HTTPS" : "HTTP"
   ssl_policy        = data.external.certificate.result["arn"] != "" && var.environment == "production" ? "ELBSecurityPolicy-2016-08" : null
