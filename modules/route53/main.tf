@@ -22,6 +22,7 @@ resource "aws_route53_record" "xtcross-service-record" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes = [records]
   }
 }
 
