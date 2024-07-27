@@ -81,7 +81,7 @@ resource "aws_cognito_user_pool" "xtcross-cognito-pool" {
 resource "aws_cognito_user_pool_client" "xtcross-cognito-client" {
   count = var.environment == "production" ? 1 : 0
   name = "xtcross-${var.environment}-client"
-  user_pool_id = aws_cognito_user_pool.xtcross-cognito-pool.id
+  user_pool_id = aws_cognito_user_pool.xtcross-cognito-pool[0].id
   explicit_auth_flows = [
     "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH"
@@ -92,7 +92,7 @@ resource "aws_cognito_user_pool_client" "xtcross-cognito-client" {
 resource "aws_cognito_user_pool_domain" "xtcross-cognito-domain" {
   count           = var.environment == "production" ? 1 : 0
   domain          = "authorizer.${var.xtcross-domain-name}.com"
-  user_pool_id    = aws_cognito_user_pool.xtcross-cognito-pool.id
+  user_pool_id    = aws_cognito_user_pool.xtcross-cognito-pool[0].id
 }
 
 resource "aws_lb" "xtcross-loadbalaner" {
