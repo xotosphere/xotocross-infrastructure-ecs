@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "grafana" {
-  url  = var.environment == "production" ? "https://grafana.${var.xtcross-domain-name}.com" : "http://grafana.${var.environment}.${var.xtcross-domain-name}.com"
+  url  = var.environment == "production" ? "https://grafana.${var.xtcross-domain-name}.com" : "http://grafana.${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
   auth = "${var.xtcross-username}:${var.xtcross-password}"
 }
 
