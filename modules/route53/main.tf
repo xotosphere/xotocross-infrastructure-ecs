@@ -21,7 +21,6 @@ resource "aws_route53_record" "xtcross-service-record" {
   records = [var.xtcross-loadbalaner-name]
 }
 
-
 # resource "aws_route53_record" "xtcross-cognito-record" {
 #   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
 #   name    = "authorizer.${var.xtcross-domain-name}.com"
