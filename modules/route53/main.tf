@@ -13,10 +13,16 @@ data "external" "xtcross-record-exist" {
 
 resource "aws_route53_record" "xtcross-service-record" {
   for_each = toset(["production", "wildcard"])
-  count  = var.environment == each.key && data.external.xtcross-record-exist.result.exist == "false" ? 1 : 0
+
   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
   name    = each.key == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.environment}.${var.xtcross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
-  records = [var.xtcross-loadbalaner-name]
+
+  dynamic "records" {
+    for_each = var.environment == each.key && data.external.xtcross-record-exist.result.exist == "false" ? [var.xtcross-loadbalaner-name] : []
+    content {
+      records = records.value
+    }
+  }
 }
