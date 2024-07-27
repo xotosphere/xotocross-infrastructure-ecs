@@ -1,46 +1,21 @@
-
-####################### VARIABLE
 variable "environment" { description = "xtcross environment" }
 variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-loadbalaner-name" { description = "xtcross dns name of the alb" }
 variable "xtcross-loadbalaner-zone-id" { description = "xtcross zone id of the alb" }
 
-
-####################### DATA
-
 data "aws_route53_zone" "xtcross-zone" {
   name = "${var.xtcross-domain-name}.com"
 }
 
-data "aws_route53_record" "xtcross-service-record-production" {
-  count  = var.environment == "production" ? 1 : 0
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
+data "external" "xtcross-record-exist" {
+  program = ["bash", "-c", "aws route53 list-resource-record-sets --hosted-zone-id ${data.aws_route53_zone.xtcross-zone.zone_id} --query \"ResourceRecordSets[?Name=='*.${var.environment}.${var.xtcross-domain-name}.com.']\" --output json | jq -c '{exist: . | length > 0}'"]
 }
 
-data "aws_route53_record" "xtcross-service-record-wildcard" {
-  count  = var.environment != "production" ? 1 : 0
+resource "aws_route53_record" "xtcross-service-record" {
+  for_each = toset(["production", "wildcard"])
+  count  = var.environment == each.key && data.external.xtcross-record-exist.result.exist == "false" ? 1 : 0
   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.environment}.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
-}
-
-####################### RESOURCE
-
-resource "aws_route53_record" "xtcross-service-record-production" {
-  count  = var.environment == "production" && length(try(data.aws_route53_record.xtcross-service-record-production[0].records, [])) == 0 ? 1 : 0
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [var.xtcross-loadbalaner-name]
-}
-
-resource "aws_route53_record" "xtcross-service-record-wildcard" {
-  count  = var.environment != "production" && length(try(data.aws_route53_record.xtcross-service-record-wildcard[0].records, [])) == 0 ? 1 : 0
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.environment}.${var.xtcross-domain-name}.com"
+  name    = each.key == "production" ? "*.${var.xtcross-domain-name}.com" : "*.${var.environment}.${var.xtcross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xtcross-loadbalaner-name]
