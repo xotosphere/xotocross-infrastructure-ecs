@@ -1,7 +1,6 @@
 ####################### LOCAL
 
 locals {
-
   xtcross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
     xtcross-container-name      = "xtcross-${var.xtcross-service-name}-fluentbit"
     xtcross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
@@ -25,18 +24,12 @@ locals {
     xtcross-container-dependency  = jsonencode([])
     xtcross-container-entrypoint  = jsonencode([])
     xtcross-container-healthcheck = "null"
-    xtcross-container-firelensconfiguration = jsonencode({
-      type = "fluentbit",
-      options = {
-        config-file-type  = "file",
-        config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf"
-      }
-    })
+    xtcross-container-firelensconfiguration = jsonencode({ type = "fluentbit", options = { config-file-type  = "file", config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf" } })
   }))
 
   xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [])
   xtcross-healthcheck-pathlist = concat(var.xtcross-healthcheck-pathlist, var.xtcross-enable-monitor ? ["/api/v1/health"] : [])
-  xtcross-listener-hostlist    = concat(var.xtcross-listener-hostlist, var.xtcross-enable-monitor ? ["fluentbit-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [])
-  xtcross-container-portlist   = concat(var.xtcross-container-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
-  xtcross-host-portlist        = concat(var.xtcross-host-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
+  xtcross-listener-hostlist = concat(var.xtcross-listener-hostlist, var.xtcross-enable-monitor ? ["fluentbit-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [])
+  xtcross-container-portlist = concat(var.xtcross-container-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
+  xtcross-host-portlist = concat(var.xtcross-host-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
 }
