@@ -11,6 +11,7 @@ variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-loadbalaner-name" { description = "xtcross dns name of the alb" }
 variable "xtcross-loadbalaner-zone-id" { description = "xtcross zone id of the alb" }
 variable "xtcross-service-name" { description = "xtcross the name of the xtcross service" }
+variable "xtcross-listener-hostlist" { description = "xtcross the list of listener hostnames" }
 
 ####################### RESOURCE
 
@@ -33,9 +34,10 @@ variable "xtcross-service-name" { description = "xtcross the name of the xtcross
 # }
 
 resource "aws_route53_record" "xtcross-service-record" {
-  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.environment}.${var.xtcross-domain-name}.com"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [var.xtcross-loadbalaner-name]
+  for_each = toset(var.xtcross-listener-hostlist)
+  zone_id  = data.aws_route53_zone.xtcross-zone.zone_id
+  name     = each.key
+  type     = "CNAME"
+  ttl      = "300"
+  records  = [var.xtcross-loadbalaner-name]
 }
