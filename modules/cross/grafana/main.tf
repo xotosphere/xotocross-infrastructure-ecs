@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "grafana" {
-  url  = "https://grafana.${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
+  url  = "https://grafana-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
   auth = "${var.xtcross-username}:${var.xtcross-password}"
 }
 
@@ -32,11 +32,11 @@ locals {
       container_name = container_name
     }))
   ]
-  
+
   dashboard_json = templatefile("${path.module}/dashboard.json.tpl", {
     cost_project                   = var.xtcross-service-name,
     environment                    = var.environment,
-    dashboard_container_panel_list = join(",", [for item in local.dashboard_container_panel_list : jsonencode(item)]) 
+    dashboard_container_panel_list = join(",", [for item in local.dashboard_container_panel_list : jsonencode(item)])
   })
 }
 

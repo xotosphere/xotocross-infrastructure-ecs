@@ -34,7 +34,7 @@ variable "xtcross-service-name" { description = "xtcross the name of the xtcross
 
 resource "aws_route53_record" "xtcross-service-record" {
   zone_id = data.aws_route53_zone.xtcross-zone.zone_id
-  name    = "*.${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
+  name    = "*-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"
   type    = "CNAME"
   ttl     = "300"
   records = [var.xtcross-loadbalaner-name]
