@@ -92,9 +92,11 @@ resource "aws_cloudwatch_metric_alarm" "xtcross-scheduletask-alarm" {
   threshold = "1"
   alarm_description = "xtcross metric checks if there are any errors from the lambda function"
   alarm_actions = [data.aws_sns_topic.xtcross-cloudwatch-sns.arn]
+  
   dimensions = {
     FunctionName = var.xtcross-function-name
   }
+  
   tags = {
     Name = "${var.xtcross-function-name}-alarm"
     environment = var.environment

@@ -77,7 +77,6 @@
 # }
 
 variable "environment" {description = "The environment in which the resources are created"}
-# variable "xtcross-service-name" { description = "xtcross the name of the xtcross service" }
 
 resource "aws_cognito_user_pool" "xtcross-user-pool" {
   name = "xtcross-${var.environment}-pool"

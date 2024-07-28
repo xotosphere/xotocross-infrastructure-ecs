@@ -17,7 +17,6 @@ variable "xtcross-constraint-expression" { description = "xtcross placement cons
 variable "xtcross-healthcheck-grace" { description = "xtcross health check grace period" }
 variable "xtcross-network-mode" { description = "xtcross network mode" }
 variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn" }
-variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
 
 ####################### RESOURCE
@@ -30,6 +29,7 @@ data "aws_efs_file_system" "xtcross-fs" {
 
 resource "aws_efs_access_point" "xtcross-accesspoint" {
   file_system_id = data.aws_efs_file_system.xtcross-fs.id
+  
   root_directory {
     creation_info {
       owner_gid = 0
@@ -38,6 +38,7 @@ resource "aws_efs_access_point" "xtcross-accesspoint" {
     }
     path = "/${var.xtcross-service-name}"
   }
+  
   posix_user {
     gid = 0
     uid = 0
@@ -64,7 +65,6 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
       }
     }
   }
-
 }
 
 resource "aws_ecs_service" "xtcross-service" {
