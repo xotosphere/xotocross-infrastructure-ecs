@@ -26,6 +26,7 @@ variable "environment" { description = "xtcross environment" }
 variable "region" { description = "xtcross region" }
 variable "xtcross-loadbalaner-name" { description = "xtcross name of the alb" }
 variable "xtcross-public-subnetlist" { description = "xtcross list of public subnet ids to place the alb in" }
+variable "xtcross-private-subnetlist" { description = "xtcross list of private subnet ids to place the alb in" }
 variable "xtcross-loadbalaner-securitygroup" { description = "xtcross list of security group ids to attach to the alb" }
 variable "xtcross-listener-portlist" { description = "xtcross list of ports for the listeners" }
 variable "xtcross-host-portlist" { description = "xtcross list of target ports for the listeners" }
@@ -63,7 +64,7 @@ resource "aws_lb" "xtcross-loadbalaner" {
   name                             = var.xtcross-loadbalaner-name
   internal                         = true
   load_balancer_type               = "application"
-  subnets                          = var.xtcross-public-subnetlist
+  subnets                          = var.xtcross-private-subnetlist
   security_groups                  = [var.xtcross-loadbalaner-securitygroup]
   desync_mitigation_mode           = "defensive"
   enable_cross_zone_load_balancing = true
