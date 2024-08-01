@@ -11,7 +11,9 @@ locals {
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
       { name = "LOKI_HOST", value = "loki-monitor.${var.environment}.${var.xtcross-domain-name}.com" },
-      { name = "LOKI_PORT", value = "80" },
+      { name = "LOKI_PORT", value = "443" },
+      { name = "HTTPS", value = "On" },
+      { name = "HTTPS_VERIFY", value = "Off" },
       { name = "COST_PROJECT_NAME", value = var.xtcross-service-name },
       { name = "COST_PROJECT_VERSION", value = var.xtcross-service-version },
       { name = "FLB_LOG_LEVEL", value = "debug" },

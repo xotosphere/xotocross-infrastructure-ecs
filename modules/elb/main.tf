@@ -20,6 +20,11 @@ output "xtcross-loadbalaner-zone-id" {
   description = "xtcross zone id of the alb"
 }
 
+output "xtcross-https-enabled" {
+  value       = local.hasCert
+  description = "xtcross has certificate"
+}
+
 ######################
 
 variable "environment" { description = "xtcross environment" }
