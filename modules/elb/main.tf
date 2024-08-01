@@ -62,9 +62,9 @@ locals {
 
 resource "aws_lb" "xtcross-loadbalaner" {
   name                             = var.xtcross-loadbalaner-name
-  internal                         = true
+  internal                         = var.environment == "production" ? false : true
   load_balancer_type               = "application"
-  subnets                          = var.xtcross-private-subnetlist
+  subnets                          = var.environment == "production" ? var.xtcross-public-subnetlist : var.xtcross-private-subnetlist
   security_groups                  = [var.xtcross-loadbalaner-securitygroup]
   desync_mitigation_mode           = "defensive"
   enable_cross_zone_load_balancing = true
