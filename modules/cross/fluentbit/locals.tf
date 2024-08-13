@@ -4,7 +4,6 @@ locals {
   xtcross-container-fluentbit = jsondecode(templatefile("${path.module}/aws/task-container.tpl", {
     xtcross-container-name      = "xtcross-${var.xtcross-service-name}-fluentbit"
     xtcross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
-    xtcross-container-cpu       = 0
     xtcross-container-essential = false
     xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
     xtcross-container-environment = jsonencode([
