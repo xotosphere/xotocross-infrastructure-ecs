@@ -27,9 +27,9 @@ locals {
     xtcross-container-firelensconfiguration = jsonencode({ type = "fluentbit", options = { config-file-type = "file", config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf" } })
   }))
 
-  xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [])
-  xtcross-healthcheck-pathlist = concat(var.xtcross-healthcheck-pathlist, var.xtcross-enable-monitor ? ["/api/v1/health"] : [])
-  xtcross-listener-hostlist    = concat(var.xtcross-listener-hostlist, var.xtcross-enable-monitor ? ["fluentbit-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [])
-  xtcross-container-portlist   = concat(var.xtcross-container-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
-  xtcross-host-portlist        = concat(var.xtcross-host-portlist, var.xtcross-enable-monitor ? [2020, 24224] : [])
+  xtcross-container-definition = concat(var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [], var.xtcross-container-definition)
+  xtcross-healthcheck-pathlist = concat(var.xtcross-enable-monitor ? ["/api/v1/health"] : [], var.xtcross-healthcheck-pathlist)
+  xtcross-listener-hostlist    = concat(var.xtcross-enable-monitor ? ["fluentbit-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [], var.xtcross-listener-hostlist)
+  xtcross-container-portlist   = concat(var.xtcross-enable-monitor ? [2020] : [], var.xtcross-container-portlist)
+  xtcross-host-portlist        = concat(var.xtcross-enable-monitor ? [2020] : [], var.xtcross-host-portlist)
 }
