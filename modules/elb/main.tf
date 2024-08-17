@@ -171,6 +171,10 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     enabled         = false
     type            = "lb_cookie"
   }
+  
+  lifecycle {
+    create_before_destroy = true
+  }
 
   tags = {
     Name        = "${var.xtcross-targetgroup-name}-${each.value}"
