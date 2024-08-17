@@ -20,7 +20,6 @@ variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
 variable "xtcross-task-memory" { description = "xtcross task memory" }
 
-
 ####################### RESOURCE
 
 data "aws_efs_file_system" "xtcross-fs" {
