@@ -4,7 +4,7 @@
   "essential":  ${xtcross-container-essential},
   "portMappings": ${xtcross-container-portmap},
   "environment" : ${xtcross-container-environment},
-  "logConfiguration": {"logDriver": "awslogs", "options": { "awslogs-group": "${xtcross-container-loggroup}", "awslogs-region": "${xtcross-container-region}", "awslogs-stream-prefix": "${xtcross-container-name}"}},
+  "logConfiguration": ${xtcross-logconfiguration},
   "command": ${xtcross-container-command},
   "entryPoint": ${xtcross-container-entrypoint},
   "dependsOn": ${xtcross-container-dependency},

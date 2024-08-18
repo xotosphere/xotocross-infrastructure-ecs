@@ -18,12 +18,11 @@ locals {
       { name = "AWS_REGION", value = var.region },
       { name = "LOG_GROUP", value = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log" },
     ])
-    xtcross-container-loggroup              = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log"
-    xtcross-container-region                = var.region
     xtcross-container-command               = jsonencode([])
     xtcross-container-dependency            = jsonencode([])
     xtcross-container-entrypoint            = jsonencode([])
     xtcross-container-healthcheck           = "null"
+    xtcross-logconfiguration = jsonencode({logDriver = "awslogs", options = { "awslogs-group" = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log", "awslogs-region" = var.region }})
     xtcross-container-firelensconfiguration = jsonencode({ type = "fluentbit", options = { config-file-type = "file", config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf" } })
   }))
 
