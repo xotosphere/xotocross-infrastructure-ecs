@@ -115,7 +115,6 @@ resource "aws_lb_listener" "xtcross-http-listener-200" {
 
   default_action {
     type = "fixed-response"
-
     fixed_response {
       content_type = "text/html"
       message_body = "<html><head><style>body{background-color:#282c34;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:calc(10px + 2vmin);color:white;}</style></head><body><h1>Welcome to our website! be sure to check the url 😊</h1></body></html>"
@@ -181,46 +180,3 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     environment = var.environment
   }
 }
-
-# toremove and think about : for the vpn connection to IP WAFF
-# resource "aws_wafv2_web_acl" "xtcross-waf" {
-#   name        = "xtcross-${var.environment}-lbwaf"
-#   description = "WAF for ${var.xtcross-loadbalaner-name}"
-#   scope       = "REGIONAL"
-
-#   default_action {
-#     allow {}
-#   }
-
-#   rule {
-#     name     = "rule-1"
-#     priority = 1
-
-#     action {
-#       block {}
-#     }
-
-#     statement {
-#       ip_set_reference_statement {
-#         arn = aws_wafv2_ip_set.example.arn
-#       }
-#     }
-
-#     visibility_config {
-#       cloudwatch_metrics_enabled = false
-#       metric_name                = "friendly-rule-metric-name"
-#       sampled_requests_enabled   = false
-#     }
-#   }
-
-#   visibility_config {
-#     cloudwatch_metrics_enabled = false
-#     metric_name                = "friendly-metric-name"
-#     sampled_requests_enabled   = false
-#   }
-# }
-
-# resource "aws_wafv2_web_acl_association" "xtcross-waf-association" {
-#   resource_arn = aws_lb.xtcross-loadbalaner.arn
-#   web_acl_arn  = aws_wafv2_web_acl.xtcross-waf.arn
-# }
