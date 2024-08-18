@@ -66,8 +66,8 @@ locals {
 }
 
 resource "aws_lb" "xtcross-loadbalaner" {
-  name                             = var.xtcross-loadbalaner-name
-  internal                         = var.environment == "production" ? false : true
+  name = var.xtcross-loadbalaner-name
+  # internal                         = var.environment == "production" ? false : true
   load_balancer_type               = "application"
   subnets                          = var.environment == "production" ? var.xtcross-public-subnetlist : var.xtcross-private-subnetlist
   security_groups                  = [var.xtcross-loadbalaner-securitygroup]
@@ -171,7 +171,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
     enabled         = false
     type            = "lb_cookie"
   }
-  
+
   lifecycle {
     create_before_destroy = true
   }
