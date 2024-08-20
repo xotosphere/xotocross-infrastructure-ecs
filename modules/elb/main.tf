@@ -158,7 +158,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
 
   condition {
     host_header {
-      values = [var.xtcross-listener-hostlist[each.value]]
+      values = ["private-${var.xtcross-listener-hostlist[each.value]}", var.xtcross-listener-hostlist[each.value]]
     }
   }
 
