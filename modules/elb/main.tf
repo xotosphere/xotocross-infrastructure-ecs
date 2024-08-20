@@ -63,54 +63,6 @@ locals {
   certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
-resource "aws_lb" "xtcross-loadbalancer-public" {
-  name                             = var.xtcross-loadbalancer-public-name
-  internal                         = false
-  load_balancer_type               = "network"
-  subnets                          = var.xtcross-public-subnetlist
-  security_groups                  = [var.xtcross-loadbalancer-securitygroup]
-  desync_mitigation_mode           = "defensive"
-  enable_cross_zone_load_balancing = true
-  enable_http2                     = true
-  idle_timeout                     = 300
-  ip_address_type                  = "ipv4"
-
-  tags = {
-    Name        = "${var.xtcross-loadbalancer-public-name}"
-    environment = var.environment
-  }
-}
-
-resource "aws_lb_listener" "xtcross-http-listener-public" {
-  load_balancer_arn = aws_lb.xtcross-loadbalancer-public.arn
-  port              = local.hasCert ? 443 : 80
-  protocol          = "TCP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
-  }
-}
-
-resource "aws_lb_target_group" "xtcross-targetgroup-public" {
-  name        = var.xtcross-targetgroup-name
-  port        = local.hasCert ? 443 : 80
-  protocol    = "TCP"
-  target_type = "alb"
-  vpc_id      = var.xtcross-vpc-id
-
-  tags = {
-    Name = "${var.xtcross-targetgroup-name}"
-  }
-}
-
-resource "aws_lb_target_group_attachment" "xtcross-targetgroup-public-attachment" {
-  target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
-  target_id        = aws_lb.xtcross-loadbalancer-private.arn
-  port             = local.hasCert ? 443 : 80
-}
-
-
 resource "aws_lb" "xtcross-loadbalancer-private" {
   name                             = "${var.xtcross-loadbalancer-public-name}-i"
   internal                         = true
@@ -202,4 +154,53 @@ resource "aws_lb_target_group" "xtcross-targetgroup-private" {
     Name        = "${var.xtcross-targetgroup-name}-${each.value}"
     environment = var.environment
   }
+}
+
+
+resource "aws_lb" "xtcross-loadbalancer-public" {
+  name                             = var.xtcross-loadbalancer-public-name
+  internal                         = false
+  load_balancer_type               = "network"
+  subnets                          = var.xtcross-public-subnetlist
+  security_groups                  = [var.xtcross-loadbalancer-securitygroup]
+  desync_mitigation_mode           = "defensive"
+  enable_cross_zone_load_balancing = true
+  enable_http2                     = true
+  idle_timeout                     = 300
+  ip_address_type                  = "ipv4"
+
+  tags = {
+    Name        = "${var.xtcross-loadbalancer-public-name}"
+    environment = var.environment
+  }
+}
+
+resource "aws_lb_listener" "xtcross-http-listener-public" {
+  load_balancer_arn = aws_lb.xtcross-loadbalancer-public.arn
+  port              = local.hasCert ? 443 : 80
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
+  }
+}
+
+resource "aws_lb_target_group" "xtcross-targetgroup-public" {
+  name        = var.xtcross-targetgroup-name
+  port        = local.hasCert ? 443 : 80
+  protocol    = "TCP"
+  target_type = "alb"
+  vpc_id      = var.xtcross-vpc-id
+
+  tags = {
+    Name = "${var.xtcross-targetgroup-name}"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "xtcross-targetgroup-public-attachment" {
+  target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
+  target_id        = aws_lb.xtcross-loadbalancer-private.arn
+  port             = local.hasCert ? 443 : 80
+  depends_on       = [aws_lb_listener.xtcross-http-listener-private]
 }
