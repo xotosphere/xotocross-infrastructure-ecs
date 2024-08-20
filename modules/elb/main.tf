@@ -14,7 +14,7 @@ output "xtcross-loadbalancer-private-name" {
 }
 
 output "xtcross-loadbalancer-zone-id" {
-  value       = aws_lb.xtcross-loadbalancer.zone_id
+  value       = aws_lb.xtcross-loadbalancer-public.zone_id
   description = "xtcross zone id of the alb"
 }
 
