@@ -64,7 +64,7 @@ locals {
 }
 
 resource "aws_lb" "xtcross-loadbalancer-public" {
-  name                             = "${var.xtcross-loadbalancer-public-name}-public"
+  name                             = var.xtcross-loadbalancer-public-name
   internal                         = false
   load_balancer_type               = "application"
   subnets                          = var.xtcross-public-subnetlist
@@ -76,7 +76,7 @@ resource "aws_lb" "xtcross-loadbalancer-public" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    Name        = "${var.xtcross-loadbalancer-public-name}-public"
+    Name        = "${var.xtcross-loadbalancer-public-name}"
     environment = var.environment
   }
 }
@@ -120,7 +120,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-public" {
 }
 
 resource "aws_lb" "xtcross-loadbalancer-private" {
-  name                             = "${var.xtcross-loadbalancer-public-name}-private"
+  name                             = "${var.xtcross-loadbalancer-public-name}-i"
   internal                         = true
   load_balancer_type               = "application"
   subnets                          = var.xtcross-private-subnetlist
@@ -132,7 +132,7 @@ resource "aws_lb" "xtcross-loadbalancer-private" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    Name        = "${var.xtcross-loadbalancer-public-name}-private"
+    Name        = "${var.xtcross-loadbalancer-public-name}-i" ## name can't be too long. I use "i" for internal
     environment = var.environment
   }
 }
