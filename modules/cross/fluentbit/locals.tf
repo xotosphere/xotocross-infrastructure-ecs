@@ -8,7 +8,7 @@ locals {
     xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "LOKI_HOST", value = "loki-monitor.${var.environment}.${var.xtcross-domain-name}.com" },
+      { name = "LOKI_HOST", value = "private-loki-monitor.${var.environment}.${var.xtcross-domain-name}.com" },
       { name = "LOKI_PORT", value = "443" },
       { name = "HTTPS", value = "On" },
       { name = "HTTPS_VERIFY", value = "Off" },
@@ -22,7 +22,7 @@ locals {
     xtcross-container-dependency            = jsonencode([])
     xtcross-container-entrypoint            = jsonencode([])
     xtcross-container-healthcheck           = "null"
-    xtcross-logconfiguration = jsonencode({logDriver = "awslogs", options = { "awslogs-group" = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log", "awslogs-region" = var.region }})
+    xtcross-logconfiguration                = jsonencode({ logDriver = "awslogs", options = { "awslogs-group" = "/aws/ecs/xtcross-${var.xtcross-service-name}-${var.environment}-log", "awslogs-region" = var.region } })
     xtcross-container-firelensconfiguration = jsonencode({ type = "fluentbit", options = { config-file-type = "file", config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf" } })
   }))
 

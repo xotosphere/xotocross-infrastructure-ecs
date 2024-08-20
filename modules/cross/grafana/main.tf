@@ -42,13 +42,13 @@ locals {
 }
 
 resource "local_file" "dashboard_snapshot" {
-  count     = var.xtcross-enable-monitor ? 1 : 0
-  content   = local.dashboard_json
-  filename  = "${path.module}/dashboard_snapshot.json"
+  count    = var.xtcross-enable-monitor ? 1 : 0
+  content  = local.dashboard_json
+  filename = "${path.module}/dashboard_snapshot.json"
 }
 
 resource "grafana_dashboard" "xtcross-service-dashboard" {
-  count        = var.xtcross-enable-monitor ? 1 : 0
-  config_json  = local.dashboard_json
-  overwrite    = true
+  count       = var.xtcross-enable-monitor ? 1 : 0
+  config_json = local.dashboard_json
+  overwrite   = true
 }
