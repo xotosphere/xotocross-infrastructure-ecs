@@ -84,7 +84,6 @@ resource "aws_lb" "xtcross-loadbalancer-public" {
 resource "aws_lb_listener" "xtcross-http-listener-public" {
   load_balancer_arn = aws_lb.xtcross-loadbalancer-public.arn
   port              = local.hasCert ? 443 : 80
-  certificate_arn   = local.certificate
   protocol          = "TCP"
 
   default_action {
