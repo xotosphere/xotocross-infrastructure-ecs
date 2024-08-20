@@ -95,7 +95,7 @@ resource "aws_lb_listener" "xtcross-http-listener-public" {
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup-public" {
-  name        = "${var.xtcross-targetgroup-name}-public"
+  name        = "${var.xtcross-targetgroup-name}-lb"
   port        = local.hasCert ? 443 : 80
   protocol    = "HTTP"
   target_type = "alb"
