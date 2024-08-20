@@ -98,7 +98,7 @@ resource "aws_lb_listener" "xtcross-http-listener-public" {
   }
 }
 
-resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
+resource "aws_lb_listener_rule" "xtcross-http-listener-rule-public" {
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
   listener_arn = aws_lb_listener.xtcross-http-listener-public.arn
@@ -154,7 +154,7 @@ resource "aws_lb_listener" "xtcross-http-listener-private" {
   }
 }
 
-resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
+resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
   listener_arn = aws_lb_listener.xtcross-http-listener-private.arn
