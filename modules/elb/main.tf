@@ -1,5 +1,5 @@
 output "xtcross-targetgroup-arnlist" {
-  value       = { for k in keys(aws_lb_target_group.xtcross-targetgroup) : k => aws_lb_target_group.xtcross-targetgroup[k].arn }
+  value       = { for k in keys(aws_lb_target_group.xtcross-targetgroup-private) : k => aws_lb_target_group.xtcross-targetgroup-private[k].arn }
   description = "xtcross arn list of the target groups"
 }
 
@@ -89,35 +89,29 @@ resource "aws_lb_listener" "xtcross-http-listener-public" {
   ssl_policy        = local.hasCert ? "ELBSecurityPolicy-2016-08" : null
 
   default_action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/html"
-      message_body = "<html><head><style>body{background-color:#282c34;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:calc(10px + 2vmin);color:white;}</style></head><body><h1>Welcome to our website! be sure to check the url 😊</h1></body></html>"
-      status_code  = "200"
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "xtcross-http-listener-rule-public" {
-  for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
-
-  listener_arn = aws_lb_listener.xtcross-http-listener-public.arn
-
-  action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
-  }
-
-  condition {
-    host_header {
-      values = [var.xtcross-listener-hostlist[each.value]]
-    }
-  }
-
-  lifecycle {
-    create_before_destroy = true
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
   }
 }
+
+resource "aws_lb_target_group" "xtcross-targetgroup-public" {
+  name        = "${var.xtcross-targetgroup-name}-public"
+  port        = local.hasCert ? 443 : 80
+  protocol    = "HTTP"
+  target_type = "alb"
+  vpc_id      = var.xtcross-vpc-id
+
+  tags = {
+    Name = "${var.xtcross-targetgroup-name}-public"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "xtcross-targetgroup-public-attachment" {
+  target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
+  target_id        = aws_lb.xtcross-loadbalancer-private.arn
+  port             = local.hasCert ? 443 : 80
+}
+
 
 resource "aws_lb" "xtcross-loadbalancer-private" {
   name                             = "${var.xtcross-loadbalancer-public-name}-i"
@@ -161,7 +155,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup-private[each.value].arn
   }
 
   condition {
@@ -175,7 +169,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
   }
 }
 
-resource "aws_lb_target_group" "xtcross-targetgroup" {
+resource "aws_lb_target_group" "xtcross-targetgroup-private" {
   for_each                      = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
   name                          = "${var.xtcross-targetgroup-name}-${each.value}"
   port                          = var.xtcross-host-portlist[each.value]
