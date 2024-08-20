@@ -102,7 +102,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup-public" {
   vpc_id      = var.xtcross-vpc-id
 
   tags = {
-    Name = "${var.xtcross-targetgroup-name}-public"
+    Name = "${var.xtcross-targetgroup-name}-lb"
   }
 }
 
