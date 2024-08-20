@@ -95,14 +95,14 @@ resource "aws_lb_listener" "xtcross-http-listener-public" {
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup-public" {
-  name        = "${var.xtcross-targetgroup-name}-lb"
+  name        = var.xtcross-targetgroup-name
   port        = local.hasCert ? 443 : 80
   protocol    = "HTTP"
   target_type = "alb"
   vpc_id      = var.xtcross-vpc-id
 
   tags = {
-    Name = "${var.xtcross-targetgroup-name}-lb"
+    Name = "${var.xtcross-targetgroup-name}"
   }
 }
 
