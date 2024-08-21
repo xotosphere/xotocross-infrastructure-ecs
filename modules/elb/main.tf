@@ -173,6 +173,8 @@ resource "aws_lb" "xtcross-loadbalancer-public" {
     Name        = "${var.xtcross-loadbalancer-public-name}"
     environment = var.environment
   }
+
+  depends_on = [aws_lb_listener.xtcross-http-listener-private]
 }
 
 resource "aws_lb_listener" "xtcross-http-listener-public" {
@@ -184,6 +186,8 @@ resource "aws_lb_listener" "xtcross-http-listener-public" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
   }
+
+  depends_on = [aws_lb_listener.xtcross-http-listener-private]
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup-public" {
@@ -196,6 +200,8 @@ resource "aws_lb_target_group" "xtcross-targetgroup-public" {
   tags = {
     Name = "${var.xtcross-targetgroup-name}"
   }
+
+  depends_on = [aws_lb_listener.xtcross-http-listener-private]
 }
 
 resource "aws_lb_target_group_attachment" "xtcross-targetgroup-public-attachment" {
