@@ -5,7 +5,7 @@ locals {
     xtcross-container-name      = "xtcross-${var.xtcross-service-name}-fluentbit"
     xtcross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
     xtcross-container-essential = false
-    xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp" }])
+    xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp", name = "port-${24224}" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp", name = "port-${2020}" }])
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
       { name = "LOKI_HOST", value = "private-loki-monitor.${var.environment}.${var.xtcross-domain-name}.com" },
