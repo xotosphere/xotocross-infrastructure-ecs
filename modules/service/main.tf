@@ -110,7 +110,7 @@ resource "aws_ecs_service" "xtcross-service" {
 
   service_connect_configuration {
     enabled   = true
-    namespace = "xotosphere.com"
+    namespace = "${var.environment}.local"
 
     dynamic "service" {
       for_each = range(0, length(var.xtcross-container-definition))
