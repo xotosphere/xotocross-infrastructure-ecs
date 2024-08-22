@@ -113,10 +113,6 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
       values = ["private-${var.xtcross-listener-hostlist[each.value]}", var.xtcross-listener-hostlist[each.value]]
     }
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_lb_target_group" "xtcross-targetgroup-private" {
@@ -144,10 +140,6 @@ resource "aws_lb_target_group" "xtcross-targetgroup-private" {
     cookie_duration = 86400
     enabled         = false
     type            = "lb_cookie"
-  }
-
-  lifecycle {
-    create_before_destroy = true
   }
 
   tags = {
