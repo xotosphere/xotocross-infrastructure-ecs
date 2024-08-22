@@ -109,7 +109,8 @@ resource "aws_ecs_service" "xtcross-service" {
   health_check_grace_period_seconds = var.xtcross-healthcheck-grace
 
   service_connect_configuration {
-    enabled = true
+    enabled   = true
+    namespace = var.xtcross-service-name
 
     dynamic "service" {
       for_each = range(0, length(var.xtcross-container-definition))
