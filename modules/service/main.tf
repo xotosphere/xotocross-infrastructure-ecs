@@ -121,7 +121,7 @@ resource "aws_ecs_service" "xtcross-service" {
         port_name      = "port-${var.xtcross-container-port[count.value]}"
 
         client_alias {
-          dns_name = "${var.xtcross-container-definition[count.value].name}.internal"
+          dns_name = "${var.xtcross-container-definition[count.value].name}.${var.environment}.local"
           port     = var.xtcross-container-port[count.value]
         }
       }
