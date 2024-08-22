@@ -109,15 +109,16 @@ resource "aws_ecs_service" "xtcross-service" {
   health_check_grace_period_seconds = var.xtcross-healthcheck-grace
 
   service_connect_configuration {
-    enabled = true
+    enabled   = true
+    namespace = "xotosphere.com"
 
     dynamic "service" {
       for_each = range(0, length(var.xtcross-container-definition))
       iterator = count
 
       content {
-        # discovery_name = var.xtcross-container-definition[count.value].name
-        port_name = "port-${var.xtcross-container-port[count.value]}"
+        discovery_name = var.xtcross-container-definition[count.value].name
+        port_name      = "port-${var.xtcross-container-port[count.value]}"
 
         client_alias {
           dns_name = "${var.xtcross-container-definition[count.value].name}.internal"
