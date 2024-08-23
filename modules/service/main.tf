@@ -18,6 +18,7 @@ variable "xtcross-healthcheck-grace" { description = "xtcross health check grace
 variable "xtcross-network-mode" { description = "xtcross network mode" }
 variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn" }
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
+variable "xtcross-task-memory" { description = "xtcross task memory" }
 
 ####################### RESOURCE
 
