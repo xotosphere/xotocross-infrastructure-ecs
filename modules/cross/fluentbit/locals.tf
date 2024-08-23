@@ -8,8 +8,8 @@ locals {
     xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp", name = "port-${24224}" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp", name = "port-${2020}" }])
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "LOKI_HOST", value = "http://xtcross-monitor-loki.${var.environment}.local:3100", },
-      { name = "LOKI_PORT", value = "443" },
+      { name = "LOKI_HOST", value = "http://xtcross-monitor-loki.${var.environment}.local", },
+      { name = "LOKI_PORT", value = "3100" },
       { name = "HTTPS", value = "On" },
       { name = "HTTPS_VERIFY", value = "Off" },
       { name = "COST_PROJECT_NAME", value = var.xtcross-service-name },
