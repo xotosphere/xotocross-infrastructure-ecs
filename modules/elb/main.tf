@@ -1,20 +1,15 @@
 output "xtcross-targetgroup-arnlist" {
-  value       = { for k in keys(aws_lb_target_group.xtcross-targetgroup-private) : k => aws_lb_target_group.xtcross-targetgroup-private[k].arn }
+  value       = { for k in keys(aws_lb_target_group.xtcross-targetgroup) : k => aws_lb_target_group.xtcross-targetgroup[k].arn }
   description = "xtcross arn list of the target groups"
 }
 
-output "xtcross-loadbalancer-public-name" {
-  value       = aws_lb.xtcross-loadbalancer-public.dns_name
-  description = "xtcross dns name of the alb"
-}
-
-output "xtcross-loadbalancer-private-name" {
-  value       = aws_lb.xtcross-loadbalancer-private.dns_name
+output "xtcross-loadbalancer-name" {
+  value       = aws_lb.xtcross-loadbalancer.dns_name
   description = "xtcross dns name of the alb"
 }
 
 output "xtcross-loadbalancer-zone-id" {
-  value       = aws_lb.xtcross-loadbalancer-public.zone_id
+  value       = aws_lb.xtcross-loadbalancer.zone_id
   description = "xtcross zone id of the alb"
 }
 
@@ -27,8 +22,7 @@ output "xtcross-https-enabled" {
 
 variable "environment" { description = "xtcross environment" }
 variable "region" { description = "xtcross region" }
-variable "xtcross-loadbalancer-public-name" { description = "xtcross name of the alb" }
-variable "xtcross-public-subnetlist" { description = "xtcross list of public subnet ids to place the alb in" }
+variable "xtcross-loadbalancer-name" { description = "xtcross name of the alb" }
 variable "xtcross-private-subnetlist" { description = "xtcross list of private subnet ids to place the alb in" }
 variable "xtcross-loadbalancer-securitygroup" { description = "xtcross list of security group ids to attach to the alb" }
 variable "xtcross-listener-portlist" { description = "xtcross list of ports for the listeners" }
@@ -63,9 +57,9 @@ locals {
   certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
-resource "aws_lb" "xtcross-loadbalancer-private" {
-  name                             = "${var.xtcross-loadbalancer-public-name}-i"
-  internal                         = true
+resource "aws_lb" "xtcross-loadbalancer" {
+  name                             = var.xtcross-loadbalancer-name
+  internal                         = false
   load_balancer_type               = "application"
   subnets                          = var.xtcross-private-subnetlist
   security_groups                  = [var.xtcross-loadbalancer-securitygroup]
@@ -76,13 +70,13 @@ resource "aws_lb" "xtcross-loadbalancer-private" {
   ip_address_type                  = "ipv4"
 
   tags = {
-    Name        = "${var.xtcross-loadbalancer-public-name}-i" ## name can't be too long. I use "i" for internal
+    Name        = "${var.xtcross-loadbalancer-name}-i" ## name can't be too long. I use "i" for internal
     environment = var.environment
   }
 }
 
-resource "aws_lb_listener" "xtcross-http-listener-private" {
-  load_balancer_arn = aws_lb.xtcross-loadbalancer-private.arn
+resource "aws_lb_listener" "xtcross-http-listener" {
+  load_balancer_arn = aws_lb.xtcross-loadbalancer.arn
   port              = local.hasCert ? 443 : 80
   certificate_arn   = local.certificate
   protocol          = local.hasCert ? "HTTPS" : "HTTP"
@@ -98,14 +92,14 @@ resource "aws_lb_listener" "xtcross-http-listener-private" {
   }
 }
 
-resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
+resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
 
-  listener_arn = aws_lb_listener.xtcross-http-listener-private.arn
+  listener_arn = aws_lb_listener.xtcross-http-listener.arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.xtcross-targetgroup-private[each.value].arn
+    target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
   }
 
   condition {
@@ -115,7 +109,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule-private" {
   }
 }
 
-resource "aws_lb_target_group" "xtcross-targetgroup-private" {
+resource "aws_lb_target_group" "xtcross-targetgroup" {
   for_each                      = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
   name                          = "${var.xtcross-targetgroup-name}-${each.value}"
   port                          = var.xtcross-host-portlist[each.value]
@@ -146,59 +140,4 @@ resource "aws_lb_target_group" "xtcross-targetgroup-private" {
     Name        = "${var.xtcross-targetgroup-name}-${each.value}"
     environment = var.environment
   }
-}
-
-
-resource "aws_lb" "xtcross-loadbalancer-public" {
-  name                             = var.xtcross-loadbalancer-public-name
-  internal                         = false
-  load_balancer_type               = "network"
-  subnets                          = var.xtcross-public-subnetlist
-  security_groups                  = [var.xtcross-loadbalancer-securitygroup]
-  desync_mitigation_mode           = "defensive"
-  enable_cross_zone_load_balancing = true
-  enable_http2                     = true
-  idle_timeout                     = 300
-  ip_address_type                  = "ipv4"
-
-  tags = {
-    Name        = "${var.xtcross-loadbalancer-public-name}"
-    environment = var.environment
-  }
-
-  depends_on = [aws_lb_listener.xtcross-http-listener-private]
-}
-
-resource "aws_lb_listener" "xtcross-http-listener-public" {
-  load_balancer_arn = aws_lb.xtcross-loadbalancer-public.arn
-  port              = local.hasCert ? 443 : 80
-  protocol          = "TCP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
-  }
-
-  depends_on = [aws_lb_listener.xtcross-http-listener-private]
-}
-
-resource "aws_lb_target_group" "xtcross-targetgroup-public" {
-  name        = var.xtcross-targetgroup-name
-  port        = local.hasCert ? 443 : 80
-  protocol    = "TCP"
-  target_type = "alb"
-  vpc_id      = var.xtcross-vpc-id
-
-  tags = {
-    Name = "${var.xtcross-targetgroup-name}"
-  }
-
-  depends_on = [aws_lb_listener.xtcross-http-listener-private]
-}
-
-resource "aws_lb_target_group_attachment" "xtcross-targetgroup-public-attachment" {
-  target_group_arn = aws_lb_target_group.xtcross-targetgroup-public.arn
-  target_id        = aws_lb.xtcross-loadbalancer-private.arn
-  port             = local.hasCert ? 443 : 80
-  depends_on       = [aws_lb_listener.xtcross-http-listener-private]
 }
