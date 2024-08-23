@@ -53,6 +53,7 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
   task_role_arn            = var.xtcross-task-role-arn
   network_mode             = var.xtcross-network-mode
   requires_compatibilities = ["EC2"]
+  memory                   = var.xtcross-task-memory
 
   volume {
     name = "${var.xtcross-service-name}-volume"
