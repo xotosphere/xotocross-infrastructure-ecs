@@ -19,6 +19,7 @@ variable "xtcross-network-mode" { description = "xtcross network mode" }
 variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn" }
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
 variable "xtcross-task-memory" { description = "xtcross task memory" }
+variable "xtcross-host-portlist" { description = "xtcross list of target ports for the listeners" }
 
 ####################### RESOURCE
 
@@ -118,11 +119,11 @@ resource "aws_ecs_service" "xtcross-service" {
 
       content {
         discovery_name = var.xtcross-container-definition[count.value].name
-        port_name      = "port-${var.xtcross-container-port[count.value]}"
+        port_name      = "port-${var.xtcross-host-portlist[count.value]}"
 
         client_alias {
           dns_name = "${var.xtcross-container-definition[count.value].name}.${var.environment}.local"
-          port     = var.xtcross-container-port[count.value]
+          port     = var.xtcross-host-portlist[count.value]
         }
       }
     }
