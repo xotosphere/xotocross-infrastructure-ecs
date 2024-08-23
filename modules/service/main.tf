@@ -18,7 +18,6 @@ variable "xtcross-healthcheck-grace" { description = "xtcross health check grace
 variable "xtcross-network-mode" { description = "xtcross network mode" }
 variable "xtcross-targetgroup-arnlist" { description = "xtcross target group arn" }
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts" }
-variable "xtcross-task-memory" { description = "xtcross task memory" }
 
 ####################### RESOURCE
 
@@ -53,7 +52,6 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
   task_role_arn            = var.xtcross-task-role-arn
   network_mode             = var.xtcross-network-mode
   requires_compatibilities = ["EC2"]
-  memory                   = var.xtcross-task-memory
 
   volume {
     name = "${var.xtcross-service-name}-volume"
