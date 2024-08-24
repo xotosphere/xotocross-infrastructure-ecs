@@ -5,7 +5,7 @@ locals {
     xtcross-container-name      = "xtcross-${var.xtcross-service-name}-fluentbit"
     xtcross-container-image     = "ghcr.io/xotosphere/fluentbit:latest"
     xtcross-container-essential = false
-    xtcross-container-portmap   = jsonencode([{ containerPort = 24224, hostPort = 24224, protocol = "tcp", name = "port-${24224}" }, { containerPort = 2020, hostPort = 2020, protocol = "tcp", name = "port-${2020}" }])
+    xtcross-container-portmap   = jsonencode(concat(var.xtcross-enable-prometheus ? [{ containerPort = 2020, hostPort = 2020, protocol = "tcp", name = "port-${2020}" }] : [], var.xtcross-container-definition))
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
       { name = "LOKI_HOST", value = "xtcross-monitor-loki.${var.environment}.local", },
@@ -27,8 +27,8 @@ locals {
   }))
 
   xtcross-container-definition = concat(var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [], var.xtcross-container-definition)
-  xtcross-healthcheck-pathlist = concat(var.xtcross-enable-monitor ? ["/api/v1/health"] : [], var.xtcross-healthcheck-pathlist)
-  xtcross-listener-hostlist    = concat(var.xtcross-enable-monitor ? ["fluentbit-${var.xtcross-service-name}.${var.environment}.${var.xtcross-domain-name}.com"] : [], var.xtcross-listener-hostlist)
-  xtcross-container-portlist   = concat(var.xtcross-enable-monitor ? [2020] : [], var.xtcross-container-portlist)
-  xtcross-host-portlist        = concat(var.xtcross-enable-monitor ? [2020] : [], var.xtcross-host-portlist)
+  xtcross-healthcheck-pathlist = var.xtcross-healthcheck-pathlist
+  xtcross-listener-hostlist    = var.xtcross-listener-hostlist
+  xtcross-container-portlist   = var.xtcross-container-portlist
+  xtcross-host-portlist        = var.xtcross-host-portlist
 }

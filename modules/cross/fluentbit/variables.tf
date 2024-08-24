@@ -11,3 +11,7 @@ variable "xtcross-healthcheck-pathlist" { description = "xtcross health check pa
 variable "xtcross-listener-hostlist" { description = "xtcross listener hosts for the xtcross service" }
 variable "xtcross-container-portlist" { description = "xtcross container ports for the xtcross service" }
 variable "xtcross-host-portlist" { description = "xtcross host ports for the xtcross service" }
+variable "xtcross-enable-prometheus" {
+  description = "xtcross flag to indicate if prometheus is enabled"
+  default     = false
+}
