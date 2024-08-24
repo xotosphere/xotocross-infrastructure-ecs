@@ -114,7 +114,7 @@ resource "aws_ecs_service" "xtcross-service" {
     namespace = "${var.environment}.local"
 
     dynamic "service" {
-      for_each = range(0, length(var.xtcross-container-definition))
+      for_each = range(0, length(var.xtcross-host-portlist))
       iterator = count
 
       content {
