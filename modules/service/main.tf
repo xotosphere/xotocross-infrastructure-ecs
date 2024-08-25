@@ -107,7 +107,7 @@ resource "aws_ecs_service" "xtcross-service" {
   enable_ecs_managed_tags           = false
   propagate_tags                    = "SERVICE"
   enable_execute_command            = false
-  health_check_grace_period_seconds = length(var.xtcross-host-portlist) > 0 ? var.xtcross-healthcheck-grace : null
+  health_check_grace_period_seconds = null
 
   service_connect_configuration {
     enabled   = true
