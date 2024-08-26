@@ -2,6 +2,7 @@
 
 variable "region" { description = "xtcross region" }
 variable "environment" { description = "xtcross environment" }
+variable "prefix" { description = "xtcross prefix" }
 variable "xtcross-cluster-name" { description = "xtcross ecs cluster name" }
 variable "xtcross-task-family" { description = "xtcross task family" }
 variable "xtcross-container-definition" { description = "xtcross container definition" }
@@ -71,7 +72,7 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
 }
 
 resource "aws_ecs_service" "xtcross-service" {
-  name                               = "xtcross-${var.xtcross-service-name}-${var.environment}-service"
+  name                               = "${var.prefix}-${var.xtcross-service-name}-${var.environment}-service"
   cluster                            = var.xtcross-cluster-name
   task_definition                    = aws_ecs_task_definition.xtcross-task-definition.arn
   deployment_maximum_percent         = var.xtcross-deployment-max

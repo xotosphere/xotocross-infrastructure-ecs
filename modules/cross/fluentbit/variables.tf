@@ -2,6 +2,7 @@
 
 variable "region" { description = "xtcross the aws region where the service is deployed" }
 variable "environment" { description = "xtcross environment" }
+variable "prefix" { description = "xtcross prefix" }
 variable "xtcross-domain-name" { description = "xtcross the domain name for the xtcross service" }
 variable "xtcross-service-name" { description = "xtcross the name of the xtcross service" }
 variable "xtcross-service-version" { description = "xtcross application version" }

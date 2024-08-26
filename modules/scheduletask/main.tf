@@ -5,12 +5,13 @@ data "aws_lambda_layer_version" "xtcross-cross-layer" {
 }
 
 data "aws_sns_topic" "xtcross-cloudwatch-sns" {
-  name = "xtcross-${var.environment}-sns"
+  name = "${var.prefix}-${var.environment}-sns"
 }
 
 ####################### VARIABLE
 
 variable "environment" { description = "xtcross environment" }
+variable "prefix" { description = "xtcross prefix" }
 variable "xtcross-function-name" { description = "xtcross name of the function" }
 variable "xtcross-lambda-role-arn" { description = "xtcross arn of the lambda policy function" }
 
