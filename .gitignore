@@ -50,7 +50,7 @@ terraform.rc
 id_rsa
 builds
 **/node_modules
-.env*
+
 .flaskenv*
 !.env.project
 !.env.vault
