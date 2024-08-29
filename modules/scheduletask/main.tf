@@ -1,7 +1,7 @@
 ####################### DATA
 
 data "aws_lambda_layer_version" "xtcross-cross-layer" {
-  layer_name = "${var.prefix}-cross-layer"
+  layer_name = "${var.prefix}-${var.environment}-layer"
 }
 
 data "aws_sns_topic" "xtcross-cloudwatch-sns" {
