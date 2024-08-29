@@ -1,6 +1,6 @@
 /**
 	{
-		"clusterName":"xtcross-staging-ecs",
+		"clusterName":"xtcross-staging",
 		"serviceName":"xtcross-demo-staging-service",
 		"taskCount":0,
 		"action":"stop"

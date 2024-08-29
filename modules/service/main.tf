@@ -26,7 +26,7 @@ variable "xtcross-host-portlist" { description = "xtcross list of target ports f
 
 data "aws_efs_file_system" "xtcross-fs" {
   tags = {
-    Name = "${var.xtcross-cluster-name}-fs"
+    Name = "${var.xtcross-cluster-name}"
   }
 }
 
@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
   memory = var.xtcross-task-memory
 
   volume {
-    name = "${var.xtcross-service-name}-volume"
+    name = "${var.xtcross-service-name}"
     efs_volume_configuration {
       file_system_id = data.aws_efs_file_system.xtcross-fs.id
       transit_encryption = "ENABLED"
@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "xtcross-task-definition" {
 }
 
 resource "aws_ecs_service" "xtcross-service" {
-  name = "${var.prefix}-${var.xtcross-service-name}-${var.environment}-service"
+  name = "${var.prefix}-${var.xtcross-service-name}-${var.environment}"
   cluster = var.xtcross-cluster-name
   task_definition = aws_ecs_task_definition.xtcross-task-definition.arn
   deployment_maximum_percent = var.xtcross-deployment-max

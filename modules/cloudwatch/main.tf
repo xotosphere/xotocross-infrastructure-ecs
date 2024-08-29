@@ -7,6 +7,6 @@ variable "xtcross-loggroup-retention" { description = "xtcross retention days fo
 ####################### RESOURCE
 
 resource "aws_cloudwatch_log_group" "xtcross-ecs-loggroup" {
-	name = var.xtcross-ecs-loggroup-name
+  name = var.xtcross-ecs-loggroup-name
   retention_in_days = var.xtcross-loggroup-retention
 }

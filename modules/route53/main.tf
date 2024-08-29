@@ -15,9 +15,9 @@ variable "xtcross-listener-hostlist" { description = "xtcross the list of listen
 
 resource "aws_route53_record" "xtcross-service-record-public" {
   for_each = toset(var.xtcross-listener-hostlist)
-  zone_id  = data.aws_route53_zone.xtcross-zone.zone_id
-  name     = each.key
-  type     = "CNAME"
-  ttl      = "300"
-  records  = [var.xtcross-loadbalancer-name]
+  zone_id = data.aws_route53_zone.xtcross-zone.zone_id
+  name = each.key
+  type = "CNAME"
+  ttl = "300"
+  records = [var.xtcross-loadbalancer-name]
 }

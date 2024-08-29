@@ -1,11 +1,11 @@
 ####################### DATA
 
 data "aws_lambda_layer_version" "xtcross-cross-layer" {
-  layer_name = "${var.prefix}-${var.environment}-layer"
+  layer_name = "${var.prefix}-${var.environment}"
 }
 
 data "aws_sns_topic" "xtcross-cloudwatch-sns" {
-  name = "${var.prefix}-${var.environment}-sns"
+  name = "${var.prefix}-${var.environment}"
 }
 
 ####################### VARIABLE
@@ -53,7 +53,7 @@ resource "aws_cloudwatch_metric_alarm" "xtcross-scheduletask-alarm" {
   statistic = "SampleCount"
   threshold = "1"
   alarm_description = "xtcross metric checks if there are any errors from the lambda function"
-  alarm_actions       = [data.aws_sns_topic.xtcross-cloudwatch-sns.arn]
+  alarm_actions = [data.aws_sns_topic.xtcross-cloudwatch-sns.arn]
 
   dimensions = {
     FunctionName = var.xtcross-function-name
