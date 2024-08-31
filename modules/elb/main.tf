@@ -75,7 +75,7 @@ resource "aws_lb" "xtcross-loadbalancer" {
   }
 }
 
-resource "aws_lb_listener" "https-redirection" {
+resource "aws_lb_listener" "xtcross-https-redirection" {
   count             = local.hasCert ? 1 : 0
   load_balancer_arn = aws_lb.xtcross-loadbalancer.arn
   port              = 80
