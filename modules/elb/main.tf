@@ -87,7 +87,7 @@ resource "aws_lb_listener" "xtcross-https-redirection" {
     redirect {
       port        = "443"
       protocol    = "HTTPS"
-      status_code = "301"
+      status_code = "HTTP_301"
     }
   }
 }
