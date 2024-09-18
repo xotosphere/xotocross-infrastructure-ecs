@@ -4,12 +4,12 @@ output "xtcross-targetgroup-arnlist" {
 }
 
 output "xtcross-loadbalancer-name" {
-  value       = aws_lb.xtcross-loadbalancer.dns_name
+  value       = data.aws_lb.xtcross-loadbalancer.dns_name
   description = "xtcross dns name of the alb"
 }
 
 output "xtcross-loadbalancer-zone-id" {
-  value       = aws_lb.xtcross-loadbalancer.zone_id
+  value       = data.aws_lb.xtcross-loadbalancer.zone_id
   description = "xtcross zone id of the alb"
 }
 
@@ -81,7 +81,7 @@ locals {
 
 resource "aws_lb_listener" "xtcross-https-redirection" {
   count             = local.hasCert ? 1 : 0
-  load_balancer_arn = aws_lb.xtcross-loadbalancer.arn
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -97,7 +97,7 @@ resource "aws_lb_listener" "xtcross-https-redirection" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener" {
-  load_balancer_arn = aws_lb.xtcross-loadbalancer.arn
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
   port              = local.hasCert ? 443 : 80
   certificate_arn   = local.certificate
   protocol          = local.hasCert ? "HTTPS" : "HTTP"
