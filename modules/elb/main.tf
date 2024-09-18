@@ -40,6 +40,10 @@ variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for 
 
 ######################
 
+data "aws_lb" "xtcross-loadbalancer" {
+  name = var.xtcross-loadbalancer-name
+}
+
 data "external" "xtcross-certificate" {
   program = ["bash", "-c", "arn=$(aws acm list-certificates --region eu-west-3 | jq -r '.CertificateSummaryList[] | select(.DomainName == \"*.${var.environment}.${var.xtcross-domain-name}.com\" and .Status == \"ISSUED\") | .CertificateArn' | head -n 1); jq --arg arn \"$arn\" '{\"arn\": $arn}'"]
 }
@@ -57,23 +61,23 @@ locals {
   certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
-resource "aws_lb" "xtcross-loadbalancer" {
-  name                             = var.xtcross-loadbalancer-name
-  internal                         = false
-  load_balancer_type               = "application"
-  subnets                          = var.xtcross-private-subnetlist
-  security_groups                  = [var.xtcross-loadbalancer-securitygroup]
-  desync_mitigation_mode           = "defensive"
-  enable_cross_zone_load_balancing = true
-  enable_http2                     = true
-  idle_timeout                     = 300
-  ip_address_type                  = "ipv4"
+# resource "aws_lb" "xtcross-loadbalancer" {
+#   name                             = var.xtcross-loadbalancer-name
+#   internal                         = false
+#   load_balancer_type               = "application"
+#   subnets                          = var.xtcross-private-subnetlist
+#   security_groups                  = [var.xtcross-loadbalancer-securitygroup]
+#   desync_mitigation_mode           = "defensive"
+#   enable_cross_zone_load_balancing = true
+#   enable_http2                     = true
+#   idle_timeout                     = 300
+#   ip_address_type                  = "ipv4"
 
-  tags = {
-    Name        = "${var.xtcross-loadbalancer-name}"
-    environment = var.environment
-  }
-}
+#   tags = {
+#     Name        = "${var.xtcross-loadbalancer-name}"
+#     environment = var.environment
+#   }
+# }
 
 resource "aws_lb_listener" "xtcross-https-redirection" {
   count             = local.hasCert ? 1 : 0
