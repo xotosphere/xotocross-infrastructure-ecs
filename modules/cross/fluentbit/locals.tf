@@ -27,8 +27,9 @@ locals {
   }))
 
   xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [])
-  xtcross-healthcheck-pathlist = var.xtcross-healthcheck-pathlist
-  xtcross-listener-hostlist    = var.xtcross-listener-hostlist
-  xtcross-container-portlist   = var.xtcross-container-portlist
-  xtcross-host-portlist        = var.xtcross-host-portlist
+  xtcross-healthcheck-pathlist = concat(var.xtcross-healthcheck-pathlist, var.xtcross-enable-monitor ? ["/api/v1/health"] : [])
+  #   xtcross-listener-hostlist    = concat(var.xtcross-listener-hostlist, var.xtcross-enable-monitor ? ["${var.prefix}-${var.xtcross-service-name}-fluentbit.${var.environment}.${var.xtcross-domain-name}.com"] : [])
+  xtcross-listener-hostlist  = var.xtcross-listener-hostlist
+  xtcross-container-portlist = concat(var.xtcross-container-portlist, var.xtcross-enable-monitor ? [2020] : [])
+  xtcross-host-portlist      = concat(var.xtcross-host-portlist, var.xtcross-enable-monitor ? [2020] : [])
 }
