@@ -61,24 +61,6 @@ locals {
   certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
-# resource "aws_lb" "xtcross-loadbalancer" {
-#   name                             = var.xtcross-loadbalancer-name
-#   internal                         = false
-#   load_balancer_type               = "application"
-#   subnets                          = var.xtcross-private-subnetlist
-#   security_groups                  = [var.xtcross-loadbalancer-securitygroup]
-#   desync_mitigation_mode           = "defensive"
-#   enable_cross_zone_load_balancing = true
-#   enable_http2                     = true
-#   idle_timeout                     = 300
-#   ip_address_type                  = "ipv4"
-
-#   tags = {
-#     Name        = "${var.xtcross-loadbalancer-name}"
-#     environment = var.environment
-#   }
-# }
-
 resource "aws_lb_listener" "xtcross-https-redirection" {
   count             = local.hasCert ? 1 : 0
   load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
