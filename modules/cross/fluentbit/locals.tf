@@ -8,7 +8,7 @@ locals {
     xtcross-container-portmap   = jsonencode(concat(var.xtcross-enable-prometheus ? [{ containerPort = 2020, hostPort = 2020, protocol = "tcp", name = "port-${2020}" }] : [], []))
     xtcross-container-environment = jsonencode([
       { name = "ENVIRONMENT", value = var.environment },
-      { name = "LOKI_HOST", value = "loki-monitor.${var.environment}.xotosphere.com", },
+      { name = "LOKI_HOST", value = "xotocross-infrastructure-loki.${var.environment}.xotosphere.com", },
       { name = "LOKI_PORT", value = "443" },
       { name = "HTTPS", value = "On" },
       { name = "HTTPS_VERIFY", value = "Off" },
