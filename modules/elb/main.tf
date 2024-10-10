@@ -124,6 +124,7 @@ resource "aws_lb_target_group" "xtcross-targetgroup" {
   target_type                   = var.xtcross-target-type
   vpc_id                        = var.xtcross-vpc-id
   load_balancing_algorithm_type = "round_robin"
+  deregistration_delay          = 0
 
   health_check {
     enabled             = true
