@@ -104,6 +104,11 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
     target_group_arn = aws_lb_target_group.xtcross-targetgroup[each.value].arn
   }
 
+  tags = {
+    Name        = "${var.xtcross-targetgroup-name}-${each.value}"
+    environment = var.environment
+  }
+
   condition {
     host_header {
       values = ["private-${var.xtcross-listener-hostlist[each.value]}", var.xtcross-listener-hostlist[each.value]]
