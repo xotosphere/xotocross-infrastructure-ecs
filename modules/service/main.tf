@@ -80,6 +80,11 @@ resource "aws_ecs_service" "xtcross-service" {
   desired_count                      = var.xtcross-desired-count
   launch_type                        = "EC2"
 
+  tags = {
+    Environment = var.environment
+    Name        = "${var.prefix}-${var.xtcross-service-name}-${var.environment}"
+  }
+
   deployment_controller {
     type = "ECS"
   }
