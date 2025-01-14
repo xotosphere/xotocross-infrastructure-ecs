@@ -90,10 +90,9 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
     fixed_response {
       content_type = "text/plain"
-      message_body = "Welcome to our website! Be sure to check the URL 😊"
+      message_body = "Welcome to our website! Be sure to check the URL."
       status_code  = "200"
     }
-
   }
 }
 
