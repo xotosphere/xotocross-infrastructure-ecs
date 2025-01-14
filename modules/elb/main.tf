@@ -87,30 +87,13 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
   default_action {
     type = "fixed-response"
+
     fixed_response {
-      content_type = "text/html"
-      message_body = <<EOF
-<html>
-<head>
-  <style>
-    body {
-      background-color: #282c34;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: calc(10px + 2vmin);
-      color: white;
-    }
-  </style>
-</head>
-<body>
-  <h1>Welcome to our website! Be sure to check the URL 😊</h1>
-</body>
-</html>
-EOF
+      content_type = "text/plain"
+      message_body = "Welcome to our website! Be sure to check the URL 😊"
       status_code  = "200"
     }
+
   }
 }
 
