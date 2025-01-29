@@ -61,44 +61,20 @@ locals {
   certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
-resource "aws_lb_listener" "xtcross-https-redirection" {
-  count             = local.hasCert ? 1 : 0
-  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
+data "aws_lb_listener" "xtcross-https-redirection" {
   port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
-resource "aws_lb_listener" "xtcross-http-listener" {
   load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
-  port              = local.hasCert ? 443 : 80
-  certificate_arn   = local.certificate
-  protocol          = local.hasCert ? "HTTPS" : "HTTP"
-  ssl_policy        = local.hasCert ? "ELBSecurityPolicy-2016-08" : null
-
-  default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Welcome to our website! Be sure to check the URL."
-      status_code  = "200"
-    }
-  }
 }
+
+data "aws_lb_listener" "xtcross-http-listener" {
+  port              = 443
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
+}
+
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each     = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
-  listener_arn = aws_lb_listener.xtcross-http-listener.arn
+  listener_arn = data.aws_lb_listener.xtcross-http-listener.arn
 
   action {
     type             = "forward"
