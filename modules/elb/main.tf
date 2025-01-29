@@ -69,8 +69,8 @@ locals {
   prod_cert_arn              = data.external.xtcross-certificate.result["arn"]
   hasCert                    = local.prod_cert_arn != ""
   certificate                = local.hasCert ? local.prod_cert_arn : null
-  https_redirection_listener = try(data.aws_lb_listener.xtcross-https-redirection, null)
-  http_listener              = try(data.aws_lb_listener.xtcross-http-listener, null)
+  https_redirection_listener = try(data.aws_lb_listener.xtcross-https-redirection.arn, null)
+  http_listener              = try(data.aws_lb_listener.xtcross-http-listener.arn, null)
 }
 
 resource "aws_lb_listener" "xtcross-https-redirection" {
@@ -111,7 +111,7 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each     = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
-  listener_arn = local.http_listener != null ? local.http_listener.arn : aws_lb_listener.xtcross-http-listener[0].arn
+  listener_arn = local.http_listener != null ? local.http_listener : aws_lb_listener.xtcross-http-listener[0].arn
 
   action {
     type             = "forward"
