@@ -53,6 +53,16 @@ resource "local_file" "certificate_snapshot" {
   filename = "${path.module}/certificate_snapshot.json"
 }
 
+data "aws_lb_listener" "xtcross-https-redirection" {
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
+  port              = 80
+}
+
+data "aws_lb_listener" "xtcross-http-listener" {
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
+  port              = 443
+}
+
 ######################
 
 locals {
