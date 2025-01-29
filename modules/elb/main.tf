@@ -53,29 +53,16 @@ resource "local_file" "certificate_snapshot" {
   filename = "${path.module}/certificate_snapshot.json"
 }
 
-data "aws_lb_listeners" "xtcross-http-listeners" {
-  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
-  port              = 443
-}
-
-data "aws_lb_listeners" "xtcross-https-redirection-listeners" {
-  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
-  port              = 80
-}
-
-
 ######################
 
 locals {
-  prod_cert_arn              = data.external.xtcross-certificate.result["arn"]
-  hasCert                    = local.prod_cert_arn != ""
-  certificate                = local.hasCert ? local.prod_cert_arn : null
-  https_redirection_listener = length(data.aws_lb_listeners.xtcross-https-redirection-listeners.listeners) > 0 ? data.aws_lb_listeners.xtcross-https-redirection-listeners.listeners[0].arn : null
-  http_listener              = length(data.aws_lb_listeners.xtcross-http-listeners.listeners) > 0 ? data.aws_lb_listeners.xtcross-http-listeners.listeners[0].arn : null
+  prod_cert_arn = data.external.xtcross-certificate.result["arn"]
+  hasCert       = local.prod_cert_arn != ""
+  certificate   = local.hasCert ? local.prod_cert_arn : null
 }
 
 resource "aws_lb_listener" "xtcross-https-redirection" {
-  count             = (local.hasCert && local.https_redirection_listener == null) ? 1 : 0
+  count             = local.hasCert ? 1 : 0
   load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
   port              = 80
   protocol          = "HTTP"
@@ -92,7 +79,6 @@ resource "aws_lb_listener" "xtcross-https-redirection" {
 }
 
 resource "aws_lb_listener" "xtcross-http-listener" {
-  count             = local.http_listener == null ? 1 : 0
   load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
   port              = local.hasCert ? 443 : 80
   certificate_arn   = local.certificate
@@ -112,7 +98,7 @@ resource "aws_lb_listener" "xtcross-http-listener" {
 
 resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
   for_each     = toset([for idx in range(0, length(var.xtcross-listener-hostlist)) : tostring(idx)])
-  listener_arn = local.http_listener != null ? local.http_listener : aws_lb_listener.xtcross-http-listener[0].arn
+  listener_arn = aws_lb_listener.xtcross-http-listener.arn
 
   action {
     type             = "forward"
