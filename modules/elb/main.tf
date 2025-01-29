@@ -53,15 +53,16 @@ resource "local_file" "certificate_snapshot" {
   filename = "${path.module}/certificate_snapshot.json"
 }
 
-data "aws_lb_listener" "xtcross-https-redirection" {
+data "aws_lb_listeners" "xtcross-http-listeners" {
+  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
+  port              = 443
+}
+
+data "aws_lb_listeners" "xtcross-https-redirection-listeners" {
   load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
   port              = 80
 }
 
-data "aws_lb_listener" "xtcross-http-listener" {
-  load_balancer_arn = data.aws_lb.xtcross-loadbalancer.arn
-  port              = 443
-}
 
 ######################
 
@@ -69,8 +70,8 @@ locals {
   prod_cert_arn              = data.external.xtcross-certificate.result["arn"]
   hasCert                    = local.prod_cert_arn != ""
   certificate                = local.hasCert ? local.prod_cert_arn : null
-  https_redirection_listener = try(data.aws_lb_listener.xtcross-https-redirection.arn, null)
-  http_listener              = try(data.aws_lb_listener.xtcross-http-listener.arn, null)
+  https_redirection_listener = length(data.aws_lb_listeners.xtcross-https-redirection-listeners.listeners) > 0 ? data.aws_lb_listeners.xtcross-https-redirection-listeners.listeners[0].arn : null
+  http_listener              = length(data.aws_lb_listeners.xtcross-http-listeners.listeners) > 0 ? data.aws_lb_listeners.xtcross-http-listeners.listeners[0].arn : null
 }
 
 resource "aws_lb_listener" "xtcross-https-redirection" {
