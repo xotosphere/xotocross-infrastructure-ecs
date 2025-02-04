@@ -26,7 +26,7 @@ locals {
     xtcross-container-firelensconfiguration = jsonencode({ type = "fluentbit", options = { config-file-type = "file", config-file-value = "/fluent-bit/etc/fluent-bit-filter.conf" } })
   }))
 
-  xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-monitor ? [local.xtcross-container-fluentbit] : [])
+  xtcross-container-definition = concat(var.xtcross-container-definition, var.xtcross-enable-prometheus ? [local.xtcross-container-fluentbit] : [])
   xtcross-healthcheck-pathlist = var.xtcross-healthcheck-pathlist
   xtcross-listener-hostlist    = var.xtcross-listener-hostlist
   xtcross-container-portlist   = concat(var.xtcross-container-portlist, var.xtcross-enable-prometheus ? [2020] : [])
