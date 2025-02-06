@@ -1,11 +1,11 @@
 ####################### DATA
 
 data "aws_lambda_layer_version" "xtcross-cross-layer" {
-  layer_name = "${var.xtcross-cluster-name}-${var.environment}"
+  layer_name = var.xtcross-cluster-name
 }
 
 data "aws_sns_topic" "xtcross-cloudwatch-sns" {
-  name = "${var.xtcross-cluster-name}-${var.environment}"
+  name = var.xtcross-cluster-name
 }
 
 ####################### VARIABLE
