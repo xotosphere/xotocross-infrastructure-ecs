@@ -23,11 +23,7 @@ output "xtcross-https-enabled" {
 variable "environment" { description = "xtcross environment" }
 variable "region" { description = "xtcross region" }
 variable "xtcross-loadbalancer-name" { description = "xtcross name of the alb" }
-variable "xtcross-private-subnetlist" { description = "xtcross list of private subnet ids to place the alb in" }
-variable "xtcross-loadbalancer-securitygroup" { description = "xtcross list of security group ids to attach to the alb" }
-variable "xtcross-listener-portlist" { description = "xtcross list of ports for the listeners" }
 variable "xtcross-host-portlist" { description = "xtcross list of target ports for the listeners" }
-variable "xtcross-domain-name" { description = "xtcross domain name" }
 variable "xtcross-targetgroup-name" { description = "xtcross name of the target group" }
 variable "xtcross-target-type" { description = "xtcross type of targets for the target group" }
 variable "xtcross-vpc-id" { description = "xtcross id of the vpc where the target group will be created" }
@@ -37,6 +33,7 @@ variable "xtcross-healthcheck-interval" { description = "xtcross interval betwee
 variable "xtcross-healthcheck-pathlist" { description = "xtcross path of the health check endpoint" }
 variable "xtcross-healthcheck-timeout" { description = "xtcross timeout for the health check (in seconds)" }
 variable "xtcross-listener-hostlist" { description = "xtcross list of hosts for the listeners" }
+variable "xtcross-domain-name" { description = "xtcross domain name" }
 
 ######################
 
@@ -88,7 +85,7 @@ resource "aws_lb_listener_rule" "xtcross-http-listener-rule" {
 
   condition {
     host_header {
-      values = ["private-${var.xtcross-listener-hostlist[each.value]}", var.xtcross-listener-hostlist[each.value]]
+      values = [var.xtcross-listener-hostlist[each.value]]
     }
   }
 }
